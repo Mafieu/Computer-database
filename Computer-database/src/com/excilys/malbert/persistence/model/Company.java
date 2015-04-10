@@ -6,7 +6,8 @@ public class Company extends Entity {
     public Company() {
     }
 
-    public Company(String name) {
+    public Company(long id, String name) {
+	this.id = id;
 	this.name = name;
     }
 
@@ -16,5 +17,11 @@ public class Company extends Entity {
 
     public void setName(String name) {
 	this.name = name;
+    }
+
+    @Override
+    public String toString() {
+	return new StringBuilder("Id : ").append(id).append("\tName : ")
+		.append(name).toString();
     }
 }

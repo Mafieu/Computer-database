@@ -1,15 +1,28 @@
 package com.excilys.malbert.persistence;
 
+import java.sql.Connection;
 import java.util.List;
 
+import com.excilys.malbert.dbConnection.ComputerDbConnection;
 import com.excilys.malbert.persistence.model.Entity;
 
-public interface ICrud {
-    public List<Entity> getAll();
+public abstract class ICrud {
+    protected Connection connection;
 
-    public void create();
+    protected ICrud() {
+	connection = ComputerDbConnection.getConnection();
+    }
 
-    public void delete();
+    public List<Entity> getAll() {
+	return null;
+    }
 
-    public void update();
+    public void create() {
+    }
+
+    public void delete() {
+    }
+
+    public void update() {
+    }
 }

@@ -1,22 +1,15 @@
 package com.excilys.malbert.persistence;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.malbert.dbConnection.ComputerDbConnection;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.persistence.model.Entity;
 
-public final class CrudComputer implements ICrud {
-    private Connection connection;
-
-    public CrudComputer() {
-	connection = ComputerDbConnection.getConnection();
-    }
+public final class CrudComputer extends ICrud {
 
     @Override
     public List<Entity> getAll() {
