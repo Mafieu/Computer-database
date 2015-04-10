@@ -7,25 +7,25 @@ public class Computer extends Entity {
     private String name = "";
     private Timestamp introduced = null;
     private Timestamp discontinued = null;
-    private Company company = null;
+    private long id_company = -1;
 
     public Computer() {
     }
 
-    public Computer(long id, String name, Company company) {
+    public Computer(long id, String name, long company) {
 	this.id = id;
 	this.name = name;
-	this.company = company;
+	this.id_company = company;
 	this.introduced = new Timestamp(new Date().getTime());
     }
 
-    public Computer(long id, String name, Timestamp introduced, Company company) {
+    public Computer(long id, String name, Timestamp introduced, long company) {
 	this(id, name, company);
 	this.introduced = introduced;
     }
 
     public Computer(long id, String name, Timestamp introduced,
-	    Timestamp discontinued, Company company) {
+	    Timestamp discontinued, long company) {
 	this(id, name, introduced, company);
 	this.discontinued = discontinued;
     }
@@ -54,12 +54,12 @@ public class Computer extends Entity {
 	this.discontinued = discontinued;
     }
 
-    public Company getCompany() {
-	return company;
+    public long getIdCompany() {
+	return id_company;
     }
 
-    public void setCompany(Company company) {
-	this.company = company;
+    public void setIdCompany(Company company) {
+	this.id_company = company.getId();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Computer extends Entity {
 	return new StringBuilder().append("Id : ").append(this.id)
 		.append("\tName : ").append(this.name)
 		.append("\tIntroduced : ").append(this.introduced)
-		.append("\tDescontinued : ").append(this.discontinued)
-		.toString();
+		.append("\tDiscontinued : ").append(this.discontinued)
+		.append("\tOwner : ").append(id_company).toString();
     }
 }

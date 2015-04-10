@@ -7,13 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.malbert.persistence.model.Company;
-import com.excilys.malbert.persistence.model.Entity;
 
-public class CrudCompanies extends ICrud {
+public class ControllerCompanies extends AbstractController {
 
-    @Override
-    public List<Entity> getAll() {
-	List<Entity> companies = new ArrayList<Entity>();
+    public ControllerCompanies() {
+
+    }
+
+    public List<Company> getAll() {
+	List<Company> companies = new ArrayList<Company>();
 	try {
 	    Statement statement = connection.createStatement();
 	    ResultSet set = statement.executeQuery("SELECT * FROM company");
@@ -26,20 +28,4 @@ public class CrudCompanies extends ICrud {
 	}
 	return companies;
     }
-
-    @Override
-    public void create() {
-
-    }
-
-    @Override
-    public void delete() {
-
-    }
-
-    @Override
-    public void update() {
-
-    }
-
 }
