@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class Computer extends Entity {
     private String name = "";
+    /* Change to localeDateTime (Java8 powa) */
     private Timestamp introduced = null;
     private Timestamp discontinued = null;
     private long id_company = -1;

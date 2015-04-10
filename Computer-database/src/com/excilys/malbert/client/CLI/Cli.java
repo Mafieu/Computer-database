@@ -1,7 +1,5 @@
 package com.excilys.malbert.client.CLI;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import com.excilys.malbert.persistence.ControllerCompanies;
@@ -15,23 +13,27 @@ public class Cli {
 	ControllerComputer computers = new ControllerComputer();
 	ControllerCompanies companies = new ControllerCompanies();
 	List<Company> listCompanies;
-	List<Computer> listCompunters;
+	List<Computer> listComputers;
 	listCompanies = companies.getAll();
 	for (Company company : listCompanies) {
 	    System.out.println(company.toString());
 	}
-	listCompunters = computers.getAll();
-	for (Computer computer : listCompunters) {
+	listComputers = computers.getAll();
+	for (Computer computer : listComputers) {
 	    System.out.println(computer.toString());
 	}
-	computers.create("titi", new Timestamp(new Date().getTime()), null,
-		listCompanies.get(5));
-	listCompunters = computers.getAll();
-	for (Computer computer : listCompunters) {
-	    System.out.println(computer.toString());
-	}
-
-	Computer computer = computers.getComputer(500);
-	System.out.println(computer.toString());
+	System.out
+		.println("******************************************************");
+	Computer pc = computers.getComputer(listComputers.get(
+		listComputers.size() - 1).getId());
+	System.out.println(pc.toString());
+	pc = computers.getComputer(listComputers
+		.get(listComputers.size() - 2).getId());
+	System.out.println(pc.toString());
+	computers.update(listComputers.get(listComputers.size() - 1),
+		listComputers.get(listComputers.size() - 2));
+	pc = computers.getComputer(listComputers
+		.get(listComputers.size() - 1).getId());
+	System.out.println(pc.toString());
     }
 }
