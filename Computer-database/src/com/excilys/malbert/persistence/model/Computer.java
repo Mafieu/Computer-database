@@ -13,21 +13,37 @@ public class Computer extends Entity {
     public Computer() {
     }
 
-    public Computer(long id, String name, long company) {
+    public Computer(long id, String name, long id_company) {
 	this.id = id;
 	this.name = name;
-	this.id_company = company;
+	this.id_company = id_company;
 	this.introduced = new Timestamp(new Date().getTime());
     }
 
-    public Computer(long id, String name, Timestamp introduced, long company) {
-	this(id, name, company);
+    public Computer(long id, String name, Timestamp introduced, long id_company) {
+	this(id, name, id_company);
 	this.introduced = introduced;
     }
 
     public Computer(long id, String name, Timestamp introduced,
-	    Timestamp discontinued, long company) {
-	this(id, name, introduced, company);
+	    Timestamp discontinued, long id_company) {
+	this(id, name, introduced, id_company);
+	this.discontinued = discontinued;
+    }
+
+    public Computer(String name, long id_company) {
+	this.name = name;
+	this.id_company = id_company;
+    }
+
+    public Computer(String name, Timestamp introduced, long id_company) {
+	this(name, id_company);
+	this.introduced = introduced;
+    }
+
+    public Computer(String name, Timestamp introduced, Timestamp discontinued,
+	    long id_company) {
+	this(name, introduced, id_company);
 	this.discontinued = discontinued;
     }
 

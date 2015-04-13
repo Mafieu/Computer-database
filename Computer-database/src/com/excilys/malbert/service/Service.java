@@ -21,7 +21,7 @@ public class Service {
 	return computers.getAll();
     }
 
-    public List<Company> getAllCompanies() {
+    public List<Company> getAllCompanies() throws SQLException {
 	return companies.getAll();
     }
 

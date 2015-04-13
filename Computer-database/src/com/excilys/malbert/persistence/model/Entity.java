@@ -6,4 +6,8 @@ public abstract class Entity {
     public long getId() {
 	return id;
     }
+
+    public boolean equals(Entity obj) {
+	return this.id == obj.getId();
+    }
 }

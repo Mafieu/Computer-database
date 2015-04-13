@@ -40,6 +40,7 @@ public final class DAOComputer extends AbstractDAO {
     }
 
     public void create(Computer newComputer) throws SQLException {
+	// Check if company exists
 	PreparedStatement statement = connection
 		.prepareStatement("INSERT INTO computer(name, introduced, discontinued, company_id) VALUES (?, ? , ?, ?)");
 	statement.setString(1, newComputer.getName());
@@ -50,28 +51,21 @@ public final class DAOComputer extends AbstractDAO {
     }
 
     public void delete(Computer computer) throws SQLException {
-	PreparedStatement statement = connection
-		.prepareStatement("DELETE FROM computer WHERE id = "
-			+ computer.getId());
-	statement.executeUpdate();
+	Statement statement = connection.createStatement();
+	statement.executeUpdate("DELETE FROM computer WHERE id = "
+		+ computer.getId());
     }
 
     public void update(Computer oldComputer, Computer newComputer)
 	    throws SQLException {
-	Statement statement = connection.createStatement(
-		ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-	ResultSet set = statement
-		.executeQuery("SELECT * FROM computer WHERE id = "
-			+ oldComputer.getId());
-	if (!set.next()) {
-	    throw new SQLException("Computer not found for update, id : "
-		    + oldComputer.getId());
-	} else {
-	    set.updateString(2, newComputer.getName());
-	    set.updateTimestamp(3, newComputer.getIntroduced());
-	    set.updateTimestamp(4, newComputer.getDiscontinued());
-	    set.updateLong(5, newComputer.getIdCompany());
-	    set.updateRow();
-	}
+	// Check if company exists
+	PreparedStatement statement = connection
+		.prepareStatement("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?");
+	statement.setString(1, newComputer.getName());
+	statement.setTimestamp(2, newComputer.getIntroduced());
+	statement.setTimestamp(3, newComputer.getDiscontinued());
+	statement.setLong(4, newComputer.getIdCompany());
+	statement.setLong(5, oldComputer.getId());
+	statement.executeUpdate();
     }
 }

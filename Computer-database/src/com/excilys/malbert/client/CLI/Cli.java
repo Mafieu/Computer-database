@@ -13,7 +13,7 @@ import com.excilys.malbert.service.Service;
 public class Cli {
 
     private static Service service;
-    private static Scanner console;
+    private static Scanner scanner;
 
     private static void printMenu() {
 	System.out.println("1. List of computers");
@@ -25,72 +25,70 @@ public class Cli {
 	System.out.println("7. Quit program");
     }
 
+    private static Timestamp getDate() {
+	GregorianCalendar gc;
+	try {
+	    String[] introduction = scanner.nextLine().split("-");
+	    gc = new GregorianCalendar(Integer.parseInt(introduction[0]),
+		    Integer.parseInt(introduction[1]) - 1,
+		    Integer.parseInt(introduction[2]));
+	    return new Timestamp(gc.getTimeInMillis());
+	} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+	    return null;
+	}
+    }
+
     private static Computer createComputer() {
-	List<Company> companies = service.getAllCompanies();
 	String name;
 	Timestamp introduced, discontinued;
-	GregorianCalendar gc;
-	long id;
+	long id = -1;
 	System.out.println("Name of the computer :");
-	console.nextLine(); // Just for debug, otherwise name is ""
-	name = console.nextLine();
+	scanner.nextLine(); // Just for debug, otherwise name is ""
+	name = scanner.nextLine();
 	System.out.println("Date of introduction (YYYY-MM-DD):");
-	try {
-	    String[] introduction = console.nextLine().split("-");
-	    gc = new GregorianCalendar(Integer.parseInt(introduction[0]),
-		    Integer.parseInt(introduction[1]),
-		    Integer.parseInt(introduction[2]));
-	    introduced = new Timestamp(gc.getTimeInMillis());
-	} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-	    introduced = null;
-	}
+	introduced = getDate();
 	System.out.println("Date of discontinuation (YYYY-MM-DD):");
-	try {
-	    String[] discontinuation = console.nextLine().split("-");
-	    gc = new GregorianCalendar(Integer.parseInt(discontinuation[0]),
-		    Integer.parseInt(discontinuation[1]),
-		    Integer.parseInt(discontinuation[2]));
-	    discontinued = new Timestamp(gc.getTimeInMillis());
-	} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-	    discontinued = null;
-	}
+	discontinued = getDate();
 	System.out.println("Id of the manufacturer :");
-	id = console.nextLong();
-	try {
-	    companies.get((int) id - 1);
-	} catch (IndexOutOfBoundsException e) {
-	    System.err.println("Wrong company id");
+	if (scanner.hasNextLong()) {
+	    id = scanner.nextLong();
+	} else {
+	    scanner.next();
 	}
-	return new Computer(-1, name, introduced, discontinued, id);
+	return new Computer(name, introduced, discontinued, id);
     }
 
     private static void menu(int choice) {
 	List<Company> listCompanies;
 	List<Computer> listComputers;
 	Computer pc;
-	long id;
+	long id = -1;
 
 	switch (choice) {
 	case 1:
 	    try {
 		listComputers = service.getAllComputers();
-		for (Computer computer : listComputers) {
-		    System.out.println(computer.toString());
-		}
+		Paginator<Computer> paginatorPc = new Paginator<Computer>(
+			listComputers);
+		paginatorPc.show();
 	    } catch (SQLException e) {
 		System.err.println("Failed to get list of computers");
 	    }
 	    break;
 	case 2:
-	    listCompanies = service.getAllCompanies();
-	    for (Company company : listCompanies) {
-		System.out.println(company.toString());
+	    try {
+		listCompanies = service.getAllCompanies();
+		Paginator<Company> paginatorComp = new Paginator<Company>(
+			listCompanies);
+		paginatorComp.show();
+	    } catch (SQLException e1) {
+		System.err.println("Failed to get list of companies");
 	    }
 	    break;
 	case 3:
 	    try {
 		System.out.println("Id of the computer :");
-		id = console.nextLong();
+		id = scanner.nextLong();
 		System.out.println(service.getComputer(id).toString());
 	    } catch (SQLException e) {
 		System.err.println("Failed to get the computer");
@@ -105,7 +103,11 @@ public class Cli {
 	    break;
 	case 5:
 	    System.out.println("Id of the computer to update :");
-	    id = console.nextLong();
+	    if (scanner.hasNextLong()) {
+		id = scanner.nextLong();
+	    } else {
+		scanner.next();
+	    }
 	    try {
 		pc = service.getComputer(id);
 		try {
@@ -119,7 +121,7 @@ public class Cli {
 	    break;
 	case 6:
 	    System.out.println("Id of the computer :");
-	    id = console.nextLong();
+	    id = scanner.nextLong();
 	    try {
 		pc = service.getComputer(id);
 		try {
@@ -142,16 +144,16 @@ public class Cli {
 
     public static void main(String[] args) {
 	service = new Service();
-	console = new Scanner(System.in);
+	scanner = new Scanner(System.in);
 	int entry;
 
 	do {
 	    printMenu();
-	    if (console.hasNextInt()) {
-		entry = console.nextInt();
+	    if (scanner.hasNextInt()) {
+		entry = scanner.nextInt();
 		menu(entry);
 	    } else {
-		console.next();
+		scanner.next();
 		entry = 0;
 		System.err.println("Please enter a number between 1 and 7");
 	    }
