@@ -33,6 +33,9 @@ public abstract class DAOComputer {
 	    computers.add(new Computer(set.getLong(1), set.getString(2), set
 		    .getTimestamp(3), set.getTimestamp(4), set.getInt(5)));
 	}
+
+	set.close();
+	statement.close();
 	connection.close();
 	return computers;
     }
@@ -57,6 +60,9 @@ public abstract class DAOComputer {
 	    computer = new Computer(set.getLong(1), set.getString(2),
 		    set.getTimestamp(3), set.getTimestamp(4), set.getInt(5));
 	}
+
+	set.close();
+	statement.close();
 	connection.close();
 	return computer;
     }
@@ -77,6 +83,8 @@ public abstract class DAOComputer {
 	statement.setTimestamp(3, newComputer.getDiscontinued());
 	statement.setLong(4, newComputer.getIdCompany());
 	statement.executeUpdate();
+
+	statement.close();
 	connection.close();
     }
 
@@ -92,6 +100,8 @@ public abstract class DAOComputer {
 	Statement statement = connection.createStatement();
 	statement.executeUpdate("DELETE FROM computer WHERE id = "
 		+ computer.getId());
+
+	statement.close();
 	connection.close();
     }
 
@@ -115,6 +125,8 @@ public abstract class DAOComputer {
 	statement.setLong(4, newComputer.getIdCompany());
 	statement.setLong(5, oldComputer.getId());
 	statement.executeUpdate();
+
+	statement.close();
 	connection.close();
     }
 }

@@ -31,6 +31,9 @@ public abstract class DAOCompany {
 	while (set.next()) {
 	    companies.add(new Company(set.getLong(1), set.getString(2)));
 	}
+
+	set.close();
+	statement.close();
 	connection.close();
 	return companies;
     }
@@ -54,6 +57,9 @@ public abstract class DAOCompany {
 	} else {
 	    company = new Company(set.getLong(1), set.getString(2));
 	}
+
+	set.close();
+	statement.close();
 	connection.close();
 	return company;
     }
