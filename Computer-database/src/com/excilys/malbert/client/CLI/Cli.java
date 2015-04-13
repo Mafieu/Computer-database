@@ -10,11 +10,19 @@ import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.service.Service;
 
+/**
+ * Command Line Interface class for the client
+ * 
+ * @author excilys
+ */
 public class Cli {
 
     private static Service service;
     private static Scanner scanner;
 
+    /**
+     * Prints the menu
+     */
     private static void printMenu() {
 	System.out.println("1. List of computers");
 	System.out.println("2. List of companies");
@@ -25,6 +33,11 @@ public class Cli {
 	System.out.println("7. Quit program");
     }
 
+    /**
+     * Change the format's date (YYYY-MM-DD) to a Timestamp
+     * 
+     * @return The date in a Timestamp object
+     */
     private static Timestamp getDate() {
 	GregorianCalendar gc;
 	try {
@@ -38,6 +51,9 @@ public class Cli {
 	}
     }
 
+    /**
+     * @return A computer
+     */
     private static Computer createComputer() {
 	String name;
 	Timestamp introduced, discontinued;
@@ -58,6 +74,12 @@ public class Cli {
 	return new Computer(name, introduced, discontinued, id);
     }
 
+    /**
+     * Menu of the CLI
+     * 
+     * @param choice
+     *            Menu choice
+     */
     private static void menu(int choice) {
 	List<Company> listCompanies;
 	List<Computer> listComputers;
@@ -113,7 +135,7 @@ public class Cli {
 		try {
 		    service.updateComputer(pc, createComputer());
 		} catch (SQLException e) {
-		    System.err.println("Failed to create the computer");
+		    System.err.println("Failed to update the computer");
 		}
 	    } catch (SQLException e) {
 		System.err.println("Failed to get the computer");
@@ -142,6 +164,10 @@ public class Cli {
 	}
     }
 
+    /**
+     * @param args
+     *            Unused
+     */
     public static void main(String[] args) {
 	service = new Service();
 	scanner = new Scanner(System.in);

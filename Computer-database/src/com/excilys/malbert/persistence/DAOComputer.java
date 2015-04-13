@@ -11,8 +11,19 @@ import java.util.List;
 import com.excilys.malbert.dbConnection.ComputerDbConnection;
 import com.excilys.malbert.persistence.model.Computer;
 
+/**
+ * DAO for the computer table
+ * 
+ * @author excilys
+ */
 public abstract class DAOComputer {
 
+    /**
+     * Gets a list of all the computers
+     * 
+     * @return A list of all the computers in database
+     * @throws SQLException
+     */
     public static List<Computer> getAll() throws SQLException {
 	Connection connection = ComputerDbConnection.getConnection();
 	List<Computer> computers = new ArrayList<Computer>();
@@ -26,6 +37,14 @@ public abstract class DAOComputer {
 	return computers;
     }
 
+    /**
+     * Gets a computer
+     * 
+     * @param id
+     *            Id of the computer we want to get
+     * @return The computer in database
+     * @throws SQLException
+     */
     public static Computer getComputer(long id) throws SQLException {
 	Connection connection = ComputerDbConnection.getConnection();
 	Computer computer;
@@ -42,9 +61,15 @@ public abstract class DAOComputer {
 	return computer;
     }
 
+    /**
+     * Creates a computer
+     * 
+     * @param newComputer
+     *            The computer to create
+     * @throws SQLException
+     */
     public static void create(Computer newComputer) throws SQLException {
 	Connection connection = ComputerDbConnection.getConnection();
-	// Check if company exists
 	PreparedStatement statement = connection
 		.prepareStatement("INSERT INTO computer(name, introduced, discontinued, company_id) VALUES (?, ? , ?, ?)");
 	statement.setString(1, newComputer.getName());
@@ -55,6 +80,13 @@ public abstract class DAOComputer {
 	connection.close();
     }
 
+    /**
+     * Deletes a computer
+     * 
+     * @param computer
+     *            The computer to delete
+     * @throws SQLException
+     */
     public static void delete(Computer computer) throws SQLException {
 	Connection connection = ComputerDbConnection.getConnection();
 	Statement statement = connection.createStatement();
@@ -63,10 +95,18 @@ public abstract class DAOComputer {
 	connection.close();
     }
 
+    /**
+     * Updates a computer
+     * 
+     * @param oldComputer
+     *            The computer to update
+     * @param newComputer
+     *            The computer updated
+     * @throws SQLException
+     */
     public static void update(Computer oldComputer, Computer newComputer)
 	    throws SQLException {
 	Connection connection = ComputerDbConnection.getConnection();
-	// Check if company exists
 	PreparedStatement statement = connection
 		.prepareStatement("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?");
 	statement.setString(1, newComputer.getName());
