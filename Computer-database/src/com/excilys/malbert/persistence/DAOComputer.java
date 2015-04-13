@@ -9,9 +9,9 @@ import java.util.List;
 
 import com.excilys.malbert.persistence.model.Computer;
 
-public final class ControllerComputer extends AbstractController {
+public final class DAOComputer extends AbstractDAO {
 
-    public ControllerComputer() {
+    public DAOComputer() {
     }
 
     public List<Computer> getAll() {

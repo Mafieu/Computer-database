@@ -8,9 +8,9 @@ import java.util.List;
 
 import com.excilys.malbert.persistence.model.Company;
 
-public class ControllerCompanies extends AbstractController {
+public class DAOCompanies extends AbstractDAO {
 
-    public ControllerCompanies() {
+    public DAOCompanies() {
 
     }
 
