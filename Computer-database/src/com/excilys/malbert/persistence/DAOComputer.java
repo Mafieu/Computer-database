@@ -1,5 +1,6 @@
 package com.excilys.malbert.persistence;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,14 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.malbert.dbConnection.ComputerDbConnection;
 import com.excilys.malbert.persistence.model.Computer;
 
-public final class DAOComputer extends AbstractDAO {
+public abstract class DAOComputer {
 
-    public DAOComputer() {
-    }
-
-    public List<Computer> getAll() throws SQLException {
+    public static List<Computer> getAll() throws SQLException {
+	Connection connection = ComputerDbConnection.getConnection();
 	List<Computer> computers = new ArrayList<Computer>();
 	Statement statement = connection.createStatement();
 	ResultSet set = statement.executeQuery("SELECT * FROM computer");
@@ -22,10 +22,12 @@ public final class DAOComputer extends AbstractDAO {
 	    computers.add(new Computer(set.getLong(1), set.getString(2), set
 		    .getTimestamp(3), set.getTimestamp(4), set.getInt(5)));
 	}
+	connection.close();
 	return computers;
     }
 
-    public Computer getComputer(long id) throws SQLException {
+    public static Computer getComputer(long id) throws SQLException {
+	Connection connection = ComputerDbConnection.getConnection();
 	Computer computer;
 	Statement statement = connection.createStatement();
 	ResultSet set = statement
@@ -36,10 +38,12 @@ public final class DAOComputer extends AbstractDAO {
 	    computer = new Computer(set.getLong(1), set.getString(2),
 		    set.getTimestamp(3), set.getTimestamp(4), set.getInt(5));
 	}
+	connection.close();
 	return computer;
     }
 
-    public void create(Computer newComputer) throws SQLException {
+    public static void create(Computer newComputer) throws SQLException {
+	Connection connection = ComputerDbConnection.getConnection();
 	// Check if company exists
 	PreparedStatement statement = connection
 		.prepareStatement("INSERT INTO computer(name, introduced, discontinued, company_id) VALUES (?, ? , ?, ?)");
@@ -48,16 +52,20 @@ public final class DAOComputer extends AbstractDAO {
 	statement.setTimestamp(3, newComputer.getDiscontinued());
 	statement.setLong(4, newComputer.getIdCompany());
 	statement.executeUpdate();
+	connection.close();
     }
 
-    public void delete(Computer computer) throws SQLException {
+    public static void delete(Computer computer) throws SQLException {
+	Connection connection = ComputerDbConnection.getConnection();
 	Statement statement = connection.createStatement();
 	statement.executeUpdate("DELETE FROM computer WHERE id = "
 		+ computer.getId());
+	connection.close();
     }
 
-    public void update(Computer oldComputer, Computer newComputer)
+    public static void update(Computer oldComputer, Computer newComputer)
 	    throws SQLException {
+	Connection connection = ComputerDbConnection.getConnection();
 	// Check if company exists
 	PreparedStatement statement = connection
 		.prepareStatement("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?");
@@ -67,5 +75,6 @@ public final class DAOComputer extends AbstractDAO {
 	statement.setLong(4, newComputer.getIdCompany());
 	statement.setLong(5, oldComputer.getId());
 	statement.executeUpdate();
+	connection.close();
     }
 }

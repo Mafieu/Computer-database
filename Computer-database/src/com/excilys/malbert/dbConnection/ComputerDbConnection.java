@@ -9,15 +9,16 @@ public abstract class ComputerDbConnection {
     private static Connection connection = null;
 
     public static Connection getConnection() {
-	if (connection == null)
-	    try {
+	try {
+	    if (connection == null || connection.isClosed()) {
 		connection = DriverManager
 			.getConnection(
 				"jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull",
 				"admincdb", "qwerty1234");
-	    } catch (SQLException e) {
-		e.printStackTrace();
 	    }
+	} catch (SQLException e) {
+	    System.err.println("Connection failed to database");
+	}
 	return connection;
     }
 }
