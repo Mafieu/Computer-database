@@ -1,5 +1,6 @@
 package com.excilys.malbert.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.malbert.persistence.DAOCompanies;
@@ -16,7 +17,7 @@ public class Service {
 	computers = new DAOComputer();
     }
 
-    public List<Computer> getAllComputers() {
+    public List<Computer> getAllComputers() throws SQLException {
 	return computers.getAll();
     }
 
@@ -24,19 +25,20 @@ public class Service {
 	return companies.getAll();
     }
 
-    public Computer getComputer(long id) {
+    public Computer getComputer(long id) throws SQLException {
 	return computers.getComputer(id);
     }
 
-    public void createComputer(Computer computer) {
+    public void createComputer(Computer computer) throws SQLException {
 	computers.create(computer);
     }
 
-    public void deleteComputer(Computer computer) {
+    public void deleteComputer(Computer computer) throws SQLException {
 	computers.delete(computer);
     }
 
-    public void updateComputer(Computer oldComputer, Computer newComputer) {
+    public void updateComputer(Computer oldComputer, Computer newComputer)
+	    throws SQLException {
 	computers.update(oldComputer, newComputer);
     }
 }
