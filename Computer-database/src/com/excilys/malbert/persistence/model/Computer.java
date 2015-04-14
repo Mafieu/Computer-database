@@ -1,7 +1,6 @@
 package com.excilys.malbert.persistence.model;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Model object to represent the rows of computer's table
@@ -12,8 +11,8 @@ import java.util.Date;
 public class Computer extends Entity {
     private String name = "";
     /* Change to localeDateTime (Java8 powa) */
-    private Timestamp introduced = null;
-    private Timestamp discontinued = null;
+    private LocalDateTime introduced = null;
+    private LocalDateTime discontinued = null;
     private long id_company = -1;
 
     /**
@@ -33,7 +32,7 @@ public class Computer extends Entity {
 	this.id = id;
 	this.name = name;
 	this.id_company = id_company;
-	this.introduced = new Timestamp(new Date().getTime());
+	this.introduced = LocalDateTime.now();
     }
 
     /**
@@ -42,7 +41,8 @@ public class Computer extends Entity {
      * @param introduced
      * @param id_company
      */
-    public Computer(long id, String name, Timestamp introduced, long id_company) {
+    public Computer(long id, String name, LocalDateTime introduced,
+	    long id_company) {
 	this(id, name, id_company);
 	this.introduced = introduced;
     }
@@ -54,8 +54,8 @@ public class Computer extends Entity {
      * @param discontinued
      * @param id_company
      */
-    public Computer(long id, String name, Timestamp introduced,
-	    Timestamp discontinued, long id_company) {
+    public Computer(long id, String name, LocalDateTime introduced,
+	    LocalDateTime discontinued, long id_company) {
 	this(id, name, introduced, id_company);
 	this.discontinued = discontinued;
     }
@@ -76,7 +76,7 @@ public class Computer extends Entity {
      * @param introduced
      * @param id_company
      */
-    public Computer(String name, Timestamp introduced, long id_company) {
+    public Computer(String name, LocalDateTime introduced, long id_company) {
 	this(name, id_company);
 	this.introduced = introduced;
     }
@@ -87,8 +87,8 @@ public class Computer extends Entity {
      * @param discontinued
      * @param id_company
      */
-    public Computer(String name, Timestamp introduced, Timestamp discontinued,
-	    long id_company) {
+    public Computer(String name, LocalDateTime introduced,
+	    LocalDateTime discontinued, long id_company) {
 	this(name, introduced, id_company);
 	this.discontinued = discontinued;
     }
@@ -110,25 +110,25 @@ public class Computer extends Entity {
     /**
      * @return
      */
-    public Timestamp getIntroduced() {
+    public LocalDateTime getIntroduced() {
 	return introduced;
     }
 
-    public void setIntroduced(Timestamp introduced) {
+    public void setIntroduced(LocalDateTime introduced) {
 	this.introduced = introduced;
     }
 
     /**
      * @return
      */
-    public Timestamp getDiscontinued() {
+    public LocalDateTime getDiscontinued() {
 	return discontinued;
     }
 
     /**
      * @param discontinued
      */
-    public void setDiscontinued(Timestamp discontinued) {
+    public void setDiscontinued(LocalDateTime discontinued) {
 	this.discontinued = discontinued;
     }
 

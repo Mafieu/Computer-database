@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.excilys.malbert.dbConnection.ComputerDbConnection;
 import com.excilys.malbert.persistence.model.Computer;
+import com.excilys.malbert.utils.Utils;
 
 /**
  * DAO for the computer table
@@ -30,8 +31,10 @@ public abstract class DAOComputer {
 	Statement statement = connection.createStatement();
 	ResultSet set = statement.executeQuery("SELECT * FROM computer");
 	while (set.next()) {
-	    computers.add(new Computer(set.getLong(1), set.getString(2), set
-		    .getTimestamp(3), set.getTimestamp(4), set.getInt(5)));
+	    computers.add(new Computer(set.getLong(1), set.getString(2), Utils
+		    .timestampToLocaldatetime(set.getTimestamp(3)), Utils
+		    .timestampToLocaldatetime(set.getTimestamp(4)), set
+		    .getInt(5)));
 	}
 
 	set.close();
@@ -58,7 +61,9 @@ public abstract class DAOComputer {
 	    throw new SQLException("No computer found with id = " + id);
 	} else {
 	    computer = new Computer(set.getLong(1), set.getString(2),
-		    set.getTimestamp(3), set.getTimestamp(4), set.getInt(5));
+		    Utils.timestampToLocaldatetime(set.getTimestamp(3)),
+		    Utils.timestampToLocaldatetime(set.getTimestamp(4)),
+		    set.getInt(5));
 	}
 
 	set.close();
@@ -79,8 +84,10 @@ public abstract class DAOComputer {
 	PreparedStatement statement = connection
 		.prepareStatement("INSERT INTO computer(name, introduced, discontinued, company_id) VALUES (?, ? , ?, ?)");
 	statement.setString(1, newComputer.getName());
-	statement.setTimestamp(2, newComputer.getIntroduced());
-	statement.setTimestamp(3, newComputer.getDiscontinued());
+	statement.setTimestamp(2,
+		Utils.localdatetimeToTimestamp(newComputer.getIntroduced()));
+	statement.setTimestamp(3,
+		Utils.localdatetimeToTimestamp(newComputer.getDiscontinued()));
 	statement.setLong(4, newComputer.getIdCompany());
 	statement.executeUpdate();
 
@@ -120,8 +127,11 @@ public abstract class DAOComputer {
 	PreparedStatement statement = connection
 		.prepareStatement("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?");
 	statement.setString(1, newComputer.getName());
-	statement.setTimestamp(2, newComputer.getIntroduced());
-	statement.setTimestamp(3, newComputer.getDiscontinued());
+	Utils.localdatetimeToTimestamp(newComputer.getIntroduced());
+	statement.setTimestamp(2,
+		Utils.localdatetimeToTimestamp(newComputer.getIntroduced()));
+	statement.setTimestamp(3,
+		Utils.localdatetimeToTimestamp(newComputer.getDiscontinued()));
 	statement.setLong(4, newComputer.getIdCompany());
 	statement.setLong(5, oldComputer.getId());
 	statement.executeUpdate();

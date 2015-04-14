@@ -1,8 +1,8 @@
 package com.excilys.malbert.client.CLI;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.GregorianCalendar;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,15 +38,14 @@ public class Cli {
      * 
      * @return The date in a Timestamp object
      */
-    private static Timestamp getDate() {
-	GregorianCalendar gc;
+    private static LocalDateTime getDate() {
 	try {
 	    String[] introduction = scanner.nextLine().split("-");
-	    gc = new GregorianCalendar(Integer.parseInt(introduction[0]),
-		    Integer.parseInt(introduction[1]) - 1,
-		    Integer.parseInt(introduction[2]));
-	    return new Timestamp(gc.getTimeInMillis());
-	} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+	    return LocalDateTime.of(Integer.parseInt(introduction[0]),
+		    Integer.parseInt(introduction[1]),
+		    Integer.parseInt(introduction[2]), 0, 0);
+	} catch (NumberFormatException | ArrayIndexOutOfBoundsException
+		| DateTimeException e) {
 	    return null;
 	}
     }
@@ -56,7 +55,7 @@ public class Cli {
      */
     private static Computer createComputer() {
 	String name;
-	Timestamp introduced, discontinued;
+	LocalDateTime introduced, discontinued;
 	long id = -1;
 	System.out.println("Name of the computer :");
 	scanner.nextLine(); // Just for debug, otherwise name is ""
