@@ -1,4 +1,4 @@
-package com.excilys.malbert.dbConnection.updated;
+package com.excilys.malbert.dbConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,6 +1,5 @@
 package com.excilys.malbert.client.CLI;
 
-import java.sql.SQLException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -71,7 +70,8 @@ public class Cli {
 	} else {
 	    scanner.next();
 	}
-	return new Computer(name, introduced, discontinued, id);
+	return new Computer(name, introduced, discontinued, new Company(id,
+		null));
     }
 
     /**
@@ -88,40 +88,24 @@ public class Cli {
 
 	switch (choice) {
 	case 1:
-	    try {
-		listComputers = service.getAllComputers();
-		Paginator<Computer> paginatorPc = new Paginator<Computer>(
-			listComputers);
-		paginatorPc.show();
-	    } catch (SQLException e) {
-		System.err.println("Failed to get list of computers");
-	    }
+	    listComputers = service.getAllComputers();
+	    Paginator<Computer> paginatorPc = new Paginator<Computer>(
+		    listComputers);
+	    paginatorPc.show();
 	    break;
 	case 2:
-	    try {
-		listCompanies = service.getAllCompanies();
-		Paginator<Company> paginatorComp = new Paginator<Company>(
-			listCompanies);
-		paginatorComp.show();
-	    } catch (SQLException e1) {
-		System.err.println("Failed to get list of companies");
-	    }
+	    listCompanies = service.getAllCompanies();
+	    Paginator<Company> paginatorComp = new Paginator<Company>(
+		    listCompanies);
+	    paginatorComp.show();
 	    break;
 	case 3:
-	    try {
-		System.out.println("Id of the computer :");
-		id = scanner.nextLong();
-		System.out.println(service.getComputer(id).toString());
-	    } catch (SQLException e) {
-		System.err.println("Failed to get the computer");
-	    }
+	    System.out.println("Id of the computer :");
+	    id = scanner.nextLong();
+	    System.out.println(service.getComputer(id).toString());
 	    break;
 	case 4:
-	    try {
-		service.createComputer(createComputer());
-	    } catch (SQLException e) {
-		System.err.println("Failed to create the computer");
-	    }
+	    service.createComputer(createComputer());
 	    break;
 	case 5:
 	    System.out.println("Id of the computer to update :");
@@ -130,30 +114,14 @@ public class Cli {
 	    } else {
 		scanner.next();
 	    }
-	    try {
-		pc = service.getComputer(id);
-		try {
-		    service.updateComputer(pc, createComputer());
-		} catch (SQLException e) {
-		    System.err.println("Failed to update the computer");
-		}
-	    } catch (SQLException e) {
-		System.err.println("Failed to get the computer");
-	    }
+	    pc = service.getComputer(id);
+	    service.updateComputer(pc, createComputer());
 	    break;
 	case 6:
 	    System.out.println("Id of the computer :");
 	    id = scanner.nextLong();
-	    try {
-		pc = service.getComputer(id);
-		try {
-		    service.deleteComputer(pc);
-		} catch (SQLException e) {
-		    System.err.println("Failed to delete the computer");
-		}
-	    } catch (SQLException e) {
-		System.err.println("Failed to get the computer");
-	    }
+	    pc = service.getComputer(id);
+	    service.deleteComputer(pc);
 	    break;
 	case 7:
 	    System.out.println("Good bye");

@@ -13,7 +13,7 @@ public class Computer extends Entity {
     /* Change to localeDateTime (Java8 powa) */
     private LocalDateTime introduced = null;
     private LocalDateTime discontinued = null;
-    private long id_company = -1;
+    private Company company = null;
 
     /**
      * Default constructor
@@ -28,10 +28,10 @@ public class Computer extends Entity {
      * @param name
      * @param id_company
      */
-    public Computer(long id, String name, long id_company) {
+    public Computer(long id, String name, Company company) {
 	this.id = id;
 	this.name = name;
-	this.id_company = id_company;
+	this.company = company;
 	this.introduced = LocalDateTime.now();
     }
 
@@ -42,8 +42,8 @@ public class Computer extends Entity {
      * @param id_company
      */
     public Computer(long id, String name, LocalDateTime introduced,
-	    long id_company) {
-	this(id, name, id_company);
+	    Company company) {
+	this(id, name, company);
 	this.introduced = introduced;
     }
 
@@ -55,8 +55,8 @@ public class Computer extends Entity {
      * @param id_company
      */
     public Computer(long id, String name, LocalDateTime introduced,
-	    LocalDateTime discontinued, long id_company) {
-	this(id, name, introduced, id_company);
+	    LocalDateTime discontinued, Company company) {
+	this(id, name, introduced, company);
 	this.discontinued = discontinued;
     }
 
@@ -66,9 +66,9 @@ public class Computer extends Entity {
      * @param name
      * @param id_company
      */
-    public Computer(String name, long id_company) {
+    public Computer(String name, Company company) {
 	this.name = name;
-	this.id_company = id_company;
+	this.company = company;
     }
 
     /**
@@ -76,8 +76,8 @@ public class Computer extends Entity {
      * @param introduced
      * @param id_company
      */
-    public Computer(String name, LocalDateTime introduced, long id_company) {
-	this(name, id_company);
+    public Computer(String name, LocalDateTime introduced, Company company) {
+	this(name, company);
 	this.introduced = introduced;
     }
 
@@ -88,8 +88,8 @@ public class Computer extends Entity {
      * @param id_company
      */
     public Computer(String name, LocalDateTime introduced,
-	    LocalDateTime discontinued, long id_company) {
-	this(name, introduced, id_company);
+	    LocalDateTime discontinued, Company company) {
+	this(name, introduced, company);
 	this.discontinued = discontinued;
     }
 
@@ -135,15 +135,15 @@ public class Computer extends Entity {
     /**
      * @return
      */
-    public long getIdCompany() {
-	return id_company;
+    public Company getCompany() {
+	return company;
     }
 
     /**
      * @param company
      */
-    public void setIdCompany(Company company) {
-	this.id_company = company.getId();
+    public void setCompany(Company company) {
+	this.company = company;
     }
 
     @Override
@@ -152,6 +152,6 @@ public class Computer extends Entity {
 		.append("\tName : ").append(this.name)
 		.append("\tIntroduced : ").append(this.introduced)
 		.append("\tDiscontinued : ").append(this.discontinued)
-		.append("\tOwner : ").append(id_company).toString();
+		.append("\tOwner : ").append(company).toString();
     }
 }

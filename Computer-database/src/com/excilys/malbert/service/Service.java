@@ -3,10 +3,10 @@ package com.excilys.malbert.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.excilys.malbert.persistence.DAOCompany;
+import com.excilys.malbert.persistence.DAOComputer;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
-import com.excilys.malbert.persistence.updated.DAOCompany;
-import com.excilys.malbert.persistence.updated.DAOComputer;
 
 /**
  * Describes the services
@@ -28,7 +28,7 @@ public class Service {
      * @return A list of all the computers in database
      * @throws SQLException
      */
-    public List<Computer> getAllComputers() throws SQLException {
+    public List<Computer> getAllComputers() {
 	return DAOComputer.INSTANCE.getAll();
     }
 
@@ -38,7 +38,7 @@ public class Service {
      * @return A list of all the companies in database
      * @throws SQLException
      */
-    public List<Company> getAllCompanies() throws SQLException {
+    public List<Company> getAllCompanies() {
 	return DAOCompany.INSTANCE.getAll();
     }
 
@@ -50,7 +50,7 @@ public class Service {
      * @return The computer
      * @throws SQLException
      */
-    public Computer getComputer(long id) throws SQLException {
+    public Computer getComputer(long id) {
 	return DAOComputer.INSTANCE.getComputer(id);
     }
 
@@ -61,7 +61,7 @@ public class Service {
      *            The computer to insert in database
      * @throws SQLException
      */
-    public void createComputer(Computer computer) throws SQLException {
+    public void createComputer(Computer computer) {
 	DAOComputer.INSTANCE.create(computer);
     }
 
@@ -72,7 +72,7 @@ public class Service {
      *            The computer to delete in database
      * @throws SQLException
      */
-    public void deleteComputer(Computer computer) throws SQLException {
+    public void deleteComputer(Computer computer) {
 	DAOComputer.INSTANCE.delete(computer);
     }
 
@@ -85,8 +85,7 @@ public class Service {
      *            The computer updated
      * @throws SQLException
      */
-    public void updateComputer(Computer oldComputer, Computer newComputer)
-	    throws SQLException {
+    public void updateComputer(Computer oldComputer, Computer newComputer) {
 	DAOComputer.INSTANCE.update(oldComputer, newComputer);
     }
 }

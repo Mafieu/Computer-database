@@ -1,4 +1,4 @@
-package com.excilys.malbert.persistence.updated;
+package com.excilys.malbert.persistence;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,9 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.malbert.dbConnection.updated.ConnectionDbFactory;
+import com.excilys.malbert.dbConnection.ConnectionDbFactory;
 import com.excilys.malbert.persistence.model.Computer;
+import com.excilys.malbert.utils.Mapper;
 import com.excilys.malbert.utils.Utils;
 
 public enum DAOComputer implements IDAOComputer {
@@ -23,16 +24,14 @@ public enum DAOComputer implements IDAOComputer {
 	List<Computer> computers = new ArrayList<Computer>();
 
 	try {
-	    statement = connection.prepareStatement("SELECT * FROM computer");
+	    statement = connection
+		    .prepareStatement("SELECT * FROM computer LEFT OUTER JOIN company ON computer.company_id = company.id");
 	    set = statement.executeQuery();
 	    while (set.next()) {
-		computers.add(new Computer(set.getLong(1), set.getString(2),
-			Utils.timestampToLocaldatetime(set.getTimestamp(3)),
-			Utils.timestampToLocaldatetime(set.getTimestamp(4)),
-			set.getInt(5)));
+		computers.add(Mapper.mapComputer(set));
 	    }
 	} catch (SQLException e) {
-	    throw new DAOException();
+	    throw new DAOException("Couldn't get the list of Computers");
 	} finally {
 	    ConnectionDbFactory.closeConnection(connection, statement, set);
 	}
@@ -48,19 +47,16 @@ public enum DAOComputer implements IDAOComputer {
 
 	try {
 	    statement = connection
-		    .prepareStatement("SELECT * FROM computer WHERE id = ?");
+		    .prepareStatement("SELECT * FROM computer LEFT OUTER JOIN company ON computer.company_id = company.id WHERE id = ?");
 	    statement.setLong(1, id);
 	    set = statement.executeQuery();
 	    if (!set.next()) {
-		throw new DAOException(/* "No computer found with id = " + id */);
+		throw new DAOException("No computer found with id " + id);
 	    } else {
-		computer = new Computer(set.getLong(1), set.getString(2),
-			Utils.timestampToLocaldatetime(set.getTimestamp(3)),
-			Utils.timestampToLocaldatetime(set.getTimestamp(4)),
-			set.getInt(5));
+		computer = Mapper.mapComputer(set);
 	    }
 	} catch (SQLException e) {
-	    throw new DAOException();
+	    throw new DAOException("Couldn't get the computer " + id);
 	} finally {
 	    ConnectionDbFactory.closeConnection(connection, statement, set);
 	}
@@ -81,14 +77,14 @@ public enum DAOComputer implements IDAOComputer {
 		    Utils.localdatetimeToTimestamp(computer.getIntroduced()));
 	    statement.setTimestamp(3,
 		    Utils.localdatetimeToTimestamp(computer.getDiscontinued()));
-	    if (computer.getIdCompany() <= 0) {
+	    if (computer.getCompany().getId() <= 0) {
 		statement.setNull(4, Types.BIGINT);
 	    } else {
-		statement.setLong(4, computer.getIdCompany());
+		statement.setLong(4, computer.getCompany().getId());
 	    }
 	    statement.executeUpdate();
 	} catch (SQLException e) {
-	    throw new DAOException();
+	    throw new DAOException("Couldn't create the computer");
 	} finally {
 	    ConnectionDbFactory.closeConnection(connection, statement, null);
 	}
@@ -105,9 +101,9 @@ public enum DAOComputer implements IDAOComputer {
 	    statement.setLong(1, computer.getId());
 	    statement.executeUpdate();
 	} catch (SQLException e) {
-	    throw new DAOException();
+	    throw new DAOException("Couldn't delete the computer");
 	} finally {
-	    ConnectionDbFactory.closeConnection(connection, null, null);
+	    ConnectionDbFactory.closeConnection(connection, statement, null);
 	}
     }
 
@@ -126,17 +122,17 @@ public enum DAOComputer implements IDAOComputer {
 			    .getIntroduced()));
 	    statement.setTimestamp(3, Utils
 		    .localdatetimeToTimestamp(newComputer.getDiscontinued()));
-	    if (newComputer.getIdCompany() <= 0) {
+	    if (newComputer.getCompany().getId() <= 0) {
 		statement.setNull(4, Types.BIGINT);
 	    } else {
-		statement.setLong(4, newComputer.getIdCompany());
+		statement.setLong(4, newComputer.getCompany().getId());
 	    }
 	    statement.setLong(5, oldComputer.getId());
 	    statement.executeUpdate();
 	} catch (SQLException e) {
-	    throw new DAOException();
+	    throw new DAOException("Couldn't update the computer");
 	} finally {
-	    ConnectionDbFactory.closeConnection(connection, null, null);
+	    ConnectionDbFactory.closeConnection(connection, statement, null);
 	}
     }
 

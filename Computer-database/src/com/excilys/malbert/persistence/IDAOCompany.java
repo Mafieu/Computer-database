@@ -1,4 +1,4 @@
-package com.excilys.malbert.persistence.updated;
+package com.excilys.malbert.persistence;
 
 import java.util.List;
 
