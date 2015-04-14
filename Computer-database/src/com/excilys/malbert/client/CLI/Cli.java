@@ -7,7 +7,8 @@ import java.util.Scanner;
 
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
-import com.excilys.malbert.service.Service;
+import com.excilys.malbert.service.ServiceCompany;
+import com.excilys.malbert.service.ServiceComputer;
 
 /**
  * Command Line Interface class for the client
@@ -16,7 +17,6 @@ import com.excilys.malbert.service.Service;
  */
 public class Cli {
 
-    private static Service service;
     private static Scanner scanner;
 
     /**
@@ -88,13 +88,13 @@ public class Cli {
 
 	switch (choice) {
 	case 1:
-	    listComputers = service.getAllComputers();
+	    listComputers = ServiceComputer.getAllComputers();
 	    Paginator<Computer> paginatorPc = new Paginator<Computer>(
 		    listComputers);
 	    paginatorPc.show();
 	    break;
 	case 2:
-	    listCompanies = service.getAllCompanies();
+	    listCompanies = ServiceCompany.getAllCompanies();
 	    Paginator<Company> paginatorComp = new Paginator<Company>(
 		    listCompanies);
 	    paginatorComp.show();
@@ -102,10 +102,10 @@ public class Cli {
 	case 3:
 	    System.out.println("Id of the computer :");
 	    id = scanner.nextLong();
-	    System.out.println(service.getComputer(id).toString());
+	    System.out.println(ServiceComputer.getComputer(id).toString());
 	    break;
 	case 4:
-	    service.createComputer(createComputer());
+	    ServiceComputer.createComputer(createComputer());
 	    break;
 	case 5:
 	    System.out.println("Id of the computer to update :");
@@ -114,14 +114,14 @@ public class Cli {
 	    } else {
 		scanner.next();
 	    }
-	    pc = service.getComputer(id);
-	    service.updateComputer(pc, createComputer());
+	    pc = ServiceComputer.getComputer(id);
+	    ServiceComputer.updateComputer(pc, createComputer());
 	    break;
 	case 6:
 	    System.out.println("Id of the computer :");
 	    id = scanner.nextLong();
-	    pc = service.getComputer(id);
-	    service.deleteComputer(pc);
+	    pc = ServiceComputer.getComputer(id);
+	    ServiceComputer.deleteComputer(pc);
 	    break;
 	case 7:
 	    System.out.println("Good bye");
@@ -137,7 +137,6 @@ public class Cli {
      *            Unused
      */
     public static void main(String[] args) {
-	service = new Service();
 	scanner = new Scanner(System.in);
 	int entry;
 
