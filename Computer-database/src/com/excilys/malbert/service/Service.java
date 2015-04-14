@@ -3,10 +3,10 @@ package com.excilys.malbert.service;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.excilys.malbert.persistence.DAOCompany;
-import com.excilys.malbert.persistence.DAOComputer;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
+import com.excilys.malbert.persistence.updated.DAOCompany;
+import com.excilys.malbert.persistence.updated.DAOComputer;
 
 /**
  * Describes the services
@@ -29,7 +29,7 @@ public class Service {
      * @throws SQLException
      */
     public List<Computer> getAllComputers() throws SQLException {
-	return DAOComputer.getAll();
+	return DAOComputer.INSTANCE.getAll();
     }
 
     /**
@@ -39,7 +39,7 @@ public class Service {
      * @throws SQLException
      */
     public List<Company> getAllCompanies() throws SQLException {
-	return DAOCompany.getAll();
+	return DAOCompany.INSTANCE.getAll();
     }
 
     /**
@@ -51,7 +51,7 @@ public class Service {
      * @throws SQLException
      */
     public Computer getComputer(long id) throws SQLException {
-	return DAOComputer.getComputer(id);
+	return DAOComputer.INSTANCE.getComputer(id);
     }
 
     /**
@@ -62,7 +62,7 @@ public class Service {
      * @throws SQLException
      */
     public void createComputer(Computer computer) throws SQLException {
-	DAOComputer.create(computer);
+	DAOComputer.INSTANCE.create(computer);
     }
 
     /**
@@ -73,7 +73,7 @@ public class Service {
      * @throws SQLException
      */
     public void deleteComputer(Computer computer) throws SQLException {
-	DAOComputer.delete(computer);
+	DAOComputer.INSTANCE.delete(computer);
     }
 
     /**
@@ -87,6 +87,6 @@ public class Service {
      */
     public void updateComputer(Computer oldComputer, Computer newComputer)
 	    throws SQLException {
-	DAOComputer.update(oldComputer, newComputer);
+	DAOComputer.INSTANCE.update(oldComputer, newComputer);
     }
 }
