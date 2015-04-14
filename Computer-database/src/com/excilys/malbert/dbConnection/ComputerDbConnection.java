@@ -12,6 +12,9 @@ import java.sql.SQLException;
 public abstract class ComputerDbConnection {
 
     private static Connection connection = null;
+    private final static String DB = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
+    private final static String USER = "admincdb";
+    private final static String PASSWD = "qwerty1234";
 
     /**
      * @return A connection to the database
@@ -19,10 +22,7 @@ public abstract class ComputerDbConnection {
     public static Connection getConnection() {
 	try {
 	    if (connection == null || connection.isClosed()) {
-		connection = DriverManager
-			.getConnection(
-				"jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull",
-				"admincdb", "qwerty1234");
+		connection = DriverManager.getConnection(DB, USER, PASSWD);
 	    }
 	} catch (SQLException e) {
 	    System.err.println("Connection failed to database");

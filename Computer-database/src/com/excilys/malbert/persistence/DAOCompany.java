@@ -53,7 +53,7 @@ public abstract class DAOCompany {
 	ResultSet set = statement
 		.executeQuery("SELECT * FROM company WHERE id = " + id);
 	if (!set.next()) {
-	    throw new SQLException("No computer found with id = " + id);
+	    throw new SQLException("No company found with id = " + id);
 	} else {
 	    company = new Company(set.getLong(1), set.getString(2));
 	}

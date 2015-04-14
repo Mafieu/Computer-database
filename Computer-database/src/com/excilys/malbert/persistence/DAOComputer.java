@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +89,11 @@ public abstract class DAOComputer {
 		Utils.localdatetimeToTimestamp(newComputer.getIntroduced()));
 	statement.setTimestamp(3,
 		Utils.localdatetimeToTimestamp(newComputer.getDiscontinued()));
-	statement.setLong(4, newComputer.getIdCompany());
+	if (newComputer.getIdCompany() <= 0) {
+	    statement.setNull(4, Types.BIGINT);
+	} else {
+	    statement.setLong(4, newComputer.getIdCompany());
+	}
 	statement.executeUpdate();
 
 	statement.close();
@@ -132,7 +137,11 @@ public abstract class DAOComputer {
 		Utils.localdatetimeToTimestamp(newComputer.getIntroduced()));
 	statement.setTimestamp(3,
 		Utils.localdatetimeToTimestamp(newComputer.getDiscontinued()));
-	statement.setLong(4, newComputer.getIdCompany());
+	if (newComputer.getIdCompany() <= 0) {
+	    statement.setNull(4, Types.BIGINT);
+	} else {
+	    statement.setLong(4, newComputer.getIdCompany());
+	}
 	statement.setLong(5, oldComputer.getId());
 	statement.executeUpdate();
 

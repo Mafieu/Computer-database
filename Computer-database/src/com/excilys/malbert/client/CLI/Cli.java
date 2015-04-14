@@ -64,7 +64,8 @@ public class Cli {
 	introduced = getDate();
 	System.out.println("Date of discontinuation (YYYY-MM-DD):");
 	discontinued = getDate();
-	System.out.println("Id of the manufacturer :");
+	System.out
+		.println("Id of the manufacturer (for no manufacturer, enter a 0 or minus id):");
 	if (scanner.hasNextLong()) {
 	    id = scanner.nextLong();
 	} else {
