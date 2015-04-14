@@ -7,6 +7,8 @@ import com.excilys.malbert.persistence.model.Computer;
 public interface IDAOComputer {
     public List<Computer> getAll();
 
+    public List<Computer> getSome(int limit, int offset);
+
     public Computer getComputer(long id);
 
     public void create(Computer computer);

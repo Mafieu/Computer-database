@@ -101,7 +101,11 @@ public class Cli {
 	    break;
 	case 3:
 	    System.out.println("Id of the computer :");
-	    id = scanner.nextLong();
+	    if (scanner.hasNextLong()) {
+		id = scanner.nextLong();
+	    } else {
+		scanner.next();
+	    }
 	    System.out.println(ServiceComputer.getComputer(id).toString());
 	    break;
 	case 4:

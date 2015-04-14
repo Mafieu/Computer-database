@@ -25,6 +25,15 @@ public abstract class ServiceComputer {
     }
 
     /**
+     * @param limit
+     * @param offset
+     * @return
+     */
+    public static List<Computer> getSome(int limit, int offset) {
+	return DAOComputer.INSTANCE.getSome(limit, offset);
+    }
+
+    /**
      * Gets a computer from the DAOComputer
      * 
      * @param id

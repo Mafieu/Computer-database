@@ -14,7 +14,6 @@ import com.excilys.malbert.utils.Mapper;
 public enum DAOCompany implements IDAOCompany {
     INSTANCE;
 
-    @Override
     public List<Company> getAll() {
 	Connection connection = ConnectionDbFactory.getConnection();
 	PreparedStatement statement = null;

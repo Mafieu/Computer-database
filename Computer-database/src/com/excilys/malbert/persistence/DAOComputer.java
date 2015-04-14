@@ -16,7 +16,6 @@ import com.excilys.malbert.utils.Utils;
 public enum DAOComputer implements IDAOComputer {
     INSTANCE;
 
-    @Override
     public List<Computer> getAll() {
 	Connection connection = ConnectionDbFactory.getConnection();
 	PreparedStatement statement = null;
@@ -38,7 +37,30 @@ public enum DAOComputer implements IDAOComputer {
 	return computers;
     }
 
-    @Override
+    public List<Computer> getSome(int limit, int offset) {
+	Connection connection = ConnectionDbFactory.getConnection();
+	PreparedStatement statement = null;
+	ResultSet set = null;
+	List<Computer> computers = new ArrayList<Computer>();
+
+	try {
+	    statement = connection
+		    .prepareStatement("SELECT * FROM computer LEFT OUTER JOIN company ON computer.company_id = company.id LIMIT ? OFFSET ?");
+	    statement.setInt(1, limit);
+	    statement.setInt(2, offset);
+	    set = statement.executeQuery();
+	    while (set.next()) {
+		computers.add(Mapper.mapComputer(set));
+	    }
+	} catch (SQLException e) {
+	    throw new DAOException("Couldn't get the list of Computers from "
+		    + offset + " to " + (offset + limit));
+	} finally {
+	    ConnectionDbFactory.closeConnection(connection, statement, set);
+	}
+	return computers;
+    }
+
     public Computer getComputer(long id) {
 	Connection connection = ConnectionDbFactory.getConnection();
 	PreparedStatement statement = null;
@@ -47,7 +69,7 @@ public enum DAOComputer implements IDAOComputer {
 
 	try {
 	    statement = connection
-		    .prepareStatement("SELECT * FROM computer LEFT OUTER JOIN company ON computer.company_id = company.id WHERE id = ?");
+		    .prepareStatement("SELECT * FROM computer LEFT OUTER JOIN company ON computer.company_id = company.id WHERE computer.id = ?");
 	    statement.setLong(1, id);
 	    set = statement.executeQuery();
 	    if (!set.next()) {
@@ -64,7 +86,6 @@ public enum DAOComputer implements IDAOComputer {
 	return computer;
     }
 
-    @Override
     public void create(Computer computer) {
 	Connection connection = ConnectionDbFactory.getConnection();
 	PreparedStatement statement = null;
@@ -90,7 +111,6 @@ public enum DAOComputer implements IDAOComputer {
 	}
     }
 
-    @Override
     public void delete(Computer computer) {
 	Connection connection = ConnectionDbFactory.getConnection();
 	PreparedStatement statement = null;
@@ -107,7 +127,6 @@ public enum DAOComputer implements IDAOComputer {
 	}
     }
 
-    @Override
     public void update(Computer oldComputer, Computer newComputer) {
 	Connection connection = ConnectionDbFactory.getConnection();
 	PreparedStatement statement = null;
@@ -122,10 +141,11 @@ public enum DAOComputer implements IDAOComputer {
 			    .getIntroduced()));
 	    statement.setTimestamp(3, Utils
 		    .localdatetimeToTimestamp(newComputer.getDiscontinued()));
-	    if (newComputer.getCompany().getId() <= 0) {
-		statement.setNull(4, Types.BIGINT);
-	    } else {
+	    if (newComputer.getCompany() != null
+		    && newComputer.getCompany().getId() > 0) {
 		statement.setLong(4, newComputer.getCompany().getId());
+	    } else {
+		statement.setNull(4, Types.BIGINT);
 	    }
 	    statement.setLong(5, oldComputer.getId());
 	    statement.executeUpdate();
