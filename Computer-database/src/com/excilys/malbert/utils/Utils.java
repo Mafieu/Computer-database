@@ -14,6 +14,6 @@ public abstract class Utils {
     }
 
     public static Timestamp localdatetimeToTimestamp(LocalDateTime time) {
-	return Timestamp.valueOf(time);
+	return time == null ? null : Timestamp.valueOf(time);
     }
 }

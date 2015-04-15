@@ -148,6 +148,7 @@ public enum DAOComputer implements IDAOComputer {
 		statement.setNull(4, Types.BIGINT);
 	    }
 	    statement.setLong(5, oldComputer.getId());
+	    System.out.println(oldComputer.getId());
 	    statement.executeUpdate();
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't update the computer");

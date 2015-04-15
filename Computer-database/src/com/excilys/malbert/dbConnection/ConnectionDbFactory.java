@@ -8,9 +8,13 @@ import java.sql.SQLException;
 
 public abstract class ConnectionDbFactory {
 
-    private final static String DB = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
+    private final static String URL = "jdbc:mysql://localhost:3306/";
+    private final static String DB = "computer-database-db";
+    private final static String DB_TEST = "computer-database-db-test";
+    private final static String OPTION = "?zeroDateTimeBehavior=convertToNull";
     private final static String USER = "admincdb";
     private final static String PASSWD = "qwerty1234";
+    public static boolean TESTING = false;
 
     static {
 	try {
@@ -23,7 +27,8 @@ public abstract class ConnectionDbFactory {
     public static Connection getConnection() {
 	Connection connection = null;
 	try {
-	    connection = DriverManager.getConnection(DB, USER, PASSWD);
+	    connection = DriverManager.getConnection(URL
+		    + (TESTING ? DB_TEST : DB) + OPTION, USER, PASSWD);
 	} catch (SQLException e) {
 	    // Throw ConnectionException
 	}

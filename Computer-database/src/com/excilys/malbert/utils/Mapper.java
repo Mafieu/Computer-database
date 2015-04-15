@@ -10,10 +10,16 @@ import com.excilys.malbert.persistence.model.Computer;
 public abstract class Mapper {
     public static Computer mapComputer(ResultSet set) {
 	try {
+	    Company company;
+	    if (set.getLong(5) == 0) {
+		company = null;
+	    } else {
+		company = new Company(set.getLong(5), set.getString(7));
+	    }
 	    return new Computer(set.getLong(1), set.getString(2),
 		    Utils.timestampToLocaldatetime(set.getTimestamp(3)),
 		    Utils.timestampToLocaldatetime(set.getTimestamp(4)),
-		    new Company(set.getLong(5), set.getString(7)));
+		    company);
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't parse bdd->computer");
 	}

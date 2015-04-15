@@ -22,7 +22,14 @@ public abstract class Entity {
      * @param obj
      * @return
      */
-    public boolean equals(Entity obj) {
-	return this.id == obj.getId();
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj instanceof Entity) {
+	    return this.id == ((Entity) obj).getId();
+	} else {
+	    return false;
+	}
     }
 }

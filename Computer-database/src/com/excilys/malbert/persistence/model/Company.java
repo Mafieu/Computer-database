@@ -54,4 +54,19 @@ public class Company extends Entity {
 	return new StringBuilder("Id : ").append(id).append("\tName : ")
 		.append(name).toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj) {
+	    return true;
+	}
+	if (obj instanceof Company) {
+	    Company company = ((Company) obj);
+	    return this.id == company.id
+		    && (name == null ? company.name == null : name
+			    .equals(company.name));
+	} else {
+	    return false;
+	}
+    }
 }

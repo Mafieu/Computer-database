@@ -154,4 +154,29 @@ public class Computer extends Entity {
 		.append("\tDiscontinued : ").append(this.discontinued)
 		.append("\tOwner : ").append(company).toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj) {
+	    return true;
+	}
+	if (obj instanceof Computer) {
+	    Computer computer = ((Computer) obj);
+	    boolean testName, testIntroduced, testDiscontinued, testCompany;
+	    // We test if both are null or if origin is not null and equals
+	    // to computer
+	    testName = (name == null ? computer.name == null : name
+		    .equals(computer.name));
+	    testIntroduced = (introduced == null ? computer.introduced == null
+		    : introduced.equals(computer.introduced));
+	    testDiscontinued = (discontinued == null ? computer.discontinued == null
+		    : discontinued.equals(computer.discontinued));
+	    testCompany = (company == null ? computer.company == null : company
+		    .equals(computer.company));
+	    return this.id == computer.id && testName && testIntroduced
+		    && testDiscontinued && testCompany;
+	} else {
+	    return false;
+	}
+    }
 }
