@@ -1,4 +1,4 @@
-package com.excilys.malbert.presentation;
+package com.excilys.malbert.presentation.servlets;
 
 import java.io.IOException;
 

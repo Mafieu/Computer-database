@@ -43,9 +43,9 @@ public class Cli {
 	scanner.nextLine(); // Just for debug, otherwise name is ""
 	name = scanner.nextLine();
 	System.out.println("Date of introduction (YYYY-MM-DD):");
-	introduced = Utils.getDate(scanner.nextLine());
+	introduced = Utils.stringToLocaldatetime(scanner.nextLine());
 	System.out.println("Date of discontinuation (YYYY-MM-DD):");
-	discontinued = Utils.getDate(scanner.nextLine());
+	discontinued = Utils.stringToLocaldatetime(scanner.nextLine());
 	System.out
 		.println("Id of the manufacturer (for no manufacturer, enter a 0 or minus id):");
 	if (scanner.hasNextLong()) {

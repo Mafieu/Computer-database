@@ -25,7 +25,7 @@ public enum DAOCompany implements IDAOCompany {
 	    statement = connection.prepareStatement("SELECT * FROM company");
 	    set = statement.executeQuery();
 	    while (set.next()) {
-		companies.add(Mapper.mapCompany(set));
+		companies.add(Mapper.resultsetToCompany(set));
 	    }
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't get the list of companies");
@@ -49,7 +49,7 @@ public enum DAOCompany implements IDAOCompany {
 	    statement.setLong(1, id);
 	    set = statement.executeQuery();
 	    set.next();
-	    company = Mapper.mapCompany(set);
+	    company = Mapper.resultsetToCompany(set);
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't get the company " + id);
 	} finally {

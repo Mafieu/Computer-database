@@ -6,9 +6,11 @@ import java.sql.SQLException;
 import com.excilys.malbert.persistence.DAOException;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
+import com.excilys.malbert.presentation.dto.CompanyDTO;
+import com.excilys.malbert.presentation.dto.ComputerDTO;
 
 public abstract class Mapper {
-    public static Computer mapComputer(ResultSet set) {
+    public static Computer resultsetToComputer(ResultSet set) {
 	try {
 	    Company company;
 	    if (set.getLong(5) == 0) {
@@ -25,11 +27,34 @@ public abstract class Mapper {
 	}
     }
 
-    public static Company mapCompany(ResultSet set) {
+    public static Company resultsetToCompany(ResultSet set) {
 	try {
 	    return new Company(set.getLong(1), set.getString(2));
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't parse bdd->computer");
 	}
+    }
+
+    public static Computer computerdtoToComputer(ComputerDTO computerDTO) {
+	return new Computer(computerDTO.getId(), computerDTO.getName(),
+		Utils.stringToLocaldatetime(computerDTO.getIntroduced()),
+		Utils.stringToLocaldatetime(computerDTO.getDiscontinued()),
+		new Company(computerDTO.getCompanyId(), computerDTO
+			.getCompanyName()));
+    }
+
+    public static ComputerDTO computerToComputerdto(Computer computer) {
+	return new ComputerDTO(computer.getId(), computer.getName(),
+		Utils.localdatetimeToString(computer.getIntroduced()),
+		Utils.localdatetimeToString(computer.getDiscontinued()),
+		computer.getCompany().getId(), computer.getCompany().getName());
+    }
+
+    public static Company companydtoToCompany(CompanyDTO companyDTO) {
+	return new Company(companyDTO.getId(), companyDTO.getName());
+    }
+
+    public static CompanyDTO companyToCompanydto(Company company) {
+	return new CompanyDTO(company.getId(), company.getName());
     }
 }

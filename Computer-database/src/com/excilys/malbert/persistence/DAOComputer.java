@@ -27,7 +27,7 @@ public enum DAOComputer implements IDAOComputer {
 		    .prepareStatement("SELECT * FROM computer LEFT OUTER JOIN company ON computer.company_id = company.id");
 	    set = statement.executeQuery();
 	    while (set.next()) {
-		computers.add(Mapper.mapComputer(set));
+		computers.add(Mapper.resultsetToComputer(set));
 	    }
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't get the list of Computers");
@@ -50,7 +50,7 @@ public enum DAOComputer implements IDAOComputer {
 	    statement.setInt(2, offset);
 	    set = statement.executeQuery();
 	    while (set.next()) {
-		computers.add(Mapper.mapComputer(set));
+		computers.add(Mapper.resultsetToComputer(set));
 	    }
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't get the list of Computers from "
@@ -75,7 +75,7 @@ public enum DAOComputer implements IDAOComputer {
 	    if (!set.next()) {
 		throw new DAOException("No computer found with id " + id);
 	    } else {
-		computer = Mapper.mapComputer(set);
+		computer = Mapper.resultsetToComputer(set);
 	    }
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't get the computer " + id);

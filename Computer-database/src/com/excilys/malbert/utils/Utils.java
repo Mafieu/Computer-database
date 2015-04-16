@@ -17,7 +17,7 @@ public abstract class Utils {
 	return time == null ? null : Timestamp.valueOf(time);
     }
 
-    public static LocalDateTime getDate(String date) {
+    public static LocalDateTime stringToLocaldatetime(String date) {
 	if (date != null
 		&& date.matches("[1-2][0-9]{3}-[0-9]?[0-9]-[0-9]?[0-9]")) {
 	    String[] dates = date.split("-");
@@ -27,6 +27,16 @@ public abstract class Utils {
 	} else {
 	    return null;
 	}
+    }
+
+    public static String localdatetimeToString(LocalDateTime date) {
+	StringBuilder builder = new StringBuilder();
+	builder.append(date.getYear());
+	builder.append("-");
+	builder.append(date.getMonthValue());
+	builder.append("-");
+	builder.append(date.getDayOfMonth());
+	return builder.toString();
     }
 
     public static long stringToLong(String str) {
