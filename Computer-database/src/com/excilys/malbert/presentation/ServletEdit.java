@@ -66,7 +66,6 @@ public class ServletEdit extends HttpServlet {
     protected void doPost(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
 	long id = Utils.stringToLong(request.getParameter("computerId"));
-	System.out.println(id);
 	String name = request.getParameter("computerName");
 	LocalDateTime introduced = Utils.getDate(request
 		.getParameter("introduced"));
