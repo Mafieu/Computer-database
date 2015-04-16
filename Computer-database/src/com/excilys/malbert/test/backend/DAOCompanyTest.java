@@ -12,8 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.excilys.malbert.dbConnection.ConnectionDbFactory;
 import com.excilys.malbert.persistence.DAOCompany;
+import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
 import com.excilys.malbert.persistence.model.Company;
 
 public class DAOCompanyTest {

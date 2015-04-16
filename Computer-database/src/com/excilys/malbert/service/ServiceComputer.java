@@ -1,9 +1,9 @@
 package com.excilys.malbert.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.malbert.persistence.DAOComputer;
+import com.excilys.malbert.persistence.IDAOComputer;
 import com.excilys.malbert.persistence.model.Computer;
 
 /**
@@ -14,69 +14,33 @@ import com.excilys.malbert.persistence.model.Computer;
  */
 public abstract class ServiceComputer {
 
-    /**
-     * Gets all the computers from DAOComputer
-     * 
-     * @return A list of all the computers in database
-     * @throws SQLException
-     */
+    private static IDAOComputer daoComputer = DAOComputer.INSTANCE;
+
     public static List<Computer> getAllComputers() {
-	return DAOComputer.INSTANCE.getAll();
+	return daoComputer.getAll();
     }
 
-    /**
-     * @param limit
-     * @param offset
-     * @return
-     */
     public static List<Computer> getSome(int limit, int offset) {
-	return DAOComputer.INSTANCE.getSome(limit, offset);
+	return daoComputer.getSome(limit, offset);
     }
 
-    /**
-     * Gets a computer from the DAOComputer
-     * 
-     * @param id
-     *            Id of the computer to get
-     * @return The computer
-     * @throws SQLException
-     */
     public static Computer getComputer(long id) {
-	return DAOComputer.INSTANCE.getComputer(id);
+	return daoComputer.getComputer(id);
     }
 
-    /**
-     * Creates a computer in the database with DAOComputer
-     * 
-     * @param computer
-     *            The computer to insert in database
-     * @throws SQLException
-     */
     public static void createComputer(Computer computer) {
-	DAOComputer.INSTANCE.create(computer);
+	daoComputer.create(computer);
     }
 
-    /**
-     * Deletes a computer from the database with DAOComputer
-     * 
-     * @param computer
-     *            The computer to delete in database
-     * @throws SQLException
-     */
     public static void deleteComputer(Computer computer) {
-	DAOComputer.INSTANCE.delete(computer);
+	daoComputer.delete(computer);
     }
 
-    /**
-     * Updates a computer in the database with DAOComputer
-     * 
-     * @param oldComputer
-     *            The computer to update
-     * @param newComputer
-     *            The computer updated
-     * @throws SQLException
-     */
-    public static void updateComputer(Computer oldComputer, Computer newComputer) {
-	DAOComputer.INSTANCE.update(oldComputer, newComputer);
+    public static void updateComputer(Computer computer) {
+	daoComputer.update(computer);
+    }
+
+    public static int getNumberComputer() {
+	return daoComputer.getNumberComputer();
     }
 }

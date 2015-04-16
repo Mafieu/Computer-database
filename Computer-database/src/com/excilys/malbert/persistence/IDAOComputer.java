@@ -11,9 +11,15 @@ public interface IDAOComputer {
 
     public Computer getComputer(long id);
 
+    public int getNumberComputer();
+
     public void create(Computer computer);
 
     public void delete(Computer computer);
 
-    public void update(Computer oldComputer, Computer newComputer);
+    /**
+     * @param computer
+     *            Computer with values changed (must keep the same id)
+     */
+    public void update(Computer computer);
 }

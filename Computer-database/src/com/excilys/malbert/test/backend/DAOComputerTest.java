@@ -12,9 +12,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.excilys.malbert.dbConnection.ConnectionDbFactory;
 import com.excilys.malbert.persistence.DAOComputer;
 import com.excilys.malbert.persistence.DAOException;
+import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.test.utils.TestUtils;
@@ -113,7 +113,7 @@ public class DAOComputerTest {
     public void testUpdate() {
 	Computer computer = new Computer(3, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, new Company(1, "Apple Inc."));
-	DAOComputer.INSTANCE.update(computers.get(2), computer);
+	DAOComputer.INSTANCE.update(computer);
 	assertEquals(computer, DAOComputer.INSTANCE.getComputer(3));
     }
 }

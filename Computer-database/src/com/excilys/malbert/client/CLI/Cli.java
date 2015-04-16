@@ -1,6 +1,5 @@
 package com.excilys.malbert.client.CLI;
 
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
@@ -9,6 +8,7 @@ import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.service.ServiceCompany;
 import com.excilys.malbert.service.ServiceComputer;
+import com.excilys.malbert.utils.Utils;
 
 /**
  * Command Line Interface class for the client
@@ -33,45 +33,32 @@ public class Cli {
     }
 
     /**
-     * Change the format's date (YYYY-MM-DD) to a Timestamp
-     * 
-     * @return The date in a Timestamp object
-     */
-    private static LocalDateTime getDate() {
-	try {
-	    String[] introduction = scanner.nextLine().split("-");
-	    return LocalDateTime.of(Integer.parseInt(introduction[0]),
-		    Integer.parseInt(introduction[1]),
-		    Integer.parseInt(introduction[2]), 0, 0);
-	} catch (NumberFormatException | ArrayIndexOutOfBoundsException
-		| DateTimeException e) {
-	    return null;
-	}
-    }
-
-    /**
      * @return A computer
      */
-    private static Computer createComputer() {
+    private static Computer createComputer(long id) {
 	String name;
 	LocalDateTime introduced, discontinued;
-	long id = -1;
+	long idCompany = -1;
 	System.out.println("Name of the computer :");
 	scanner.nextLine(); // Just for debug, otherwise name is ""
 	name = scanner.nextLine();
 	System.out.println("Date of introduction (YYYY-MM-DD):");
-	introduced = getDate();
+	introduced = Utils.getDate(scanner.nextLine());
 	System.out.println("Date of discontinuation (YYYY-MM-DD):");
-	discontinued = getDate();
+	discontinued = Utils.getDate(scanner.nextLine());
 	System.out
 		.println("Id of the manufacturer (for no manufacturer, enter a 0 or minus id):");
 	if (scanner.hasNextLong()) {
-	    id = scanner.nextLong();
+	    idCompany = scanner.nextLong();
 	} else {
 	    scanner.next();
 	}
-	return new Computer(name, introduced, discontinued, new Company(id,
-		null));
+	return new Computer(id, name, introduced, discontinued, new Company(
+		idCompany, null));
+    }
+
+    private static Computer createComputer() {
+	return createComputer(-1);
     }
 
     /**
@@ -119,7 +106,7 @@ public class Cli {
 		scanner.next();
 	    }
 	    pc = ServiceComputer.getComputer(id);
-	    ServiceComputer.updateComputer(pc, createComputer());
+	    ServiceComputer.updateComputer(createComputer(id));
 	    break;
 	case 6:
 	    System.out.println("Id of the computer :");
