@@ -30,13 +30,17 @@ public abstract class Utils {
     }
 
     public static String localdatetimeToString(LocalDateTime date) {
-	StringBuilder builder = new StringBuilder();
-	builder.append(date.getYear());
-	builder.append("-");
-	builder.append(date.getMonthValue());
-	builder.append("-");
-	builder.append(date.getDayOfMonth());
-	return builder.toString();
+	if (date == null) {
+	    return null;
+	} else {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append(date.getYear());
+	    builder.append("-");
+	    builder.append(date.getMonthValue());
+	    builder.append("-");
+	    builder.append(date.getDayOfMonth());
+	    return builder.toString();
+	}
     }
 
     public static long stringToLong(String str) {
