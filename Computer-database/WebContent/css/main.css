@@ -10,7 +10,7 @@ footer {
     width:100%;
     background:#FEFEFE;
     border-top:1px solid #CCC;
-    height:60px;
+    height: auto;
 }
 
 footer .pagination {
@@ -26,4 +26,8 @@ input[type='checkbox'] {
     padding:0px;
     border-radius: 5px;
     white-space: nowrap;
+}
+
+.disabled {
+	pointer-events: none;
 }

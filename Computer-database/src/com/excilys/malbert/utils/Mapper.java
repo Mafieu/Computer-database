@@ -36,25 +36,53 @@ public abstract class Mapper {
     }
 
     public static Computer computerdtoToComputer(ComputerDTO computerDTO) {
-	return new Computer(computerDTO.getId(), computerDTO.getName(),
-		Utils.stringToLocaldatetime(computerDTO.getIntroduced()),
-		Utils.stringToLocaldatetime(computerDTO.getDiscontinued()),
-		new Company(computerDTO.getCompanyId(), computerDTO
-			.getCompanyName()));
+	if (computerDTO == null) {
+	    return null;
+	} else {
+	    return new Computer(computerDTO.getId(), computerDTO.getName(),
+		    Utils.stringToLocaldatetime(computerDTO.getIntroduced()),
+		    Utils.stringToLocaldatetime(computerDTO.getDiscontinued()),
+		    new Company(computerDTO.getCompanyId(),
+			    computerDTO.getCompanyName()));
+	}
     }
 
     public static ComputerDTO computerToComputerdto(Computer computer) {
-	return new ComputerDTO(computer.getId(), computer.getName(),
-		Utils.localdatetimeToString(computer.getIntroduced()),
-		Utils.localdatetimeToString(computer.getDiscontinued()),
-		computer.getCompany().getId(), computer.getCompany().getName());
+	if (computer == null) {
+	    return null;
+	} else {
+	    if (computer.getCompany() == null) {
+		return new ComputerDTO(
+			computer.getId(),
+			computer.getName(),
+			Utils.localdatetimeToString(computer.getIntroduced()),
+			Utils.localdatetimeToString(computer.getDiscontinued()),
+			0, null);
+	    } else {
+		return new ComputerDTO(
+			computer.getId(),
+			computer.getName(),
+			Utils.localdatetimeToString(computer.getIntroduced()),
+			Utils.localdatetimeToString(computer.getDiscontinued()),
+			computer.getCompany().getId(), computer.getCompany()
+				.getName());
+	    }
+	}
     }
 
     public static Company companydtoToCompany(CompanyDTO companyDTO) {
-	return new Company(companyDTO.getId(), companyDTO.getName());
+	if (companyDTO == null) {
+	    return null;
+	} else {
+	    return new Company(companyDTO.getId(), companyDTO.getName());
+	}
     }
 
     public static CompanyDTO companyToCompanydto(Company company) {
-	return new CompanyDTO(company.getId(), company.getName());
+	if (company == null) {
+	    return null;
+	} else {
+	    return new CompanyDTO(company.getId(), company.getName());
+	}
     }
 }

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <%@page pageEncoding="UTF-8" %>
-<%@page import="com.excilys.malbert.persistence.model.Computer"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="hashtag" tagdir="/WEB-INF/tags" %>
+<%@page import="com.excilys.malbert.presentation.dto.ComputerDTO"%>
 <%@page import="java.util.List"%>
 <html>
 <head>
@@ -13,12 +15,6 @@
 <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
-	<%
-	int size = (int) request.getAttribute("numberComputer");
-	List<Computer> list = (List<Computer>) request.getAttribute("listComputer");
-	int currentPage = (int) request.getAttribute("page");
-	int limit = (int) request.getAttribute("limit");
-	%>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
@@ -28,7 +24,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                <% out.print(size); %> Computers found
+                ${numberComputer} Computers found
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -80,84 +76,32 @@
                 </thead>
                 <!-- Browse attribute computers -->
                 <tbody id="results">
-                    <%
-                    for(Computer computer : list){
-                    %>
-                    <tr>
+                    <c:forEach items="${computers}" var="computer">
+                    	<tr>
                         <td class="editMode">
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer?id=<% out.print(computer.getId()); %>" onclick=""><% out.print(computer.getName()); %></a>
+                            <a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a>
                         </td>
-                        <td><%
-                        	if(computer.getIntroduced() != null) {
-                            	out.print(computer.getIntroduced().toLocalDate());
-                        	} %>
+                        <td>
+                        	<c:if test="${computer.introduced != null}">${computer.introduced}</c:if>
                         </td>
-                        <td><% 
-                        	if(computer.getDiscontinued() != null){
-                            	out.print(computer.getDiscontinued().toLocalDate());
-                            	} %>
+                        <td>
+                        	<c:if test="${computer.discontinued != null}">${computer.discontinued}</c:if>
                         </td>
-                        <td><%
-                        	if(computer.getCompany() != null) {
-                            	out.print(computer.getCompany().getName());
-                            	} %>
+                        <td>
+                        	<c:if test="${computer.companyName != null}">${computer.companyName}</c:if>
                         </td>
                     </tr>
-                    <% } %>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
     </section>
 
     <footer class="navbar-fixed-bottom">
-        <div class="container text-center">
-            <ul class="pagination">
-            	<li>
-                    <a href="dashboard?page=<%
-                    if(currentPage > 1) {
-                    	out.print(currentPage - 1);
-                    } else {
-                		out.print(currentPage);
-                    }
-                    %>" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-              	<% 
-              	int i = 0;
-              	for(; i < size / limit; ++i) {
-              	%>
-              		<li><a href="dashboard?page=<% out.print(i+1); %>"><% out.print(i+1); %></a></li>
-              	<%
-              	}
-              	if(size % limit != 0) {
-              	    %>
-              	    <li><a href="dashboard?page=<% out.print(i+1); %>"><% out.print(i+1); %></a></li>
-              	    <%
-              	}
-              	%>
-              	<li>
-                	<a href="dashboard?page=<%
-                	if(currentPage < size) {
-                	out.print(currentPage + 1);
-                	} else {
-                	    out.print(currentPage);
-                	}
-                	%>" aria-label="Next">
-                    	<span aria-hidden="true">&raquo;</span>
-                	</a>
-            	</li>
-        	</ul>
-
-        	<div class="btn-group btn-group-sm pull-right" role="group" >
-            	<!-- <a class="btn btn-default" href="dashboard?limit=10">10</a> -->
-            	<a class="btn btn-default" href="dashboard?limit=50">50</a>
-            	<a class="btn btn-default" href="dashboard?limit=100">100</a>
-        	</div>
-		</div>
+        <hashtag:pagination currentPage="${page}" limit="${limit}" size="${numberComputer}"></hashtag:pagination>
     </footer>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>

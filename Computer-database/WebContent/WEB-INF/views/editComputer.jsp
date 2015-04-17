@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.excilys.malbert.presentation.dto.CompanyDTO"%>
+<%@page import="com.excilys.malbert.presentation.dto.ComputerDTO"%>
 <%@page import="java.util.List"%>
-<%@page import="com.excilys.malbert.persistence.model.Company"%>
-<%@page import="com.excilys.malbert.persistence.model.Computer"%>
 <html>
 <head>
 <title>Computer Database</title>
@@ -13,10 +14,6 @@
 <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
-	<%
-	Computer computer = (Computer) request.getAttribute("computer");
-	List<Company> companies = (List<Company>) request.getAttribute("companies");
-	%>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
@@ -27,48 +24,38 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <div class="label label-default pull-right">
-                        id: <% out.print(computer.getId()); %>
+                        id: ${computer.id}
                     </div>
                     <h1>Edit Computer</h1>
 
                     <form action="editComputer" method="POST">
-                        <input type="hidden" name="computerId" value="<% out.print(computer.getId()); %>"/>
+                        <input type="hidden" name="computerId" value="${computer.id}"/>
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" name="computerName" value="<% out.print(computer.getName()); %>">
+                                <input type="text" class="form-control" name="computerName" value="${computer.name}">
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" name="introduced" value="<%
-                                if(computer.getIntroduced() != null) {
-                                	out.print(computer.getIntroduced().toLocalDate());
-                                }
-                                %>">
+                                <input type="date" class="form-control" name="introduced" value="${computer.introduced}">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" name="discontinued" value="<%
-                                if(computer.getDiscontinued() != null) {
-                                	out.print(computer.getIntroduced().toLocalDate());
-                                }
-                                %>">
+                                <input type="date" class="form-control" name="discontinued" value="${computer.discontinued}">
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
                                 <select class="form-control" name="companyId" >
                                     <!-- Actual value -->
-                                    <% if(computer.getCompany() != null) { %>
-                                    <option value="<% out.print(computer.getCompany().getId()); %>"><% out.print(computer.getCompany().getName()); %></option>
-                                    <% } %>
+                                    <c:if test="${computer.companyName != null}">
+                                    	<option value="${computer.companyId}">${computer.companyName}</option>
+                                    </c:if>
                                     <option value="0">--</option>
-                                    <% 
-                                    for(Company company : companies) {
-                                		if((computer.getCompany() != null && company.getId() != computer.getCompany().getId()) || computer.getCompany() == null) {
-                                	%>
-                                	<option value="<% out.print(company.getId()); %>"><% out.print(company.getName()); %></option>
-                                    <%  }
-                                	} %>
+                                    <c:forEach items="${companies}" var="company">
+                                    	<c:if test="${company.id != computer.companyId}">
+                                    		<option value="${company.id}">${company.name}</option>
+                                    	</c:if>
+                                    </c:forEach>
                                 </select>
                             </div>            
                         </fieldset>

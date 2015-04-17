@@ -2,6 +2,8 @@ package com.excilys.malbert.presentation.servlets;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
+import com.excilys.malbert.presentation.dto.CompanyDTO;
 import com.excilys.malbert.service.ServiceCompany;
 import com.excilys.malbert.service.ServiceComputer;
+import com.excilys.malbert.utils.Mapper;
 import com.excilys.malbert.utils.Utils;
 
 /**
@@ -36,7 +40,12 @@ public class ServletCreate extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
-	request.setAttribute("listCompany", ServiceCompany.getAllCompanies());
+	List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
+	for (Company company : ServiceCompany.getAllCompanies()) {
+	    companiesDTO.add(Mapper.companyToCompanydto(company));
+	}
+
+	request.setAttribute("companies", companiesDTO);
 
 	this.getServletContext()
 		.getRequestDispatcher("/WEB-INF/views/addComputer.jsp")

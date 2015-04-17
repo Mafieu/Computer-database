@@ -2,6 +2,7 @@ package com.excilys.malbert.presentation.servlets;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -13,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.malbert.persistence.DAOException;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
+import com.excilys.malbert.presentation.dto.CompanyDTO;
 import com.excilys.malbert.service.ServiceCompany;
 import com.excilys.malbert.service.ServiceComputer;
+import com.excilys.malbert.utils.Mapper;
 import com.excilys.malbert.utils.Utils;
 
 /**
@@ -43,7 +46,7 @@ public class ServletEdit extends HttpServlet {
 	    response.sendRedirect("dashboard");
 	} else {
 	    Computer computer = null;
-	    List<Company> companies = ServiceCompany.getAllCompanies();
+	    List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
 	    try {
 		computer = ServiceComputer.getComputer(id);
 	    } catch (DAOException e) {
@@ -51,8 +54,13 @@ public class ServletEdit extends HttpServlet {
 			.getRequestDispatcher("/WEB-INF/views/500.jsp")
 			.forward(request, response);
 	    }
-	    request.setAttribute("companies", companies);
-	    request.setAttribute("computer", computer);
+	    for (Company company : ServiceCompany.getAllCompanies()) {
+		companiesDTO.add(Mapper.companyToCompanydto(company));
+	    }
+
+	    request.setAttribute("companies", companiesDTO);
+	    request.setAttribute("computer",
+		    Mapper.computerToComputerdto(computer));
 	    this.getServletContext()
 		    .getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
 		    .forward(request, response);

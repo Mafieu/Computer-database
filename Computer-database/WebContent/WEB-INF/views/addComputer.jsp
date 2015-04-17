@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<%@page import="com.excilys.malbert.persistence.model.Company"%>
+<%@page pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.excilys.malbert.presentation.dto.CompanyDTO"%>
 <%@page import="java.util.List"%>
 <html>
 <head>
@@ -11,7 +13,6 @@
 <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
-	<% List<Company> companies = (List<Company>) request.getAttribute("listCompany"); %>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
@@ -41,9 +42,9 @@
                                 <label for="companyId">Company</label>
                                 <select class="form-control" name="companyId" >
                                     <option value="0">--</option>
-                                	<% for(Company company : companies) { %>
-                                    <option value="<% out.print(company.getId()); %>"><% out.print(company.getName()); %></option>
-                                	<% } %>
+                                    <c:forEach items="${companies}" var="company">
+                                    	<option value="${company.id}">${company.name}</option>
+                                    </c:forEach>
                                 </select>
                             </div>                  
                         </fieldset>
