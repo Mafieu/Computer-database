@@ -29,9 +29,16 @@ public abstract class Mapper {
 
     public static Company resultsetToCompany(ResultSet set) {
 	try {
-	    return new Company(set.getLong(1), set.getString(2));
+	    Company company;
+	    System.out.println(set.getRow());
+	    if (set.getRow() == 0) {
+		company = null;
+	    } else {
+		company = new Company(set.getLong(1), set.getString(2));
+	    }
+	    return company;
 	} catch (SQLException e) {
-	    throw new DAOException("Couldn't parse bdd->computer");
+	    throw new DAOException("Couldn't parse bdd->company");
 	}
     }
 

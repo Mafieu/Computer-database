@@ -98,10 +98,14 @@ public enum DAOComputer implements IDAOComputer {
 		    Utils.localdatetimeToTimestamp(computer.getIntroduced()));
 	    statement.setTimestamp(3,
 		    Utils.localdatetimeToTimestamp(computer.getDiscontinued()));
-	    if (computer.getCompany().getId() <= 0) {
+	    if (computer.getCompany() == null) {
 		statement.setNull(4, Types.BIGINT);
 	    } else {
-		statement.setLong(4, computer.getCompany().getId());
+		if (computer.getCompany().getId() <= 0) {
+		    statement.setNull(4, Types.BIGINT);
+		} else {
+		    statement.setLong(4, computer.getCompany().getId());
+		}
 	    }
 	    statement.executeUpdate();
 	} catch (SQLException e) {

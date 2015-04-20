@@ -24,23 +24,23 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
-                    <form action="addComputer" method="POST">
+                    <form action="addComputer" onsubmit="return checkValues()" method="POST">
                         <fieldset>
-                            <div class="form-group">
+                            <div class="form-group" id="computerNameDiv">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" name="computerName" placeholder="Computer name">
+                                <input type="text" class="form-control" name="computerName" id="computerName" placeholder="Computer name">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="introducedDiv">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" name="introduced" placeholder="Introduced date">
+                                <input type="date" class="form-control" name="introduced" id="introduced" placeholder="Introduced date">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="discontinuedDiv">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" name="discontinued" placeholder="Discontinued date">
+                                <input type="date" class="form-control" name="discontinued" id="discontinued" placeholder="Discontinued date">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="companyDiv">
                                 <label for="companyId">Company</label>
-                                <select class="form-control" name="companyId" >
+                                <select class="form-control" name="companyId" id="companyId" >
                                     <option value="0">--</option>
                                     <c:forEach items="${companies}" var="company">
                                     	<option value="${company.id}">${company.name}</option>
@@ -58,5 +58,7 @@
             </div>
         </div>
     </section>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/editComputer.js"></script>
 </body>
 </html>
