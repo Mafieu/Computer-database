@@ -76,7 +76,7 @@ public class ServletCreate extends HttpServlet {
 		    .forward(request, response);
 	} else {
 	    ServiceComputer.createComputer(new Computer(name, introduced,
-		    discontinued, company));
+			discontinued, company));
 	    // Redirect to dashboard
 	    response.sendRedirect("dashboard");
 	}
