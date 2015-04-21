@@ -30,7 +30,6 @@ public abstract class Mapper {
     public static Company resultsetToCompany(ResultSet set) {
 	try {
 	    Company company;
-	    System.out.println(set.getRow());
 	    if (set.getRow() == 0) {
 		company = null;
 	    } else {

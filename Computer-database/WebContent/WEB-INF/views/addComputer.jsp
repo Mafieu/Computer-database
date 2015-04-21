@@ -24,6 +24,9 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
+                    <c:if test="${error}">
+                    	<div class="alert alert-danger">You have an error</div>
+                    </c:if>
                     <form action="addComputer" onsubmit="return checkValues()" method="POST">
                         <fieldset>
                             <div class="form-group" id="computerNameDiv">

@@ -46,6 +46,7 @@ public class ServletCreate extends HttpServlet {
 	}
 
 	request.setAttribute("companies", companiesDTO);
+	request.setAttribute("error", false);
 
 	this.getServletContext()
 		.getRequestDispatcher("/WEB-INF/views/addComputer.jsp")
@@ -65,10 +66,20 @@ public class ServletCreate extends HttpServlet {
 		.getParameter("discontinued"));
 	Company company = ServiceCompany.getCompany(Utils.stringToLong(request
 		.getParameter("companyId")));
-	ServiceComputer.createComputer(new Computer(name, introduced,
-		discontinued, company));
-	// Redirect to dashboard
-	response.sendRedirect("dashboard");
+	if (name == "" || request.getParameter("introduced") != ""
+		&& introduced == null
+		|| request.getParameter("discontinued") != ""
+		&& discontinued == null) {
+	    request.setAttribute("error", true);
+	    this.getServletContext()
+		    .getRequestDispatcher("/WEB-INF/views/addComputer.jsp")
+		    .forward(request, response);
+	} else {
+	    ServiceComputer.createComputer(new Computer(name, introduced,
+		    discontinued, company));
+	    // Redirect to dashboard
+	    response.sendRedirect("dashboard");
+	}
     }
 
 }

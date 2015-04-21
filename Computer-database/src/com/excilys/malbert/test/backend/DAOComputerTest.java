@@ -91,8 +91,8 @@ public class DAOComputerTest {
 
     @Test
     public void testCreate() {
-	// We put the id because we know what's its going to be
-	// The id is not put in the database
+	// We set the id because we know what's its going to be
+	// The id is not set in the database
 	Computer computer = new Computer(13, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, new Company(1, "Apple Inc."));
 	DAOComputer.INSTANCE.create(computer);
