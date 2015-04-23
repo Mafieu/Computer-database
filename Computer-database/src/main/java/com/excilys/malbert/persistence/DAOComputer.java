@@ -126,7 +126,7 @@ public enum DAOComputer implements IDAOComputer {
 	    statement.setLong(1, id);
 	    statement.executeUpdate();
 	} catch (SQLException e) {
-	    throw new DAOException("Couldn't delete the computer");
+	    throw new DAOException("Couldn't delete the computer " + id);
 	} finally {
 	    ConnectionDbFactory.INSTANCE.closeConnection(null, statement, null);
 	}
@@ -135,8 +135,14 @@ public enum DAOComputer implements IDAOComputer {
     @Override
     public void delete(long id) {
 	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
-	delete(id, connection);
-	ConnectionDbFactory.INSTANCE.closeConnection(connection, null, null);
+	try {
+	    delete(id, connection);
+	} catch (DAOException e) {
+	    throw new DAOException("Couldn't delete the computer " + id);
+	} finally {
+	    ConnectionDbFactory.INSTANCE
+		    .closeConnection(connection, null, null);
+	}
     }
 
     @Override

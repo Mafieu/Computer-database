@@ -22,8 +22,15 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                ${numberComputer} Computers found
+                ${page.totalCount} Computers found
             </h1>
+            <c:if test="${error}">
+            	<div class="alert alert-danger alert-dismissible" role="alert">
+            		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            		<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            		${errorMessage}
+            	</div>
+            </c:if>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="#" method="GET" class="form-inline">
@@ -59,22 +66,58 @@
                             </span>
                         </th>
                         <th>
-                            Computer name
+                        	<c:choose>
+                        		<c:when test="${page.column == 'computer.name' && page.order == 'asc'}">
+		                            <hashtag:link body="Computer name
+		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="computer.name" target="dashboard"></hashtag:link>
+	                            </c:when>
+	                            <c:otherwise>
+	                            	<hashtag:link body="Computer name
+		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="computer.name" target="dashboard"></hashtag:link>
+	                            </c:otherwise>
+                            </c:choose>
                         </th>
                         <th>
-                            Introduced date
+                        	<c:choose>
+                        		<c:when test="${page.column == 'introduced' && page.order == 'asc'}">
+		                        	<hashtag:link body="Introduced date
+		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="introduced" target="dashboard"></hashtag:link>
+		                        </c:when>
+		                        <c:otherwise>
+		                        	<hashtag:link body="Introduced date
+		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="introduced" target="dashboard"></hashtag:link>
+		                    	</c:otherwise>
+		                    </c:choose>
                         </th>
                         <th>
-                            Discontinued date
+                        	<c:choose>
+                        		<c:when test="${page.column == 'discontinued' && page.order == 'asc'}">
+		                        	<hashtag:link body="Discontinued date
+		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="discontinued" target="dashboard"></hashtag:link>
+                        		</c:when>
+                        		<c:otherwise>
+                        			<hashtag:link body="Discontinued date
+		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="discontinued" target="dashboard"></hashtag:link>
+                        		</c:otherwise>
+                        	</c:choose>
                         </th>
                         <th>
-                            Company
+                        	<c:choose>
+                        		<c:when test="${page.column == 'company.name' && page.order == 'asc'}">
+		                        	<hashtag:link body="Company
+		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="company.name" target="dashboard"></hashtag:link>
+								</c:when>
+								<c:otherwise>
+									<hashtag:link body="Company
+		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="company.name" target="dashboard"></hashtag:link>
+								</c:otherwise>
+                          	</c:choose>
                         </th>
                     </tr>
                 </thead>
                 <!-- Browse attribute computers -->
                 <tbody id="results">
-                    <c:forEach items="${computers}" var="computer">
+                    <c:forEach items="${page.data}" var="computer">
                     	<tr>
                         <td class="editMode">
                             <input type="checkbox" name="cb" class="cb" value="${computer.id}">
@@ -99,7 +142,7 @@
     </section>
 
     <footer class="navbar-fixed-bottom">
-        <hashtag:pagination currentPage="${page}" limit="${limit}" size="${numberComputer}"></hashtag:pagination>
+        <hashtag:pagination currentPage="${page.page}" limit="${page.countPerPage}" size="${page.totalCount}" orderBy="${page.order}" column="${page.column}"></hashtag:pagination>
     </footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

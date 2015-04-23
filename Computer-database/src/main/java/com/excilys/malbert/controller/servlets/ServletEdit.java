@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.malbert.controller.dto.CompanyDTO;
-import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.mapper.MapperCompany;
 import com.excilys.malbert.mapper.MapperComputer;
 import com.excilys.malbert.persistence.model.Company;
@@ -49,13 +48,7 @@ public class ServletEdit extends HttpServlet {
 	} else {
 	    Computer computer = null;
 	    List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
-	    try {
-		computer = serviceComputer.getComputer(id);
-	    } catch (DAOException e) {
-		this.getServletContext()
-			.getRequestDispatcher("/WEB-INF/views/500.jsp")
-			.forward(request, response);
-	    }
+	    computer = serviceComputer.getComputer(id);
 	    for (Company company : serviceCompany.getAllCompanies()) {
 		companiesDTO.add(MapperCompany.companyToCompanydto(company));
 	    }

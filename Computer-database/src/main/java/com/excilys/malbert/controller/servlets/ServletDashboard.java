@@ -1,8 +1,6 @@
 package com.excilys.malbert.controller.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,29 +35,52 @@ public class ServletDashboard extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
-	int totalComputers = serviceComputer.getNumberComputer();
-	int computersPerPage = Utils.stringToInt(request.getParameter("limit"));
+	Page<ComputerDTO> computers = new Page<ComputerDTO>();
+	int totalCount = serviceComputer.getNumberComputer();
+	int countPerPage = Utils.stringToInt(request.getParameter("limit"));
 	int page = Utils.stringToInt(request.getParameter("page"));
+	String order = request.getParameter("order");
+	String column = request.getParameter("column");
 
-	if (computersPerPage <= 0) {
-	    computersPerPage = 50;
-	}
-	if (page <= 0 || page - 1 > totalComputers / computersPerPage) {
-	    page = 1;
-	}
+	computers.setTotalCount(totalCount);
+	computers.setCountPerPage(countPerPage);
+	computers.setPage(page);
+	computers.setOrder(order);
+	computers.setColumn(column);
 
-	List<Computer> computers;
-	computers = serviceComputer.getSomeOrderedByAscending(computersPerPage,
-		(page - 1) * computersPerPage, "computer.id");
-	List<ComputerDTO> computersDTO = new ArrayList<>();
-	for (Computer computer : computers) {
-	    computersDTO.add(MapperComputer.computerToComputerdto(computer));
+	if (!computers.isValid()) {
+	    request.setAttribute("error", true);
+	    request.setAttribute("errorMessage", "Invalid arguments");
 	}
 
-	request.setAttribute("numberComputer", totalComputers);
-	request.setAttribute("computers", computersDTO);
-	request.setAttribute("page", page);
-	request.setAttribute("limit", computersPerPage);
+	if (computers.getOrder().equals("asc")) {
+	    for (Computer computer : serviceComputer.getSomeOrderedByAscending(
+		    computers.getCountPerPage(), (computers.getPage() - 1)
+			    * computers.getCountPerPage(),
+		    computers.getColumn())) {
+		computers.getData().add(
+			MapperComputer.computerToComputerdto(computer));
+	    }
+	} else {
+	    for (Computer computer : serviceComputer
+		    .getSomeOrderedByDescending(
+			    computers.getCountPerPage(),
+			    (computers.getPage() - 1)
+				    * computers.getCountPerPage(),
+			    computers.getColumn())) {
+		computers.getData().add(
+			MapperComputer.computerToComputerdto(computer));
+	    }
+	}
+
+	for (Computer computer : serviceComputer.getSomeOrderedByAscending(
+		computers.getCountPerPage(), (computers.getPage() - 1)
+			* computers.getCountPerPage(), "computer.id")) {
+	    computers.getData().add(
+		    MapperComputer.computerToComputerdto(computer));
+	}
+
+	request.setAttribute("page", computers);
 
 	this.getServletContext()
 		.getRequestDispatcher("/WEB-INF/views/dashboard.jsp")
