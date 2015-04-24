@@ -1,4 +1,4 @@
-package com.excilys.malbert.controller.servlets;
+package com.excilys.malbert.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +51,15 @@ public class Page<T> {
 	    ret = false;
 	}
 	return ret;
+    }
+
+    public boolean isSearchValid() {
+	if (search == null) {
+	    return false;
+	} else if (search.equals("")) {
+	    return false;
+	}
+	return true;
     }
 
     public List<T> getData() {

@@ -39,4 +39,9 @@ public interface IDAOComputer {
 
     public List<Computer> getSomeOrderedByDescending(int limit, int offset,
 	    String column);
+
+    public List<Computer> getSomeSearch(int limit, int offset, String column,
+	    String order, String search);
+
+    public int getNumberComputerSearch(String search);
 }

@@ -1,6 +1,7 @@
 package com.excilys.malbert.controller.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.malbert.controller.Page;
 import com.excilys.malbert.controller.dto.ComputerDTO;
 import com.excilys.malbert.mapper.MapperComputer;
 import com.excilys.malbert.persistence.model.Computer;
@@ -41,41 +43,57 @@ public class ServletDashboard extends HttpServlet {
 	int page = Utils.stringToInt(request.getParameter("page"));
 	String order = request.getParameter("order");
 	String column = request.getParameter("column");
+	String search = request.getParameter("search");
 
 	computers.setTotalCount(totalCount);
 	computers.setCountPerPage(countPerPage);
 	computers.setPage(page);
 	computers.setOrder(order);
 	computers.setColumn(column);
+	computers.setSearch(search);
 
 	if (!computers.isValid()) {
-	    request.setAttribute("error", true);
-	    request.setAttribute("errorMessage", "Invalid arguments");
+	    if (!(countPerPage == 0 && page == 0 && order == null
+		    && column == null && search == null)) {
+		request.setAttribute("error", true);
+		request.setAttribute("errorMessage", "Invalid arguments");
+	    }
 	}
 
+	List<Computer> list = null;
 	if (computers.getOrder().equals("asc")) {
-	    for (Computer computer : serviceComputer.getSomeOrderedByAscending(
-		    computers.getCountPerPage(), (computers.getPage() - 1)
-			    * computers.getCountPerPage(),
-		    computers.getColumn())) {
-		computers.getData().add(
-			MapperComputer.computerToComputerdto(computer));
+	    if (!computers.isSearchValid()) {
+		list = serviceComputer.getSomeOrderedByAscending(
+			computers.getCountPerPage(), (computers.getPage() - 1)
+				* computers.getCountPerPage(),
+			computers.getColumn());
+	    } else {
+		computers.setTotalCount(serviceComputer
+			.getNumberComputerSearch(search));
+		list = serviceComputer.getSomeSearch(
+			computers.getCountPerPage(), (computers.getPage() - 1)
+				* computers.getCountPerPage(),
+			computers.getColumn(), computers.getOrder(),
+			computers.getSearch());
 	    }
 	} else {
-	    for (Computer computer : serviceComputer
-		    .getSomeOrderedByDescending(
-			    computers.getCountPerPage(),
-			    (computers.getPage() - 1)
-				    * computers.getCountPerPage(),
-			    computers.getColumn())) {
-		computers.getData().add(
-			MapperComputer.computerToComputerdto(computer));
+	    if (!computers.isSearchValid()) {
+		list = serviceComputer.getSomeOrderedByDescending(
+			computers.getCountPerPage(), (computers.getPage() - 1)
+				* computers.getCountPerPage(),
+			computers.getColumn());
+	    } else {
+		computers.setTotalCount(serviceComputer
+			.getNumberComputerSearch(search));
+		list = serviceComputer.getSomeSearch(
+			computers.getCountPerPage(), (computers.getPage() - 1)
+				* computers.getCountPerPage(),
+			computers.getColumn(), computers.getOrder(),
+			computers.getSearch());
 	    }
 	}
 
-	for (Computer computer : serviceComputer.getSomeOrderedByAscending(
-		computers.getCountPerPage(), (computers.getPage() - 1)
-			* computers.getCountPerPage(), "computer.id")) {
+	for (Computer computer : list) {
 	    computers.getData().add(
 		    MapperComputer.computerToComputerdto(computer));
 	}

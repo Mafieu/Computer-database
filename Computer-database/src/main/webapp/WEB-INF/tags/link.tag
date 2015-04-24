@@ -6,5 +6,6 @@
 <%@ attribute name="classes" type="java.lang.String" description="Classes to apply at the link"%>
 <%@ attribute name="orderBy" required="true" type="java.lang.String" description="Order by ascending or descending"%>
 <%@ attribute name="column" required="true" type="java.lang.String" description="Column to order on"%>
+<%@ attribute name="search" required="true" type="java.lang.String" description="Pattern to search"%>
 
-<a class="${classes}" href="${target}?page=${page}&limit=${limit}&order=${orderBy}&column=${column}">${body}</a>
+<a class="${classes}" href="${target}?page=${page}&limit=${limit}&order=${orderBy}&column=${column}&search=${search}">${body}</a>

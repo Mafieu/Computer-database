@@ -61,9 +61,7 @@ public enum DAOComputer implements IDAOComputer {
 		    .prepareStatement("SELECT * FROM computer LEFT OUTER JOIN company ON computer.company_id = company.id WHERE computer.id = ?");
 	    statement.setLong(1, id);
 	    set = statement.executeQuery();
-	    if (!set.next()) {
-		throw new DAOException("No computer found with id " + id);
-	    } else {
+	    if (set.next()) {
 		computer = MapperComputer.resultsetToComputer(set);
 	    }
 	} catch (SQLException e) {
@@ -271,4 +269,79 @@ public enum DAOComputer implements IDAOComputer {
 	}
 	return computers;
     }
+
+    @Override
+    public List<Computer> getSomeSearch(int limit, int offset, String column,
+	    String order, String search) {
+	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	PreparedStatement statement = null;
+	ResultSet set = null;
+	List<Computer> computers = new ArrayList<Computer>();
+
+	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
+	    throw new DAOException(Validator.INVALID_LIMIT_OFFSET);
+	}
+	if (!Validator.isColumnValid(column)) {
+	    throw new DAOException(Validator.INVALID_COLUMN);
+	}
+
+	try {
+	    statement = connection
+		    .prepareStatement("SELECT * FROM computer LEFT OUTER JOIN company ON computer.company_id = company.id WHERE computer.name LIKE '%"
+			    + search
+			    + "%' OR company.name LIKE '%"
+			    + search
+			    + "%' ORDER BY "
+			    + column
+			    + " "
+			    + order
+			    + " LIMIT ? OFFSET ?");
+	    statement.setInt(1, limit);
+	    statement.setInt(2, offset);
+	    set = statement.executeQuery();
+	    while (set.next()) {
+		computers.add(MapperComputer.resultsetToComputer(set));
+	    }
+	} catch (SQLException e) {
+	    throw new DAOException("Couldn't get the list of Computers from "
+		    + offset + " to " + (offset + limit) + " ordered by "
+		    + column + " with the search of " + search);
+	} finally {
+	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
+		    set);
+	}
+
+	return computers;
+    }
+
+    @Override
+    public int getNumberComputerSearch(String search) {
+	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	PreparedStatement statement = null;
+	ResultSet set = null;
+	int nb = 0;
+
+	try {
+	    statement = connection
+		    .prepareStatement("SELECT count(*) FROM computer LEFT OUTER JOIN company ON computer.company_id = company.id WHERE computer.name LIKE '%"
+			    + search
+			    + "%' OR company.name LIKE '%"
+			    + search
+			    + "%'");
+	    set = statement.executeQuery();
+	    while (set.next()) {
+		nb = set.getInt(1);
+	    }
+	} catch (SQLException e) {
+	    throw new DAOException(
+		    "Couldn't get the number of Computers with the search of "
+			    + search);
+	} finally {
+	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
+		    set);
+	}
+
+	return nb;
+    }
+
 }

@@ -49,6 +49,9 @@ public class ServletEdit extends HttpServlet {
 	    Computer computer = null;
 	    List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
 	    computer = serviceComputer.getComputer(id);
+	    if (computer == null) {
+		response.sendRedirect("dashboard");
+	    }
 	    for (Company company : serviceCompany.getAllCompanies()) {
 		companiesDTO.add(MapperCompany.companyToCompanydto(company));
 	    }

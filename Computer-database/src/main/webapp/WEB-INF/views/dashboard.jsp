@@ -33,9 +33,19 @@
             </c:if>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
-                    <form id="searchForm" action="#" method="GET" class="form-inline">
-
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
+                    <form id="searchForm" action="dashboard" method="GET" class="form-inline">
+                        <input name="page" hidden="true" value="${page.page}"/>
+                        <input name="limit" hidden="true" value="${page.countPerPage}"/>
+                        <input name="order" hidden="true" value="${page.order}"/>
+                        <input name="column" hidden="true" value="${page.column}"/>
+                        <c:choose>
+                        	<c:when test="${page.isSearchValid()}">
+                        		<input type="search" id="searchbox" name="search" class="form-control" value="${page.search}"/>
+                        	</c:when>
+                        	<c:otherwise>
+                        		<input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name"/>
+                        	</c:otherwise>
+                       </c:choose>
                         <input type="submit" id="searchsubmit" value="Filter by name"
                         class="btn btn-primary" />
                     </form>
@@ -69,11 +79,11 @@
                         	<c:choose>
                         		<c:when test="${page.column == 'computer.name' && page.order == 'asc'}">
 		                            <hashtag:link body="Computer name
-		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="computer.name" target="dashboard"></hashtag:link>
+		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="computer.name" search="${page.search}" target="dashboard"></hashtag:link>
 	                            </c:when>
 	                            <c:otherwise>
 	                            	<hashtag:link body="Computer name
-		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="computer.name" target="dashboard"></hashtag:link>
+		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="computer.name" search="${page.search}" target="dashboard"></hashtag:link>
 	                            </c:otherwise>
                             </c:choose>
                         </th>
@@ -81,11 +91,11 @@
                         	<c:choose>
                         		<c:when test="${page.column == 'introduced' && page.order == 'asc'}">
 		                        	<hashtag:link body="Introduced date
-		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="introduced" target="dashboard"></hashtag:link>
+		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="introduced" search="${page.search}" target="dashboard"></hashtag:link>
 		                        </c:when>
 		                        <c:otherwise>
 		                        	<hashtag:link body="Introduced date
-		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="introduced" target="dashboard"></hashtag:link>
+		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="introduced" search="${page.search}" target="dashboard"></hashtag:link>
 		                    	</c:otherwise>
 		                    </c:choose>
                         </th>
@@ -93,11 +103,11 @@
                         	<c:choose>
                         		<c:when test="${page.column == 'discontinued' && page.order == 'asc'}">
 		                        	<hashtag:link body="Discontinued date
-		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="discontinued" target="dashboard"></hashtag:link>
+		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="discontinued" search="${page.search}" target="dashboard"></hashtag:link>
                         		</c:when>
                         		<c:otherwise>
                         			<hashtag:link body="Discontinued date
-		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="discontinued" target="dashboard"></hashtag:link>
+		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="discontinued" search="${page.search}" target="dashboard"></hashtag:link>
                         		</c:otherwise>
                         	</c:choose>
                         </th>
@@ -105,11 +115,11 @@
                         	<c:choose>
                         		<c:when test="${page.column == 'company.name' && page.order == 'asc'}">
 		                        	<hashtag:link body="Company
-		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="company.name" target="dashboard"></hashtag:link>
+		                            <span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="desc" column="company.name" search="${page.search}" target="dashboard"></hashtag:link>
 								</c:when>
 								<c:otherwise>
 									<hashtag:link body="Company
-		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="company.name" target="dashboard"></hashtag:link>
+		                            <span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span>" limit="${page.countPerPage}" page="${page.page}" orderBy="asc" column="company.name" search="${page.search}" target="dashboard"></hashtag:link>
 								</c:otherwise>
                           	</c:choose>
                         </th>

@@ -92,4 +92,20 @@ public enum ServiceComputer {
 
 	return daoComputer.getSomeOrderedByDescending(limit, offset, column);
     }
+
+    public List<Computer> getSomeSearch(int limit, int offset, String column,
+	    String order, String search) {
+	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
+	    throw new ServiceException(Validator.INVALID_LIMIT_OFFSET);
+	}
+	if (!Validator.isColumnValid(column)) {
+	    throw new ServiceException(Validator.INVALID_COLUMN);
+	}
+
+	return daoComputer.getSomeSearch(limit, offset, column, order, search);
+    }
+
+    public int getNumberComputerSearch(String search) {
+	return daoComputer.getNumberComputerSearch(search);
+    }
 }
