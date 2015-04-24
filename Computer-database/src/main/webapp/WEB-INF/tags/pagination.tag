@@ -3,9 +3,9 @@
 <%@ attribute name="currentPage" required="true" type="java.lang.Integer" description="Current page"%>
 <%@ attribute name="limit" required="true" type="java.lang.Integer" description="Number of computers per page"%>
 <%@ attribute name="size" required="true" type="java.lang.Integer" description="Number of computers"%>
-<%@ attribute name="orderBy" type="java.lang.String" description="Order by ascending or descending"%>
-<%@ attribute name="column" type="java.lang.String" description="Column to order on"%>
-<%@ attribute name="search" type="java.lang.String" description="Pattern to search"%>
+<%@ attribute name="orderBy" required="true" type="java.lang.String" description="Order by ascending or descending"%>
+<%@ attribute name="column" required="true" type="java.lang.String" description="Column to order on"%>
+<%@ attribute name="search" required="true" type="java.lang.String" description="Pattern to search"%>
 <div class="container text-center">
 	<ul class="pagination">
 		<c:choose>

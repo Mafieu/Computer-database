@@ -66,12 +66,23 @@ public class ServletCreate extends HttpServlet {
 		.getParameter("introduced"));
 	LocalDateTime discontinued = Utils.stringToLocaldatetime(request
 		.getParameter("discontinued"));
-	Company company = serviceCompany.getCompany(Utils.stringToLong(request
-		.getParameter("companyId")));
+	Company company = null;
+	if (!request.getParameter("companyId").equals("0")) {
+	    company = serviceCompany.getCompany(Utils.stringToLong(request
+		    .getParameter("companyId")));
+	} else {
+	    company = new Company(0, "");
+	}
 	if (name == "" || request.getParameter("introduced") != ""
 		&& introduced == null
 		|| request.getParameter("discontinued") != ""
 		&& discontinued == null) {
+	    List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
+	    for (Company company1 : serviceCompany.getAllCompanies()) {
+		companiesDTO.add(MapperCompany.companyToCompanydto(company1));
+	    }
+
+	    request.setAttribute("companies", companiesDTO);
 	    request.setAttribute("error", true);
 	    this.getServletContext()
 		    .getRequestDispatcher("/WEB-INF/views/addComputer.jsp")

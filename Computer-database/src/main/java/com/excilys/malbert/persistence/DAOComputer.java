@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,12 +97,17 @@ public enum DAOComputer implements IDAOComputer {
 		    Utils.localdatetimeToTimestamp(computer.getIntroduced()));
 	    statement.setTimestamp(3,
 		    Utils.localdatetimeToTimestamp(computer.getDiscontinued()));
-	    statement.setLong(4, computer.getCompany().getId());
+	    if (computer.getCompany().getId() <= 0) {
+		statement.setNull(4, Types.BIGINT);
+	    } else {
+		statement.setLong(4, computer.getCompany().getId());
+	    }
 	    statement.executeUpdate();
 	    set = statement.getGeneratedKeys();
 	    set.next();
 	    i = set.getLong(1);
 	} catch (SQLException e) {
+	    e.printStackTrace();
 	    throw new DAOException("Couldn't create the computer");
 	} finally {
 	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,

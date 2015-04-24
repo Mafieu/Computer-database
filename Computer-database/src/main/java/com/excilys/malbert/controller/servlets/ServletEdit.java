@@ -51,17 +51,19 @@ public class ServletEdit extends HttpServlet {
 	    computer = serviceComputer.getComputer(id);
 	    if (computer == null) {
 		response.sendRedirect("dashboard");
-	    }
-	    for (Company company : serviceCompany.getAllCompanies()) {
-		companiesDTO.add(MapperCompany.companyToCompanydto(company));
-	    }
+	    } else {
+		for (Company company : serviceCompany.getAllCompanies()) {
+		    companiesDTO
+			    .add(MapperCompany.companyToCompanydto(company));
+		}
 
-	    request.setAttribute("companies", companiesDTO);
-	    request.setAttribute("computer",
-		    MapperComputer.computerToComputerdto(computer));
-	    this.getServletContext()
-		    .getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
-		    .forward(request, response);
+		request.setAttribute("companies", companiesDTO);
+		request.setAttribute("computer",
+			MapperComputer.computerToComputerdto(computer));
+		this.getServletContext()
+			.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
+			.forward(request, response);
+	    }
 	}
     }
 
@@ -79,9 +81,19 @@ public class ServletEdit extends HttpServlet {
 		.getParameter("discontinued"));
 	Company company = serviceCompany.getCompany(Utils.stringToLong(request
 		.getParameter("companyId")));
-	serviceComputer.updateComputer(new Computer(id, name, introduced,
-		discontinued, company));
-	response.sendRedirect("dashboard");
+	if (name == "" || request.getParameter("introduced") != ""
+		&& introduced == null
+		|| request.getParameter("discontinued") != ""
+		&& discontinued == null) {
+	    request.setAttribute("error", true);
+	    this.getServletContext()
+		    .getRequestDispatcher("/WEB-INF/views/addComputer.jsp")
+		    .forward(request, response);
+	} else {
+	    serviceComputer.updateComputer(new Computer(id, name, introduced,
+		    discontinued, company));
+	    response.sendRedirect("dashboard");
+	}
     }
 
 }

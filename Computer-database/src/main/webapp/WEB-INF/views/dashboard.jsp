@@ -34,7 +34,7 @@
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="dashboard" method="GET" class="form-inline">
-                        <input name="page" hidden="true" value="${page.page}"/>
+                        <input name="page" hidden="true" value="1"/>
                         <input name="limit" hidden="true" value="${page.countPerPage}"/>
                         <input name="order" hidden="true" value="${page.order}"/>
                         <input name="column" hidden="true" value="${page.column}"/>
@@ -152,7 +152,7 @@
     </section>
 
     <footer class="navbar-fixed-bottom">
-        <hashtag:pagination currentPage="${page.page}" limit="${page.countPerPage}" size="${page.totalCount}" orderBy="${page.order}" column="${page.column}"></hashtag:pagination>
+        <hashtag:pagination currentPage="${page.page}" limit="${page.countPerPage}" size="${page.totalCount}" orderBy="${page.order}" column="${page.column}" search="${page.search}"></hashtag:pagination>
     </footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
