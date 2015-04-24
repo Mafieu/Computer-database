@@ -3,7 +3,6 @@ package com.excilys.malbert.persistence;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,12 +65,14 @@ public class DAOCompanyTest {
 
     @Test
     public void testDelete() {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
 	List<Computer> computers = DAOComputer.INSTANCE.getOfCompany(1);
+	ConnectionDbFactory.INSTANCE.getConnection();
+	ConnectionDbFactory.INSTANCE.startTransaction();
 	for (Computer computer : computers) {
-	    DAOComputer.INSTANCE.delete(computer.getId(), connection);
+	    DAOComputer.INSTANCE.transactionDelete(computer.getId());
 	}
-	DAOCompany.INSTANCE.delete(1, connection);
-	ConnectionDbFactory.INSTANCE.closeConnection(connection, null, null);
+	DAOCompany.INSTANCE.delete(1);
+	ConnectionDbFactory.INSTANCE.rollback();
+	ConnectionDbFactory.INSTANCE.closeConnection();
     }
 }

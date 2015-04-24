@@ -1,6 +1,5 @@
 package com.excilys.malbert.persistence;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.excilys.malbert.persistence.model.Computer;
@@ -39,7 +38,7 @@ public interface IDAOComputer {
      * @param connection
      *            used for rollback or commit
      */
-    public void delete(long id, Connection connection);
+    public void transactionDelete(long id);
 
     /**
      * @param computer

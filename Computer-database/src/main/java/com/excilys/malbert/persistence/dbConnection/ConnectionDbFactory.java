@@ -18,6 +18,7 @@ import com.jolbox.bonecp.BoneCPConfig;
 public enum ConnectionDbFactory {
     INSTANCE;
 
+    private ThreadLocal<Connection> connection = new ThreadLocal<Connection>();
     private ConnectionProperties properties;
     private boolean testing = false;
 
@@ -78,24 +79,53 @@ public enum ConnectionDbFactory {
      * @return a connection from the connection pool
      */
     public Connection getConnection() {
-	Connection connection = null;
 	try {
-	    connection = connectionPool.getConnection();
+	    if (connection.get() == null || connection.get().isClosed()) {
+		Connection connection = null;
+
+		connection = connectionPool.getConnection();
+		this.connection.set(connection);
+	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-	return connection;
+	return this.connection.get();
+    }
+
+    public void startTransaction() {
+	try {
+	    connection.get().setAutoCommit(false);
+	} catch (SQLException e) {
+	    // Throw ConnectionException
+	    e.printStackTrace();
+	}
+    }
+
+    public void commit() {
+	try {
+	    connection.get().commit();
+	} catch (SQLException e) {
+	    // Throw ConnectionException
+	    e.printStackTrace();
+	}
+    }
+
+    public void rollback() {
+	try {
+	    connection.get().rollback();
+	} catch (SQLException e) {
+	    // Throw ConnectionException
+	    e.printStackTrace();
+	}
     }
 
     /**
-     * Used to close all the connections
+     * Used to close the statement and the resultSet
      * 
-     * @param connection
      * @param statement
      * @param resultSet
      */
-    public void closeConnection(Connection connection,
-	    PreparedStatement statement, ResultSet resultSet) {
+    public void close(PreparedStatement statement, ResultSet resultSet) {
 	if (resultSet != null) {
 	    try {
 		resultSet.close();
@@ -110,9 +140,12 @@ public enum ConnectionDbFactory {
 		// Throw ConnectionException
 	    }
 	}
-	if (connection != null) {
+    }
+
+    public void closeConnection() {
+	if (connection != null && connection.get() != null) {
 	    try {
-		connection.close();
+		connection.get().close();
 	    } catch (SQLException e) {
 		// Throw ConnectionException
 	    }

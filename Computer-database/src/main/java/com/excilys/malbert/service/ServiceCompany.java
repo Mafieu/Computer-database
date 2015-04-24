@@ -1,7 +1,5 @@
 package com.excilys.malbert.service;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.malbert.exceptions.DAOException;
@@ -37,25 +35,21 @@ public enum ServiceCompany implements IServiceCompany {
 
     @Override
     public void deleteCompany(long id) {
-	Connection connection = connectionFactory.getConnection();
 	List<Computer> computers = daoComputer.getOfCompany(id);
+	connectionFactory.getConnection();
+
+	connectionFactory.startTransaction();
 	try {
-	    connection.setAutoCommit(false);
 	    for (Computer computer : computers) {
 		// Call to DAO or Service ?
-		daoComputer.delete(computer.getId(), connection);
+		daoComputer.transactionDelete(computer.getId());
 	    }
-	    daoCompany.delete(id, connection);
-	    connection.commit();
-	} catch (DAOException | SQLException e) {
-	    try {
-		connection.rollback();
-	    } catch (SQLException e1) {
-		throw new ServiceException(
-			"Couldn't rollback the modifications");
-	    }
+	    daoCompany.delete(id);
+	    connectionFactory.commit();
+	} catch (DAOException e) {
+	    connectionFactory.rollback();
 	} finally {
-	    connectionFactory.closeConnection(connection, null, null);
+	    connectionFactory.closeConnection();
 	}
     }
 

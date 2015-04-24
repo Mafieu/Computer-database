@@ -32,8 +32,8 @@ public enum DAOCompany implements IDAOCompany {
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't get the list of companies");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    set);
+	    ConnectionDbFactory.INSTANCE.close(statement, set);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
 
 	return companies;
@@ -63,15 +63,16 @@ public enum DAOCompany implements IDAOCompany {
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't get the company " + id);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    set);
+	    ConnectionDbFactory.INSTANCE.close(statement, set);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
 
 	return company;
     }
 
     @Override
-    public void delete(long id, Connection connection) {
+    public void delete(long id) {
+	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
 	PreparedStatement statement = null;
 
 	if (!Validator.isIdValid(id)) {
@@ -86,7 +87,7 @@ public enum DAOCompany implements IDAOCompany {
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't delete the company");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(null, statement, null);
+	    ConnectionDbFactory.INSTANCE.close(statement, null);
 	}
     }
 }

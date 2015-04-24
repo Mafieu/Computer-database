@@ -35,8 +35,8 @@ public enum DAOComputer implements IDAOComputer {
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't get the list of Computers");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    set);
+	    ConnectionDbFactory.INSTANCE.close(statement, set);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
 	return computers;
     }
@@ -68,8 +68,8 @@ public enum DAOComputer implements IDAOComputer {
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't get the computer " + id);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    set);
+	    ConnectionDbFactory.INSTANCE.close(statement, set);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
 
 	return computer;
@@ -110,14 +110,16 @@ public enum DAOComputer implements IDAOComputer {
 	    e.printStackTrace();
 	    throw new DAOException("Couldn't create the computer");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    null);
+	    ConnectionDbFactory.INSTANCE.close(statement, null);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
 	return i;
     }
 
+    // To change !
     @Override
-    public void delete(long id, Connection connection) {
+    public void transactionDelete(long id) {
+	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
 	PreparedStatement statement = null;
 
 	if (!Validator.isIdValid(id)) {
@@ -132,20 +134,19 @@ public enum DAOComputer implements IDAOComputer {
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't delete the computer " + id);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(null, statement, null);
+	    ConnectionDbFactory.INSTANCE.close(statement, null);
 	}
     }
 
     @Override
     public void delete(long id) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	ConnectionDbFactory.INSTANCE.getConnection();
 	try {
-	    delete(id, connection);
+	    transactionDelete(id);
 	} catch (DAOException e) {
 	    throw new DAOException("Couldn't delete the computer " + id);
 	} finally {
-	    ConnectionDbFactory.INSTANCE
-		    .closeConnection(connection, null, null);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
     }
 
@@ -173,8 +174,8 @@ public enum DAOComputer implements IDAOComputer {
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't update the computer");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    null);
+	    ConnectionDbFactory.INSTANCE.close(statement, null);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
     }
 
@@ -194,8 +195,8 @@ public enum DAOComputer implements IDAOComputer {
 	} catch (SQLException e) {
 	    throw new DAOException("Couldn't get the number of computers");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    null);
+	    ConnectionDbFactory.INSTANCE.close(statement, null);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
 	return nb;
     }
@@ -241,8 +242,8 @@ public enum DAOComputer implements IDAOComputer {
 		    + offset + " to " + (offset + limit) + " ordered by "
 		    + column);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    set);
+	    ConnectionDbFactory.INSTANCE.close(statement, set);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
 	return computers;
     }
@@ -270,8 +271,8 @@ public enum DAOComputer implements IDAOComputer {
 	    throw new DAOException(
 		    "Couldn't get the list of Computers of the company " + id);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    set);
+	    ConnectionDbFactory.INSTANCE.close(statement, set);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
 	return computers;
     }
@@ -313,8 +314,8 @@ public enum DAOComputer implements IDAOComputer {
 		    + offset + " to " + (offset + limit) + " ordered by "
 		    + column + " with the search of " + search);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    set);
+	    ConnectionDbFactory.INSTANCE.close(statement, set);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
 
 	return computers;
@@ -343,8 +344,8 @@ public enum DAOComputer implements IDAOComputer {
 		    "Couldn't get the number of Computers with the search of "
 			    + search);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection(connection, statement,
-		    set);
+	    ConnectionDbFactory.INSTANCE.close(statement, set);
+	    ConnectionDbFactory.INSTANCE.closeConnection();
 	}
 
 	return nb;

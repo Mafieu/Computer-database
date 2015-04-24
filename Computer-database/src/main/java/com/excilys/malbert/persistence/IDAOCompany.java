@@ -1,6 +1,5 @@
 package com.excilys.malbert.persistence;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.excilys.malbert.persistence.model.Company;
@@ -11,10 +10,5 @@ public interface IDAOCompany {
 
     public Company getCompany(long id);
 
-    /**
-     * @param id
-     * @param connection
-     *            used for rollback or commit
-     */
-    public void delete(long id, Connection connection);
+    public void delete(long id);
 }
