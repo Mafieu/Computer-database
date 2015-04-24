@@ -2,6 +2,7 @@ package com.excilys.malbert.persistence;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -67,7 +68,6 @@ public class DAOComputerTest {
 
     @Test(expected = DAOException.class)
     public void testGetSomeOffsetAndLimitNull() {
-
 	DAOComputer.INSTANCE.getSome(0, 0);
     }
 
@@ -86,9 +86,9 @@ public class DAOComputerTest {
 	DAOComputer.INSTANCE.getComputer(-5);
     }
 
-    @Test(expected = DAOException.class)
+    @Test
     public void testGetComputerOverLimit() {
-	DAOComputer.INSTANCE.getComputer(1597);
+	assertNull(DAOComputer.INSTANCE.getComputer(1597));
     }
 
     @Test
@@ -125,6 +125,7 @@ public class DAOComputerTest {
     @Test
     public void testDelete() {
 	DAOComputer.INSTANCE.delete(computers.get(0).getId());
+	assertNull(DAOComputer.INSTANCE.getComputer(computers.get(0).getId()));
     }
 
     @Test(expected = DAOException.class)
@@ -187,5 +188,10 @@ public class DAOComputerTest {
 	computersOfApple.add(computers.get(0));
 	assertArrayEquals(computersOfApple.toArray(), DAOComputer.INSTANCE
 		.getOfCompany(1).toArray());
+    }
+
+    @Test
+    public void testGetNumberOfCompany() {
+	assertEquals(1, DAOComputer.INSTANCE.getNumberComputerSearch("Apple"));
     }
 }
