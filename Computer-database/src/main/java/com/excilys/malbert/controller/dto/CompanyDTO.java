@@ -1,17 +1,15 @@
 package com.excilys.malbert.controller.dto;
 
-public class CompanyDTO {
+public class CompanyDTO extends EntityDTO {
 
-    private long id;
     private String name;
 
     public CompanyDTO() {
-	id = 0;
-	name = null;
+	this(0, null);
     }
 
     public CompanyDTO(long id, String name) {
-	this.id = id;
+	super(id);
 	this.name = name;
     }
 

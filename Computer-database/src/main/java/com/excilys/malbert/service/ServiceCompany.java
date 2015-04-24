@@ -15,23 +15,19 @@ import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.Validator;
 
-public enum ServiceCompany {
+public enum ServiceCompany implements IServiceCompany {
     INSTANCE;
 
     private IDAOCompany daoCompany = DAOCompany.INSTANCE;
     private IDAOComputer daoComputer = DAOComputer.INSTANCE;
     private ConnectionDbFactory connectionFactory = ConnectionDbFactory.INSTANCE;
 
-    /**
-     * Gets all the companies from the DAOCompany
-     * 
-     * @return A list of all the companies in database
-     * @throws SQLException
-     */
+    @Override
     public List<Company> getAllCompanies() {
 	return daoCompany.getAll();
     }
 
+    @Override
     public Company getCompany(long id) {
 	if (!Validator.isIdValid(id)) {
 	    throw new ServiceException(Validator.INVALID_ID);
@@ -39,6 +35,7 @@ public enum ServiceCompany {
 	return daoCompany.getCompany(id);
     }
 
+    @Override
     public void deleteCompany(long id) {
 	Connection connection = connectionFactory.getConnection();
 	List<Computer> computers = daoComputer.getOfCompany(id);
@@ -62,6 +59,7 @@ public enum ServiceCompany {
 	}
     }
 
+    @Override
     public void setCompanyDAO(IDAOCompany daoCompany) {
 	this.daoCompany = daoCompany;
     }

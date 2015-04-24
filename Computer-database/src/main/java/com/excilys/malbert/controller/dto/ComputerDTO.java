@@ -1,8 +1,7 @@
 package com.excilys.malbert.controller.dto;
 
-public class ComputerDTO {
+public class ComputerDTO extends EntityDTO {
 
-    private long id;
     private String name;
     private String introduced;
     private String discontinued;
@@ -10,21 +9,16 @@ public class ComputerDTO {
     private String companyName;
 
     public ComputerDTO() {
-	id = 0;
-	name = null;
-	introduced = null;
-	discontinued = null;
-	companyId = 0;
-	companyName = null;
+	this(0, null, null, null, 0, null);
     }
 
     public ComputerDTO(long id) {
-	this.id = id;
+	this(id, null, null, null, 0, null);
     }
 
     public ComputerDTO(long id, String name, String introduced,
 	    String discontinued, long companyId, String companyName) {
-	this.id = id;
+	super(id);
 	this.name = name;
 	this.introduced = introduced;
 	this.discontinued = discontinued;

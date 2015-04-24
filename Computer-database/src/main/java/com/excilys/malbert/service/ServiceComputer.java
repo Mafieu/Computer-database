@@ -14,19 +14,17 @@ import com.excilys.malbert.util.Validator;
  * @author excilys
  *
  */
-public enum ServiceComputer {
+public enum ServiceComputer implements IServiceComputer {
     INSTANCE;
 
     private IDAOComputer daoComputer = DAOComputer.INSTANCE;
 
-    public void setComputerDAO(IDAOComputer daoComputer) {
-	this.daoComputer = daoComputer;
-    }
-
+    @Override
     public List<Computer> getAllComputers() {
 	return daoComputer.getAll();
     }
 
+    @Override
     public List<Computer> getSome(int limit, int offset) {
 	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
 	    throw new ServiceException(Validator.INVALID_LIMIT_OFFSET);
@@ -35,6 +33,7 @@ public enum ServiceComputer {
 	return daoComputer.getSome(limit, offset);
     }
 
+    @Override
     public Computer getComputer(long id) {
 	if (!Validator.isIdValid(id)) {
 	    throw new ServiceException(Validator.INVALID_ID);
@@ -43,6 +42,7 @@ public enum ServiceComputer {
 	return daoComputer.getComputer(id);
     }
 
+    @Override
     public long createComputer(Computer computer) {
 	if (!Validator.isComputerValid(computer)) {
 	    throw new ServiceException(Validator.INVALID_COMPUTER);
@@ -51,6 +51,7 @@ public enum ServiceComputer {
 	return daoComputer.create(computer);
     }
 
+    @Override
     public void deleteComputer(long id) {
 	if (!Validator.isIdValid(id)) {
 	    throw new ServiceException(Validator.INVALID_ID);
@@ -58,6 +59,7 @@ public enum ServiceComputer {
 	daoComputer.delete(id);
     }
 
+    @Override
     public void updateComputer(Computer computer) {
 	if (!Validator.isComputerValid(computer)) {
 	    throw new ServiceException(Validator.INVALID_COMPUTER);
@@ -65,10 +67,12 @@ public enum ServiceComputer {
 	daoComputer.update(computer);
     }
 
+    @Override
     public int getNumberComputer() {
 	return daoComputer.getNumberComputer();
     }
 
+    @Override
     public List<Computer> getSomeOrderedByAscending(int limit, int offset,
 	    String column) {
 	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
@@ -81,6 +85,7 @@ public enum ServiceComputer {
 	return daoComputer.getSomeOrderedByAscending(limit, offset, column);
     }
 
+    @Override
     public List<Computer> getSomeOrderedByDescending(int limit, int offset,
 	    String column) {
 	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
@@ -93,6 +98,7 @@ public enum ServiceComputer {
 	return daoComputer.getSomeOrderedByDescending(limit, offset, column);
     }
 
+    @Override
     public List<Computer> getSomeSearch(int limit, int offset, String column,
 	    String order, String search) {
 	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
@@ -105,7 +111,13 @@ public enum ServiceComputer {
 	return daoComputer.getSomeSearch(limit, offset, column, order, search);
     }
 
+    @Override
     public int getNumberComputerSearch(String search) {
 	return daoComputer.getNumberComputerSearch(search);
+    }
+
+    @Override
+    public void setComputerDAO(IDAOComputer daoComputer) {
+	this.daoComputer = daoComputer;
     }
 }

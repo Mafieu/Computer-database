@@ -3,9 +3,18 @@ package com.excilys.malbert.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.malbert.controller.dto.EntityDTO;
 import com.excilys.malbert.util.Validator;
 
-public class Page<T> {
+/**
+ * Contains all the information for the jsp page. Must contain a DTO extending
+ * enTityDTO
+ * 
+ * @author excilys
+ *
+ * @param <T>
+ */
+public class Page<T extends EntityDTO> {
     private List<T> data;
     private int totalCount;
     private int countPerPage;

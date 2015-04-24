@@ -6,19 +6,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.excilys.malbert.util.GetProperties;
+import com.excilys.malbert.util.ConnectionProperties;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
+/**
+ * Singleton with a pool of connection
+ * 
+ * @author excilys
+ */
 public enum ConnectionDbFactory {
     INSTANCE;
 
-    private String url;
-    private String db;
-    private String dbTest;
-    private String option;
-    private String user;
-    private String passwd;
+    private ConnectionProperties properties;
     private boolean testing = false;
 
     private BoneCP connectionPool = null;
@@ -33,13 +33,7 @@ public enum ConnectionDbFactory {
 
     private ConnectionDbFactory() {
 	try {
-	    String[] props = new GetProperties().getPropValues();
-	    url = props[4];
-	    db = props[2];
-	    dbTest = props[3];
-	    option = props[5];
-	    user = props[0];
-	    passwd = props[1];
+	    properties = new ConnectionProperties();
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
@@ -49,9 +43,11 @@ public enum ConnectionDbFactory {
     private void changePool() {
 	try {
 	    BoneCPConfig config = new BoneCPConfig();
-	    config.setJdbcUrl(url + (testing ? dbTest : db) + option);
-	    config.setUsername(user);
-	    config.setPassword(passwd);
+	    config.setJdbcUrl(properties.getUrl()
+		    + (testing ? properties.getDbTest() : properties.getDb())
+		    + properties.getOption());
+	    config.setUsername(properties.getUser());
+	    config.setPassword(properties.getPasswd());
 	    // To avoid a bug : true to say that db is started after server
 	    config.setLazyInit(true);
 	    config.setMinConnectionsPerPartition(5);
@@ -78,6 +74,9 @@ public enum ConnectionDbFactory {
 	changePool();
     }
 
+    /**
+     * @return a connection from the connection pool
+     */
     public Connection getConnection() {
 	Connection connection = null;
 	try {
@@ -88,6 +87,13 @@ public enum ConnectionDbFactory {
 	return connection;
     }
 
+    /**
+     * Used to close all the connections
+     * 
+     * @param connection
+     * @param statement
+     * @param resultSet
+     */
     public void closeConnection(Connection connection,
 	    PreparedStatement statement, ResultSet resultSet) {
 	if (resultSet != null) {
