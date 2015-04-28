@@ -20,10 +20,15 @@ public final class Utils {
     }
 
     public static LocalDateTime stringToLocaldatetime(String date) {
-	if (DateValidator.isThisDateValid(date, "yyyy-MM-dd")) {
+	if (DateValidator.isThisDateValid(date, "dd-MM-YYYY")) {
 	    String[] dates = date.split("-");
-	    return LocalDateTime.of(Integer.parseInt(dates[0]),
-		    Integer.parseInt(dates[1]), Integer.parseInt(dates[2]), 0,
+	    return LocalDateTime.of(Integer.parseInt(dates[2]),
+		    Integer.parseInt(dates[1]), Integer.parseInt(dates[0]), 0,
+		    0);
+	} else if (DateValidator.isThisDateValid(date, "dd/MM/YYYY")) {
+	    String[] dates = date.split("/");
+	    return LocalDateTime.of(Integer.parseInt(dates[2]),
+		    Integer.parseInt(dates[1]), Integer.parseInt(dates[0]), 0,
 		    0);
 	} else {
 	    return null;

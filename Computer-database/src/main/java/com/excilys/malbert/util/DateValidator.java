@@ -1,28 +1,19 @@
 package com.excilys.malbert.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 public final class DateValidator {
+
+    private static final org.apache.commons.validator.routines.DateValidator validator = org.apache.commons.validator.routines.DateValidator
+	    .getInstance();
+
     private DateValidator() {
     }
 
     public static boolean isThisDateValid(String dateToValidate,
-	    String dateFromat) {
-	if (dateToValidate == null) {
+	    String dateFormat) {
+	if (dateToValidate == null || dateToValidate.trim().isEmpty()) {
 	    return false;
 	}
 
-	SimpleDateFormat sdf = new SimpleDateFormat(dateFromat);
-	sdf.setLenient(false);
-
-	try {
-	    // if not valid, it will throw ParseException
-	    sdf.parse(dateToValidate);
-	} catch (ParseException e) {
-	    return false;
-	}
-
-	return true;
+	return validator.isValid(dateToValidate, dateFormat);
     }
 }

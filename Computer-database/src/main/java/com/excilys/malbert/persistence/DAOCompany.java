@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.mapper.MapperCompany;
 import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
@@ -15,6 +18,8 @@ import com.excilys.malbert.util.Validator;
 
 public enum DAOCompany implements IDAOCompany {
     INSTANCE;
+
+    private Logger logger = LoggerFactory.getLogger(DAOCompany.class);
 
     @Override
     public List<Company> getAll() {
@@ -30,6 +35,7 @@ public enum DAOCompany implements IDAOCompany {
 		companies.add(MapperCompany.resultsetToCompany(set));
 	    }
 	} catch (SQLException e) {
+	    logger.error("get all companies");
 	    throw new DAOException("Couldn't get the list of companies");
 	} finally {
 	    ConnectionDbFactory.INSTANCE.close(statement, set);
@@ -47,6 +53,7 @@ public enum DAOCompany implements IDAOCompany {
 	Company company = null;
 
 	if (!Validator.isIdValid(id)) {
+	    logger.error("get company : invalid id");
 	    throw new DAOException(Validator.INVALID_ID);
 	}
 
@@ -61,6 +68,7 @@ public enum DAOCompany implements IDAOCompany {
 		company = MapperCompany.resultsetToCompany(set);
 	    }
 	} catch (SQLException e) {
+	    logger.error("get company : {}", id);
 	    throw new DAOException("Couldn't get the company " + id);
 	} finally {
 	    ConnectionDbFactory.INSTANCE.close(statement, set);
@@ -76,6 +84,7 @@ public enum DAOCompany implements IDAOCompany {
 	PreparedStatement statement = null;
 
 	if (!Validator.isIdValid(id)) {
+	    logger.error("get company : invalid id");
 	    throw new DAOException(Validator.INVALID_ID);
 	}
 
@@ -85,6 +94,7 @@ public enum DAOCompany implements IDAOCompany {
 	    statement.setLong(1, id);
 	    statement.executeUpdate();
 	} catch (SQLException e) {
+	    logger.error("delete commpany : {}", id);
 	    throw new DAOException("Couldn't delete the company");
 	} finally {
 	    ConnectionDbFactory.INSTANCE.close(statement, null);

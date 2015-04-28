@@ -33,7 +33,6 @@ public class ServletCreate extends HttpServlet {
      */
     public ServletCreate() {
 	super();
-	// TODO Auto-generated constructor stub
     }
 
     /**

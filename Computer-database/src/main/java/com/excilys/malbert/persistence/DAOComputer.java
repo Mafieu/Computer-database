@@ -8,6 +8,9 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.mapper.MapperComputer;
 import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
@@ -17,6 +20,8 @@ import com.excilys.malbert.util.Validator;
 
 public enum DAOComputer implements IDAOComputer {
     INSTANCE;
+
+    private Logger logger = LoggerFactory.getLogger(DAOComputer.class);
 
     @Override
     public List<Computer> getAll() {
@@ -33,6 +38,7 @@ public enum DAOComputer implements IDAOComputer {
 		computers.add(MapperComputer.resultsetToComputer(set));
 	    }
 	} catch (SQLException e) {
+	    logger.error("get all computers");
 	    throw new DAOException("Couldn't get the list of Computers");
 	} finally {
 	    ConnectionDbFactory.INSTANCE.close(statement, set);
@@ -54,6 +60,7 @@ public enum DAOComputer implements IDAOComputer {
 	Computer computer = null;
 
 	if (!Validator.isIdValid(id)) {
+	    logger.error("get computer : invalid id");
 	    throw new DAOException(Validator.INVALID_ID);
 	}
 
@@ -66,6 +73,7 @@ public enum DAOComputer implements IDAOComputer {
 		computer = MapperComputer.resultsetToComputer(set);
 	    }
 	} catch (SQLException e) {
+	    logger.error("get computer : {}", id);
 	    throw new DAOException("Couldn't get the computer " + id);
 	} finally {
 	    ConnectionDbFactory.INSTANCE.close(statement, set);
@@ -84,6 +92,7 @@ public enum DAOComputer implements IDAOComputer {
 	long i = 0;
 
 	if (!Validator.isComputerValid(computer)) {
+	    logger.error("create computer : invalid computer");
 	    throw new DAOException(Validator.INVALID_COMPUTER);
 	}
 
@@ -107,7 +116,7 @@ public enum DAOComputer implements IDAOComputer {
 	    set.next();
 	    i = set.getLong(1);
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    logger.error("create computer : {}", computer.toString());
 	    throw new DAOException("Couldn't create the computer");
 	} finally {
 	    ConnectionDbFactory.INSTANCE.close(statement, null);
@@ -123,6 +132,7 @@ public enum DAOComputer implements IDAOComputer {
 	PreparedStatement statement = null;
 
 	if (!Validator.isIdValid(id)) {
+	    logger.error("delete computer : invalid id");
 	    throw new DAOException(Validator.INVALID_ID);
 	}
 
@@ -132,6 +142,7 @@ public enum DAOComputer implements IDAOComputer {
 	    statement.setLong(1, id);
 	    statement.executeUpdate();
 	} catch (SQLException e) {
+	    logger.error("delete computer : {}", id);
 	    throw new DAOException("Couldn't delete the computer " + id);
 	} finally {
 	    ConnectionDbFactory.INSTANCE.close(statement, null);
@@ -144,6 +155,7 @@ public enum DAOComputer implements IDAOComputer {
 	try {
 	    transactionDelete(id);
 	} catch (DAOException e) {
+	    logger.error("delete computer : {}", id);
 	    throw new DAOException("Couldn't delete the computer " + id);
 	} finally {
 	    ConnectionDbFactory.INSTANCE.closeConnection();
@@ -156,6 +168,7 @@ public enum DAOComputer implements IDAOComputer {
 	PreparedStatement statement = null;
 
 	if (!Validator.isComputerValid(computer)) {
+	    logger.error("update computer : invalid computer");
 	    throw new DAOException(Validator.INVALID_COMPUTER);
 	}
 
@@ -172,6 +185,7 @@ public enum DAOComputer implements IDAOComputer {
 	    statement.setLong(5, computer.getId());
 	    statement.executeUpdate();
 	} catch (SQLException e) {
+	    logger.error("update computer : {}", computer.toString());
 	    throw new DAOException("Couldn't update the computer");
 	} finally {
 	    ConnectionDbFactory.INSTANCE.close(statement, null);
@@ -193,6 +207,7 @@ public enum DAOComputer implements IDAOComputer {
 	    set.next();
 	    nb = set.getInt(1);
 	} catch (SQLException e) {
+	    logger.error("count of computers");
 	    throw new DAOException("Couldn't get the number of computers");
 	} finally {
 	    ConnectionDbFactory.INSTANCE.close(statement, null);
@@ -221,9 +236,14 @@ public enum DAOComputer implements IDAOComputer {
 	List<Computer> computers = new ArrayList<Computer>();
 
 	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
+	    logger.error(
+		    "get some computer with order by : invalid limit and offset {}/{}",
+		    limit, offset);
 	    throw new DAOException(Validator.INVALID_LIMIT_OFFSET);
 	}
 	if (!Validator.isColumnValid(column)) {
+	    logger.error("get some computer with order by : invalid column {}",
+		    column);
 	    throw new DAOException(Validator.INVALID_COLUMN);
 	}
 
@@ -238,6 +258,8 @@ public enum DAOComputer implements IDAOComputer {
 		computers.add(MapperComputer.resultsetToComputer(set));
 	    }
 	} catch (SQLException e) {
+	    logger.error("get some computer with order by : {}, {}, {}, {}",
+		    limit, offset, column, order);
 	    throw new DAOException("Couldn't get the list of Computers from "
 		    + offset + " to " + (offset + limit) + " ordered by "
 		    + column);
@@ -256,6 +278,7 @@ public enum DAOComputer implements IDAOComputer {
 	List<Computer> computers = new ArrayList<Computer>();
 
 	if (!Validator.isIdValid(id)) {
+	    logger.error("get computers of company : invalid id");
 	    throw new DAOException(Validator.INVALID_ID);
 	}
 
@@ -268,6 +291,7 @@ public enum DAOComputer implements IDAOComputer {
 		computers.add(MapperComputer.resultsetToComputer(set));
 	    }
 	} catch (SQLException e) {
+	    logger.error("get computers of company : {}", id);
 	    throw new DAOException(
 		    "Couldn't get the list of Computers of the company " + id);
 	} finally {
@@ -286,9 +310,14 @@ public enum DAOComputer implements IDAOComputer {
 	List<Computer> computers = new ArrayList<Computer>();
 
 	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
+	    logger.error(
+		    "get some computer with order by : invalid limit and offset {}/{}",
+		    limit, offset);
 	    throw new DAOException(Validator.INVALID_LIMIT_OFFSET);
 	}
 	if (!Validator.isColumnValid(column)) {
+	    logger.error("get some computer with order by : invalid column {}",
+		    column);
 	    throw new DAOException(Validator.INVALID_COLUMN);
 	}
 
@@ -310,6 +339,8 @@ public enum DAOComputer implements IDAOComputer {
 		computers.add(MapperComputer.resultsetToComputer(set));
 	    }
 	} catch (SQLException e) {
+	    logger.error("get some computer with order by : {}, {}, {}, {}",
+		    limit, offset, column, order);
 	    throw new DAOException("Couldn't get the list of Computers from "
 		    + offset + " to " + (offset + limit) + " ordered by "
 		    + column + " with the search of " + search);
@@ -340,6 +371,7 @@ public enum DAOComputer implements IDAOComputer {
 		nb = set.getInt(1);
 	    }
 	} catch (SQLException e) {
+	    logger.error("get count of computer according {}", search);
 	    throw new DAOException(
 		    "Couldn't get the number of Computers with the search of "
 			    + search);

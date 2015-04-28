@@ -20,15 +20,8 @@ $(function() {
 
 // Functions to chack date format and change the css
 var checkDateFormat = function(element) {
-	var date = new Date(Date.parse(element.val()))
-	var wrongDate = isNaN(date) || date.getFullYear() < 1970 || date.getFullYear() >= 2038
-	if(!wrongDate){
-		if((month=date.getMonth()+1) < 10)
-			month = "0" + (date.getMonth()+1)
-		if((day=date.getDate()) < 10)
-			day = "0" + date.getDate()
-		element.val(date.getFullYear() + "-" + month + "-" + day)
-	}
+	var date = moment(element.val(), ["DD-MM-YYYY", "DD/MM/YYYY"], true)
+	var wrongDate = !date.isValid() || date.year() < 1970 || date.year() >= 2038
 	return wrongDate
 }
 var toggleError = function(element) {
