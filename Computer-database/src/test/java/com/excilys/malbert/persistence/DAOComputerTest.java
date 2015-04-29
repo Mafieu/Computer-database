@@ -73,22 +73,22 @@ public class DAOComputerTest {
 
     @Test
     public void testGetComputer() {
-	assertEquals(computers.get(0), DAOComputer.INSTANCE.getComputer(1));
+	assertEquals(computers.get(0), DAOComputer.INSTANCE.getOne(1));
     }
 
     @Test(expected = DAOException.class)
     public void testGetComputerNull() {
-	DAOComputer.INSTANCE.getComputer(0);
+	DAOComputer.INSTANCE.getOne(0);
     }
 
     @Test(expected = DAOException.class)
     public void testGetComputerMinus() {
-	DAOComputer.INSTANCE.getComputer(-5);
+	DAOComputer.INSTANCE.getOne(-5);
     }
 
     @Test
     public void testGetComputerOverLimit() {
-	assertNull(DAOComputer.INSTANCE.getComputer(1597));
+	assertNull(DAOComputer.INSTANCE.getOne(1597));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class DAOComputerTest {
     @Test
     public void testDelete() {
 	DAOComputer.INSTANCE.delete(computers.get(0).getId());
-	assertNull(DAOComputer.INSTANCE.getComputer(computers.get(0).getId()));
+	assertNull(DAOComputer.INSTANCE.getOne(computers.get(0).getId()));
     }
 
     @Test(expected = DAOException.class)
@@ -143,7 +143,7 @@ public class DAOComputerTest {
 	Computer computer = new Computer(3, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, new Company(1, "Apple Inc."));
 	DAOComputer.INSTANCE.update(computer);
-	assertEquals(computer, DAOComputer.INSTANCE.getComputer(3));
+	assertEquals(computer, DAOComputer.INSTANCE.getOne(3));
     }
 
     @Test(expected = DAOException.class)

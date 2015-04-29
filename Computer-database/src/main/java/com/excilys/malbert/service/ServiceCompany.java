@@ -30,7 +30,7 @@ public enum ServiceCompany implements IServiceCompany {
 	if (!Validator.isIdValid(id)) {
 	    throw new ServiceException(Validator.INVALID_ID);
 	}
-	return daoCompany.getCompany(id);
+	return daoCompany.getOne(id);
     }
 
     @Override

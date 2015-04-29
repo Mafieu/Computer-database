@@ -4,11 +4,7 @@ import java.util.List;
 
 import com.excilys.malbert.persistence.model.Company;
 
-public interface IDAOCompany {
+public interface IDAOCompany extends IDAOCrud<Company> {
 
     public List<Company> getAll();
-
-    public Company getCompany(long id);
-
-    public void delete(long id);
 }

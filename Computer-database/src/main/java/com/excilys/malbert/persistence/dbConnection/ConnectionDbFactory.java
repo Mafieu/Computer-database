@@ -6,6 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.malbert.exceptions.ConnectionException;
 import com.excilys.malbert.util.ConnectionProperties;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
@@ -22,13 +26,18 @@ public enum ConnectionDbFactory {
     private ConnectionProperties properties;
     private boolean testing = false;
 
+    private Logger logger = LoggerFactory.getLogger(ConnectionDbFactory.class);
+
     private BoneCP connectionPool = null;
 
     static {
 	try {
 	    Class.forName("com.mysql.jdbc.Driver");
 	} catch (ClassNotFoundException e) {
-	    e.printStackTrace();
+	    Logger loggerStat = LoggerFactory
+		    .getLogger(ConnectionDbFactory.class);
+	    loggerStat.error("Couldn't load jdbc driver");
+	    throw new ConnectionException("Couldn't load jdbc driver");
 	}
     };
 
@@ -36,7 +45,8 @@ public enum ConnectionDbFactory {
 	try {
 	    properties = new ConnectionProperties();
 	} catch (IOException e) {
-	    e.printStackTrace();
+	    logger.error("Couldn't get property file");
+	    throw new ConnectionException("Couldn't get property file");
 	}
 	changePool();
     }
@@ -56,7 +66,8 @@ public enum ConnectionDbFactory {
 	    config.setPartitionCount(1);
 	    connectionPool = new BoneCP(config);
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    logger.error("Couldn't change the connection pool");
+	    throw new ConnectionException("Couldn't change the connection pool");
 	}
     }
 
@@ -87,7 +98,9 @@ public enum ConnectionDbFactory {
 		this.connection.set(connection);
 	    }
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    logger.error("Couldn't get a connection from the connection pool");
+	    throw new ConnectionException(
+		    "Couldn't get a connection from the connection pool");
 	}
 	return this.connection.get();
     }
@@ -96,8 +109,8 @@ public enum ConnectionDbFactory {
 	try {
 	    connection.get().setAutoCommit(false);
 	} catch (SQLException e) {
-	    // Throw ConnectionException
-	    e.printStackTrace();
+	    logger.error("Couldn't start a transaction");
+	    throw new ConnectionException("Couldn't start a transaction");
 	}
     }
 
@@ -105,8 +118,8 @@ public enum ConnectionDbFactory {
 	try {
 	    connection.get().commit();
 	} catch (SQLException e) {
-	    // Throw ConnectionException
-	    e.printStackTrace();
+	    logger.error("Couldn't commit");
+	    throw new ConnectionException("Couldn't commit");
 	}
     }
 
@@ -114,8 +127,8 @@ public enum ConnectionDbFactory {
 	try {
 	    connection.get().rollback();
 	} catch (SQLException e) {
-	    // Throw ConnectionException
-	    e.printStackTrace();
+	    logger.error("Couldn't rollback");
+	    throw new ConnectionException("Couldn't rollback");
 	}
     }
 
@@ -130,14 +143,16 @@ public enum ConnectionDbFactory {
 	    try {
 		resultSet.close();
 	    } catch (SQLException e) {
-		// Throw ConnectionException
+		logger.error("Couldn't close the result set");
+		throw new ConnectionException("Couldn't close the result set");
 	    }
 	}
 	if (statement != null) {
 	    try {
 		statement.close();
 	    } catch (SQLException e) {
-		// Throw ConnectionException
+		logger.error("Couldn't close the statement");
+		throw new ConnectionException("Couldn't close the statement");
 	    }
 	}
     }
@@ -147,7 +162,8 @@ public enum ConnectionDbFactory {
 	    try {
 		connection.get().close();
 	    } catch (SQLException e) {
-		// Throw ConnectionException
+		logger.error("Couldn't close the connection");
+		throw new ConnectionException("Couldn't close the connection");
 	    }
 	}
     }

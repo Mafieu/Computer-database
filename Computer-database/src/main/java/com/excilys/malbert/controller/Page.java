@@ -8,7 +8,8 @@ import com.excilys.malbert.util.Validator;
 
 /**
  * Contains all the information for the jsp page. Must contain a DTO extending
- * enTityDTO
+ * enTityDTO. After constructing it, you must call isValid() method to validate
+ * the data and replace it by default values if incorrect
  * 
  * @author excilys
  *

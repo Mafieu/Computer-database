@@ -39,7 +39,7 @@ public enum ServiceComputer implements IServiceComputer {
 	    throw new ServiceException(Validator.INVALID_ID);
 	}
 
-	return daoComputer.getComputer(id);
+	return daoComputer.getOne(id);
     }
 
     @Override

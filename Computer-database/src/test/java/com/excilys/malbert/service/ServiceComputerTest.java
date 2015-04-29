@@ -44,7 +44,7 @@ public class ServiceComputerTest {
 
 	// We define the methods we can call from the mock object
 	when(mockedDAOComputer.getAll()).thenReturn(computers);
-	when(mockedDAOComputer.getComputer(2)).thenReturn(computers.get(1));
+	when(mockedDAOComputer.getOne(2)).thenReturn(computers.get(1));
 	when(mockedDAOComputer.getSome(2, 0)).thenReturn(
 		computers.subList(0, 2));
 	when(mockedDAOComputer.getNumberComputer()).thenReturn(4);

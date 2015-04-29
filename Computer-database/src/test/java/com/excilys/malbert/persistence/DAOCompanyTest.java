@@ -45,22 +45,22 @@ public class DAOCompanyTest {
 
     @Test
     public void testGetCompany() {
-	assertEquals(companies.get(0), DAOCompany.INSTANCE.getCompany(1));
+	assertEquals(companies.get(0), DAOCompany.INSTANCE.getOne(1));
     }
 
     @Test(expected = DAOException.class)
     public void testGetCompanyNull() {
-	DAOCompany.INSTANCE.getCompany(0);
+	DAOCompany.INSTANCE.getOne(0);
     }
 
     @Test(expected = DAOException.class)
     public void testGetCompanyMinus() {
-	DAOCompany.INSTANCE.getCompany(-5);
+	DAOCompany.INSTANCE.getOne(-5);
     }
 
     @Test(expected = DAOException.class)
     public void testGetCompanyOverLimit() {
-	DAOCompany.INSTANCE.getCompany(99);
+	DAOCompany.INSTANCE.getOne(99);
     }
 
     @Test

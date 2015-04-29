@@ -32,7 +32,7 @@ public class ServiceCompanyTest {
 	companies.add(new Company(4, "Netronics"));
 
 	when(mockedDAOCompany.getAll()).thenReturn(companies);
-	when(mockedDAOCompany.getCompany(1)).thenReturn(companies.get(0));
+	when(mockedDAOCompany.getOne(1)).thenReturn(companies.get(0));
 
 	// We set the dao of the service so that it uses the mock one
 	serviceCompany.setCompanyDAO(mockedDAOCompany);

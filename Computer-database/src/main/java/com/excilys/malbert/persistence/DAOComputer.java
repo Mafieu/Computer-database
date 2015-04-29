@@ -53,7 +53,7 @@ public enum DAOComputer implements IDAOComputer {
     }
 
     @Override
-    public Computer getComputer(long id) {
+    public Computer getOne(long id) {
 	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;

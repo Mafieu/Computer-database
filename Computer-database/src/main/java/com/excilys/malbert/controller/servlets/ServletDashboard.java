@@ -105,13 +105,4 @@ public class ServletDashboard extends HttpServlet {
 		.forward(request, response);
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
-     */
-    protected void doPost(HttpServletRequest request,
-	    HttpServletResponse response) throws ServletException, IOException {
-	response.sendRedirect("dashboard");
-    }
-
 }

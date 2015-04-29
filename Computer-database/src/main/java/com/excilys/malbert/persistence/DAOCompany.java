@@ -46,7 +46,7 @@ public enum DAOCompany implements IDAOCompany {
     }
 
     @Override
-    public Company getCompany(long id) {
+    public Company getOne(long id) {
 	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;

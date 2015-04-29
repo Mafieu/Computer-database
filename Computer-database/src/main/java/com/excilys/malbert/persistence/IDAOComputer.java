@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.excilys.malbert.persistence.model.Computer;
 
-public interface IDAOComputer {
+public interface IDAOComputer extends IDAOCrud<Computer> {
     public List<Computer> getAll();
 
     /**
@@ -25,13 +25,7 @@ public interface IDAOComputer {
      */
     public List<Computer> getOfCompany(long id);
 
-    public Computer getComputer(long id);
-
     public int getNumberComputer();
-
-    public long create(Computer computer);
-
-    public void delete(long id);
 
     /**
      * @param id
@@ -39,13 +33,6 @@ public interface IDAOComputer {
      *            used for rollback or commit
      */
     public void transactionDelete(long id);
-
-    /**
-     * @param computer
-     *            Computer with values changed (must keep the same id). Must not
-     *            have a null Company. To do this, set the id at 0
-     */
-    public void update(Computer computer);
 
     /**
      * Get the list of computers from offset to offset + limit ordered by column
