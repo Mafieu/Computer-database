@@ -17,13 +17,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.malbert.exceptions.DAOException;
-import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.TestUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext.xml" })
+@ContextConfiguration(locations = { "/applicationContextTest.xml" })
 public class DAOComputerTest {
 
     private List<Computer> computers;
@@ -32,8 +31,6 @@ public class DAOComputerTest {
 
     @Before
     public void before() {
-	ConnectionDbFactory.INSTANCE.setTESTING(true);
-
 	computers = new ArrayList<Computer>();
 	computers.add(new Computer(1, "MacBook Pro 15.4 inch", null, null,
 		new Company(1, "Apple Inc.")));

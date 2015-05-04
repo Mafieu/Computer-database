@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.malbert.exceptions.DAOException;
@@ -22,11 +23,14 @@ import com.excilys.malbert.util.Validator;
 @Repository
 public class DAOComputer implements IDAOComputer {
 
+    @Autowired
+    private ConnectionDbFactory factory;
+
     private Logger logger = LoggerFactory.getLogger(DAOComputer.class);
 
     @Override
     public List<Computer> getAll() {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;
 	List<Computer> computers = new ArrayList<Computer>();
@@ -42,8 +46,8 @@ public class DAOComputer implements IDAOComputer {
 	    logger.error("get all computers");
 	    throw new DAOException("Couldn't get the list of Computers");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, set);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, set);
+	    factory.closeConnection();
 	}
 	return computers;
     }
@@ -55,7 +59,7 @@ public class DAOComputer implements IDAOComputer {
 
     @Override
     public Computer getOne(long id) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;
 	Computer computer = null;
@@ -77,8 +81,8 @@ public class DAOComputer implements IDAOComputer {
 	    logger.error("get computer : {}", id);
 	    throw new DAOException("Couldn't get the computer " + id);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, set);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, set);
+	    factory.closeConnection();
 	}
 
 	return computer;
@@ -87,7 +91,7 @@ public class DAOComputer implements IDAOComputer {
     @SuppressWarnings("static-access")
     @Override
     public long create(Computer computer) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;
 	long i = 0;
@@ -120,8 +124,8 @@ public class DAOComputer implements IDAOComputer {
 	    logger.error("create computer : {}", computer.toString());
 	    throw new DAOException("Couldn't create the computer");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, null);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, null);
+	    factory.closeConnection();
 	}
 	return i;
     }
@@ -129,7 +133,7 @@ public class DAOComputer implements IDAOComputer {
     // To change !
     @Override
     public void transactionDelete(long id) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 
 	if (!Validator.isIdValid(id)) {
@@ -146,26 +150,26 @@ public class DAOComputer implements IDAOComputer {
 	    logger.error("delete computer : {}", id);
 	    throw new DAOException("Couldn't delete the computer " + id);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, null);
+	    factory.close(statement, null);
 	}
     }
 
     @Override
     public void delete(long id) {
-	ConnectionDbFactory.INSTANCE.getConnection();
+	factory.getConnection();
 	try {
 	    transactionDelete(id);
 	} catch (DAOException e) {
 	    logger.error("delete computer : {}", id);
 	    throw new DAOException("Couldn't delete the computer " + id);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.closeConnection();
 	}
     }
 
     @Override
     public void update(Computer computer) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 
 	if (!Validator.isComputerValid(computer)) {
@@ -189,14 +193,14 @@ public class DAOComputer implements IDAOComputer {
 	    logger.error("update computer : {}", computer.toString());
 	    throw new DAOException("Couldn't update the computer");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, null);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, null);
+	    factory.closeConnection();
 	}
     }
 
     @Override
     public int getNumberComputer() {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;
 	int nb = 0;
@@ -211,8 +215,8 @@ public class DAOComputer implements IDAOComputer {
 	    logger.error("count of computers");
 	    throw new DAOException("Couldn't get the number of computers");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, null);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, null);
+	    factory.closeConnection();
 	}
 	return nb;
     }
@@ -231,7 +235,7 @@ public class DAOComputer implements IDAOComputer {
 
     private List<Computer> getSomeOrderBy(int limit, int offset, String column,
 	    String order) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;
 	List<Computer> computers = new ArrayList<Computer>();
@@ -265,15 +269,15 @@ public class DAOComputer implements IDAOComputer {
 		    + offset + " to " + (offset + limit) + " ordered by "
 		    + column);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, set);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, set);
+	    factory.closeConnection();
 	}
 	return computers;
     }
 
     @Override
     public List<Computer> getOfCompany(long id) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;
 	List<Computer> computers = new ArrayList<Computer>();
@@ -296,8 +300,8 @@ public class DAOComputer implements IDAOComputer {
 	    throw new DAOException(
 		    "Couldn't get the list of Computers of the company " + id);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, set);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, set);
+	    factory.closeConnection();
 	}
 	return computers;
     }
@@ -305,7 +309,7 @@ public class DAOComputer implements IDAOComputer {
     @Override
     public List<Computer> getSomeSearch(int limit, int offset, String column,
 	    String order, String search) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;
 	List<Computer> computers = new ArrayList<Computer>();
@@ -346,8 +350,8 @@ public class DAOComputer implements IDAOComputer {
 		    + offset + " to " + (offset + limit) + " ordered by "
 		    + column + " with the search of " + search);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, set);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, set);
+	    factory.closeConnection();
 	}
 
 	return computers;
@@ -355,7 +359,7 @@ public class DAOComputer implements IDAOComputer {
 
     @Override
     public int getNumberComputerSearch(String search) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;
 	int nb = 0;
@@ -377,8 +381,8 @@ public class DAOComputer implements IDAOComputer {
 		    "Couldn't get the number of Computers with the search of "
 			    + search);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, set);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, set);
+	    factory.closeConnection();
 	}
 
 	return nb;

@@ -1,90 +1,33 @@
 package com.excilys.malbert.persistence.dbConnection;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.excilys.malbert.exceptions.ConnectionException;
-import com.excilys.malbert.util.ConnectionProperties;
-import com.jolbox.bonecp.BoneCP;
-import com.jolbox.bonecp.BoneCPConfig;
 
 /**
  * Singleton with a pool of connection
  * 
  * @author excilys
  */
-public enum ConnectionDbFactory {
-    INSTANCE;
+@Component
+public class ConnectionDbFactory {
 
     private ThreadLocal<Connection> connection = new ThreadLocal<Connection>();
-    private ConnectionProperties properties;
-    private boolean testing = false;
 
     private Logger logger = LoggerFactory.getLogger(ConnectionDbFactory.class);
 
-    private BoneCP connectionPool = null;
-
-    static {
-	try {
-	    Class.forName("com.mysql.jdbc.Driver");
-	} catch (ClassNotFoundException e) {
-	    Logger loggerStat = LoggerFactory
-		    .getLogger(ConnectionDbFactory.class);
-	    loggerStat.error("Couldn't load jdbc driver");
-	    throw new ConnectionException("Couldn't load jdbc driver");
-	}
-    };
-
-    private ConnectionDbFactory() {
-	try {
-	    properties = new ConnectionProperties();
-	} catch (IOException e) {
-	    logger.error("Couldn't get property file");
-	    throw new ConnectionException("Couldn't get property file");
-	}
-	changePool();
-    }
-
-    private void changePool() {
-	try {
-	    BoneCPConfig config = new BoneCPConfig();
-	    config.setJdbcUrl(properties.getUrl()
-		    + (testing ? properties.getDbTest() : properties.getDb())
-		    + properties.getOption());
-	    config.setUsername(properties.getUser());
-	    config.setPassword(properties.getPasswd());
-	    // To avoid a bug : true to say that db is started after server
-	    config.setLazyInit(true);
-	    config.setMinConnectionsPerPartition(5);
-	    config.setMaxConnectionsPerPartition(10);
-	    config.setPartitionCount(1);
-	    connectionPool = new BoneCP(config);
-	} catch (SQLException e) {
-	    logger.error("Couldn't change the connection pool");
-	    throw new ConnectionException("Couldn't change the connection pool");
-	}
-    }
-
-    public boolean isTESTING() {
-	return testing;
-    }
-
-    /**
-     * Use this method to pass in testing mod
-     * 
-     * @param testing
-     */
-    public void setTESTING(boolean testing) {
-	this.testing = testing;
-	connectionPool.shutdown();
-	changePool();
-    }
+    @Autowired
+    DataSource dataSource;
 
     /**
      * @return a connection from the connection pool
@@ -94,7 +37,7 @@ public enum ConnectionDbFactory {
 	    if (connection.get() == null || connection.get().isClosed()) {
 		Connection connection = null;
 
-		connection = connectionPool.getConnection();
+		connection = dataSource.getConnection();
 		this.connection.set(connection);
 	    }
 	} catch (SQLException e) {

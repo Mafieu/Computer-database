@@ -21,8 +21,8 @@ public class ServiceCompany implements IServiceCompany {
     private IDAOCompany daoCompany;
     @Autowired
     private DAOComputer computerDAO;
-
-    private ConnectionDbFactory connectionFactory = ConnectionDbFactory.INSTANCE;
+    @Autowired
+    private ConnectionDbFactory connectionFactory;
 
     @Override
     public List<Company> getAllCompanies() {

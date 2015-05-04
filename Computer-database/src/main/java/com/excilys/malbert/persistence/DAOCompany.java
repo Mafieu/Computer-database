@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.malbert.exceptions.DAOException;
@@ -20,11 +21,14 @@ import com.excilys.malbert.util.Validator;
 @Repository
 public class DAOCompany implements IDAOCompany {
 
+    @Autowired
+    private ConnectionDbFactory factory;
+
     private Logger logger = LoggerFactory.getLogger(DAOCompany.class);
 
     @Override
     public List<Company> getAll() {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;
 	List<Company> companies = new ArrayList<Company>();
@@ -39,8 +43,8 @@ public class DAOCompany implements IDAOCompany {
 	    logger.error("get all companies");
 	    throw new DAOException("Couldn't get the list of companies");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, set);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, set);
+	    factory.closeConnection();
 	}
 
 	return companies;
@@ -48,7 +52,7 @@ public class DAOCompany implements IDAOCompany {
 
     @Override
     public Company getOne(long id) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 	ResultSet set = null;
 	Company company = null;
@@ -72,8 +76,8 @@ public class DAOCompany implements IDAOCompany {
 	    logger.error("get company : {}", id);
 	    throw new DAOException("Couldn't get the company " + id);
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, set);
-	    ConnectionDbFactory.INSTANCE.closeConnection();
+	    factory.close(statement, set);
+	    factory.closeConnection();
 	}
 
 	return company;
@@ -81,7 +85,7 @@ public class DAOCompany implements IDAOCompany {
 
     @Override
     public void delete(long id) {
-	Connection connection = ConnectionDbFactory.INSTANCE.getConnection();
+	Connection connection = factory.getConnection();
 	PreparedStatement statement = null;
 
 	if (!Validator.isIdValid(id)) {
@@ -98,7 +102,7 @@ public class DAOCompany implements IDAOCompany {
 	    logger.error("delete commpany : {}", id);
 	    throw new DAOException("Couldn't delete the company");
 	} finally {
-	    ConnectionDbFactory.INSTANCE.close(statement, null);
+	    factory.close(statement, null);
 	}
     }
 }
