@@ -2,26 +2,23 @@ package com.excilys.malbert.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.malbert.exceptions.ServiceException;
 import com.excilys.malbert.persistence.DAOComputer;
-import com.excilys.malbert.persistence.IDAOComputer;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.Validator;
 
-/**
- * Describes the services
- * 
- * @author excilys
- *
- */
-public enum ServiceComputer implements IServiceComputer {
-    INSTANCE;
+@Service
+public class ServiceComputer implements IServiceComputer {
 
-    private IDAOComputer daoComputer = DAOComputer.INSTANCE;
+    @Autowired
+    private DAOComputer computerDAO;
 
     @Override
     public List<Computer> getAllComputers() {
-	return daoComputer.getAll();
+	return computerDAO.getAll();
     }
 
     @Override
@@ -30,7 +27,7 @@ public enum ServiceComputer implements IServiceComputer {
 	    throw new ServiceException(Validator.INVALID_LIMIT_OFFSET);
 	}
 
-	return daoComputer.getSome(limit, offset);
+	return computerDAO.getSome(limit, offset);
     }
 
     @Override
@@ -39,7 +36,7 @@ public enum ServiceComputer implements IServiceComputer {
 	    throw new ServiceException(Validator.INVALID_ID);
 	}
 
-	return daoComputer.getOne(id);
+	return computerDAO.getOne(id);
     }
 
     @Override
@@ -48,7 +45,7 @@ public enum ServiceComputer implements IServiceComputer {
 	    throw new ServiceException(Validator.INVALID_COMPUTER);
 	}
 
-	return daoComputer.create(computer);
+	return computerDAO.create(computer);
     }
 
     @Override
@@ -56,7 +53,7 @@ public enum ServiceComputer implements IServiceComputer {
 	if (!Validator.isIdValid(id)) {
 	    throw new ServiceException(Validator.INVALID_ID);
 	}
-	daoComputer.delete(id);
+	computerDAO.delete(id);
     }
 
     @Override
@@ -64,12 +61,12 @@ public enum ServiceComputer implements IServiceComputer {
 	if (!Validator.isComputerValid(computer)) {
 	    throw new ServiceException(Validator.INVALID_COMPUTER);
 	}
-	daoComputer.update(computer);
+	computerDAO.update(computer);
     }
 
     @Override
     public int getNumberComputer() {
-	return daoComputer.getNumberComputer();
+	return computerDAO.getNumberComputer();
     }
 
     @Override
@@ -82,7 +79,7 @@ public enum ServiceComputer implements IServiceComputer {
 	    throw new ServiceException(Validator.INVALID_COLUMN);
 	}
 
-	return daoComputer.getSomeOrderedByAscending(limit, offset, column);
+	return computerDAO.getSomeOrderedByAscending(limit, offset, column);
     }
 
     @Override
@@ -95,7 +92,7 @@ public enum ServiceComputer implements IServiceComputer {
 	    throw new ServiceException(Validator.INVALID_COLUMN);
 	}
 
-	return daoComputer.getSomeOrderedByDescending(limit, offset, column);
+	return computerDAO.getSomeOrderedByDescending(limit, offset, column);
     }
 
     @Override
@@ -108,16 +105,16 @@ public enum ServiceComputer implements IServiceComputer {
 	    throw new ServiceException(Validator.INVALID_COLUMN);
 	}
 
-	return daoComputer.getSomeSearch(limit, offset, column, order, search);
+	return computerDAO.getSomeSearch(limit, offset, column, order, search);
     }
 
     @Override
     public int getNumberComputerSearch(String search) {
-	return daoComputer.getNumberComputerSearch(search);
+	return computerDAO.getNumberComputerSearch(search);
     }
 
     @Override
-    public void setComputerDAO(IDAOComputer daoComputer) {
-	this.daoComputer = daoComputer;
+    public void setComputerDAO(DAOComputer daoComputer) {
+	this.computerDAO = daoComputer;
     }
 }

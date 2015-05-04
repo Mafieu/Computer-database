@@ -11,17 +11,26 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.malbert.persistence.DAOCompany;
 import com.excilys.malbert.persistence.IDAOCompany;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.util.TestUtils;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/applicationContext.xml" })
 public class ServiceCompanyTest {
 
     private IDAOCompany mockedDAOCompany = mock(IDAOCompany.class);
     private List<Company> companies;
-    private ServiceCompany serviceCompany = ServiceCompany.INSTANCE;
+    @Autowired
+    private ServiceCompany serviceCompany;
+    @Autowired
+    private DAOCompany companyDAO;
 
     @Before
     public void before() {
@@ -43,7 +52,7 @@ public class ServiceCompanyTest {
 
     @After
     public void after() {
-	serviceCompany.setCompanyDAO(DAOCompany.INSTANCE);
+	serviceCompany.setCompanyDAO(companyDAO);
     }
 
     @Test

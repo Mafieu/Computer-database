@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.excilys.malbert.service.ServiceComputer;
 
 @WebServlet("/deleteComputer")
@@ -15,13 +17,17 @@ public class ServletDeleteComputer extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private ServiceComputer serviceComputer = ServiceComputer.INSTANCE;
+    private ServiceComputer serviceComputer;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ServletDeleteComputer() {
 	super();
+	ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
+		"applicationContext.xml");
+	serviceComputer = appContext.getBean(ServiceComputer.class);
+	appContext.close();
     }
 
     /**

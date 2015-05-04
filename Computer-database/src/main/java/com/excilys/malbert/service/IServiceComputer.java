@@ -2,7 +2,7 @@ package com.excilys.malbert.service;
 
 import java.util.List;
 
-import com.excilys.malbert.persistence.IDAOComputer;
+import com.excilys.malbert.persistence.DAOComputer;
 import com.excilys.malbert.persistence.model.Computer;
 
 public interface IServiceComputer {
@@ -37,5 +37,5 @@ public interface IServiceComputer {
      * 
      * @param daoComputer
      */
-    public void setComputerDAO(IDAOComputer daoComputer);
+    public void setComputerDAO(DAOComputer daoComputer);
 }

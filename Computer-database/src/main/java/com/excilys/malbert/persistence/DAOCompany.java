@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.mapper.MapperCompany;
@@ -16,8 +17,8 @@ import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.util.Validator;
 
-public enum DAOCompany implements IDAOCompany {
-    INSTANCE;
+@Repository
+public class DAOCompany implements IDAOCompany {
 
     private Logger logger = LoggerFactory.getLogger(DAOCompany.class);
 

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.service.ServiceCompany;
@@ -18,8 +20,8 @@ import com.excilys.malbert.util.Utils;
 public class Cli {
 
     private static Scanner scanner;
-    private static ServiceCompany serviceCompany = ServiceCompany.INSTANCE;
-    private static ServiceComputer serviceComputer = ServiceComputer.INSTANCE;
+    private static ServiceCompany serviceCompany;
+    private static ServiceComputer serviceComputer;
 
     /**
      * Prints the menu
@@ -143,6 +145,12 @@ public class Cli {
     public static void main(String[] args) {
 	scanner = new Scanner(System.in);
 	int entry;
+
+	ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
+		"applicationContext.xml");
+	serviceComputer = appContext.getBean(ServiceComputer.class);
+	serviceCompany = appContext.getBean(ServiceCompany.class);
+	appContext.close();
 
 	do {
 	    printMenu();

@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.mapper.MapperComputer;
@@ -18,8 +19,8 @@ import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.Utils;
 import com.excilys.malbert.util.Validator;
 
-public enum DAOComputer implements IDAOComputer {
-    INSTANCE;
+@Repository
+public class DAOComputer implements IDAOComputer {
 
     private Logger logger = LoggerFactory.getLogger(DAOComputer.class);
 

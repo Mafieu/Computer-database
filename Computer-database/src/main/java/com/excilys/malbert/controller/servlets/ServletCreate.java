@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.excilys.malbert.controller.dto.CompanyDTO;
 import com.excilys.malbert.mapper.MapperCompany;
 import com.excilys.malbert.persistence.model.Company;
@@ -25,14 +27,19 @@ import com.excilys.malbert.util.Utils;
 @WebServlet("/addComputer")
 public class ServletCreate extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private ServiceCompany serviceCompany = ServiceCompany.INSTANCE;
-    private ServiceComputer serviceComputer = ServiceComputer.INSTANCE;
+    private ServiceCompany serviceCompany;
+    private ServiceComputer serviceComputer;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ServletCreate() {
 	super();
+	ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
+		"applicationContext.xml");
+	serviceComputer = appContext.getBean(ServiceComputer.class);
+	serviceCompany = appContext.getBean(ServiceCompany.class);
+	appContext.close();
     }
 
     /**

@@ -11,6 +11,10 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
@@ -18,9 +22,13 @@ import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.TestUtils;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/applicationContext.xml" })
 public class DAOComputerTest {
 
     private List<Computer> computers;
+    @Autowired
+    private DAOComputer computerDAO;
 
     @Before
     public void before() {
@@ -46,49 +54,48 @@ public class DAOComputerTest {
 
     @Test
     public void testGetAll() {
-	assertArrayEquals(computers.toArray(), DAOComputer.INSTANCE.getAll()
-		.toArray());
+	assertArrayEquals(computers.toArray(), computerDAO.getAll().toArray());
     }
 
     @Test
     public void testGetSome() {
-	assertArrayEquals(computers.subList(0, 2).toArray(),
-		DAOComputer.INSTANCE.getSome(2, 0).toArray());
+	assertArrayEquals(computers.subList(0, 2).toArray(), computerDAO
+		.getSome(2, 0).toArray());
     }
 
     @Test(expected = DAOException.class)
     public void testGetSomeNegativeLimit() {
-	DAOComputer.INSTANCE.getSome(-5, 0);
+	computerDAO.getSome(-5, 0);
     }
 
     @Test(expected = DAOException.class)
     public void testGetSomeNegativeOffset() {
-	DAOComputer.INSTANCE.getSome(2, -5);
+	computerDAO.getSome(2, -5);
     }
 
     @Test(expected = DAOException.class)
     public void testGetSomeOffsetAndLimitNull() {
-	DAOComputer.INSTANCE.getSome(0, 0);
+	computerDAO.getSome(0, 0);
     }
 
     @Test
     public void testGetComputer() {
-	assertEquals(computers.get(0), DAOComputer.INSTANCE.getOne(1));
+	assertEquals(computers.get(0), computerDAO.getOne(1));
     }
 
     @Test(expected = DAOException.class)
     public void testGetComputerNull() {
-	DAOComputer.INSTANCE.getOne(0);
+	computerDAO.getOne(0);
     }
 
     @Test(expected = DAOException.class)
     public void testGetComputerMinus() {
-	DAOComputer.INSTANCE.getOne(-5);
+	computerDAO.getOne(-5);
     }
 
     @Test
     public void testGetComputerOverLimit() {
-	assertNull(DAOComputer.INSTANCE.getOne(1597));
+	assertNull(computerDAO.getOne(1597));
     }
 
     @Test
@@ -97,7 +104,7 @@ public class DAOComputerTest {
 	// The id is not set in the database
 	Computer computer = new Computer(5, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, new Company(1, "Apple Inc."));
-	long id = DAOComputer.INSTANCE.create(computer);
+	long id = computerDAO.create(computer);
 	assertEquals(computer.getId(), id);
     }
 
@@ -107,70 +114,68 @@ public class DAOComputerTest {
 	// The id is not set in the database
 	Computer computer = new Computer(5, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, null);
-	DAOComputer.INSTANCE.create(computer);
+	computerDAO.create(computer);
     }
 
     @Test(expected = DAOException.class)
     public void testCreateNullName() {
 	Computer computer = new Computer(5, null, LocalDateTime.of(1990, 04,
 		29, 0, 0), null, new Company(1, "Apple Inc."));
-	DAOComputer.INSTANCE.create(computer);
+	computerDAO.create(computer);
     }
 
     @Test(expected = DAOException.class)
     public void testCreateNullComputer() {
-	DAOComputer.INSTANCE.create(null);
+	computerDAO.create(null);
     }
 
     @Test
     public void testDelete() {
-	DAOComputer.INSTANCE.delete(computers.get(0).getId());
-	assertNull(DAOComputer.INSTANCE.getOne(computers.get(0).getId()));
+	computerDAO.delete(computers.get(0).getId());
+	assertNull(computerDAO.getOne(computers.get(0).getId()));
     }
 
     @Test(expected = DAOException.class)
     public void testDeleteNegative() {
-	DAOComputer.INSTANCE.delete(-5);
+	computerDAO.delete(-5);
     }
 
     @Test(expected = DAOException.class)
     public void testDeleteNull() {
-	DAOComputer.INSTANCE.delete(0);
+	computerDAO.delete(0);
     }
 
     @Test
     public void testUpdate() {
 	Computer computer = new Computer(3, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, new Company(1, "Apple Inc."));
-	DAOComputer.INSTANCE.update(computer);
-	assertEquals(computer, DAOComputer.INSTANCE.getOne(3));
+	computerDAO.update(computer);
+	assertEquals(computer, computerDAO.getOne(3));
     }
 
     @Test(expected = DAOException.class)
     public void testUpdateCompanyNull() {
 	Computer computer = new Computer(3, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, null);
-	DAOComputer.INSTANCE.update(computer);
+	computerDAO.update(computer);
     }
 
     @Test(expected = DAOException.class)
     public void testUpdateNameNull() {
 	Computer computer = new Computer(3, null, LocalDateTime.of(1990, 04,
 		29, 0, 0), null, new Company(1, "Apple Inc."));
-	DAOComputer.INSTANCE.update(computer);
+	computerDAO.update(computer);
     }
 
     @Test(expected = DAOException.class)
     public void testUpdateNull() {
-	DAOComputer.INSTANCE.update(null);
+	computerDAO.update(null);
     }
 
     @Test
     public void testGetSomeAscending() {
-	assertArrayEquals(
-		computers.subList(0, 2).toArray(),
-		DAOComputer.INSTANCE.getSomeOrderedByAscending(2, 0,
-			"computer.id").toArray());
+	assertArrayEquals(computers.subList(0, 2).toArray(), computerDAO
+		.getSomeOrderedByAscending(2, 0, "computer.id").toArray());
     }
 
     @Test
@@ -178,7 +183,7 @@ public class DAOComputerTest {
 	List<Computer> invertComputers = new ArrayList<Computer>();
 	invertComputers.add(computers.get(3));
 	invertComputers.add(computers.get(2));
-	assertArrayEquals(invertComputers.toArray(), DAOComputer.INSTANCE
+	assertArrayEquals(invertComputers.toArray(), computerDAO
 		.getSomeOrderedByDescending(2, 0, "computer.id").toArray());
     }
 
@@ -186,12 +191,12 @@ public class DAOComputerTest {
     public void testGetOfCompany() {
 	List<Computer> computersOfApple = new ArrayList<Computer>();
 	computersOfApple.add(computers.get(0));
-	assertArrayEquals(computersOfApple.toArray(), DAOComputer.INSTANCE
-		.getOfCompany(1).toArray());
+	assertArrayEquals(computersOfApple.toArray(),
+		computerDAO.getOfCompany(1).toArray());
     }
 
     @Test
     public void testGetNumberOfCompany() {
-	assertEquals(1, DAOComputer.INSTANCE.getNumberComputerSearch("Apple"));
+	assertEquals(1, computerDAO.getNumberComputerSearch("Apple"));
     }
 }

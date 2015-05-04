@@ -9,6 +9,10 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
@@ -16,9 +20,15 @@ import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.TestUtils;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/applicationContextTest.xml" })
 public class DAOCompanyTest {
 
     private List<Company> companies;
+    @Autowired
+    private DAOComputer computerDAO;
+    @Autowired
+    private DAOCompany companyDAO;
 
     @Before
     public void before() {
@@ -39,39 +49,38 @@ public class DAOCompanyTest {
 
     @Test
     public void testGetAll() {
-	assertArrayEquals(companies.toArray(), DAOCompany.INSTANCE.getAll()
-		.toArray());
+	assertArrayEquals(companies.toArray(), companyDAO.getAll().toArray());
     }
 
     @Test
     public void testGetCompany() {
-	assertEquals(companies.get(0), DAOCompany.INSTANCE.getOne(1));
+	assertEquals(companies.get(0), companyDAO.getOne(1));
     }
 
     @Test(expected = DAOException.class)
     public void testGetCompanyNull() {
-	DAOCompany.INSTANCE.getOne(0);
+	companyDAO.getOne(0);
     }
 
     @Test(expected = DAOException.class)
     public void testGetCompanyMinus() {
-	DAOCompany.INSTANCE.getOne(-5);
+	companyDAO.getOne(-5);
     }
 
     @Test(expected = DAOException.class)
     public void testGetCompanyOverLimit() {
-	DAOCompany.INSTANCE.getOne(99);
+	companyDAO.getOne(99);
     }
 
     @Test
     public void testDelete() {
-	List<Computer> computers = DAOComputer.INSTANCE.getOfCompany(1);
+	List<Computer> computers = computerDAO.getOfCompany(1);
 	ConnectionDbFactory.INSTANCE.getConnection();
 	ConnectionDbFactory.INSTANCE.startTransaction();
 	for (Computer computer : computers) {
-	    DAOComputer.INSTANCE.transactionDelete(computer.getId());
+	    computerDAO.transactionDelete(computer.getId());
 	}
-	DAOCompany.INSTANCE.delete(1);
+	companyDAO.delete(1);
 	ConnectionDbFactory.INSTANCE.rollback();
 	ConnectionDbFactory.INSTANCE.closeConnection();
     }

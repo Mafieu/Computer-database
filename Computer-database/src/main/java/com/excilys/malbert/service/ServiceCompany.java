@@ -2,22 +2,26 @@ package com.excilys.malbert.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.exceptions.ServiceException;
-import com.excilys.malbert.persistence.DAOCompany;
 import com.excilys.malbert.persistence.DAOComputer;
 import com.excilys.malbert.persistence.IDAOCompany;
-import com.excilys.malbert.persistence.IDAOComputer;
 import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.Validator;
 
-public enum ServiceCompany implements IServiceCompany {
-    INSTANCE;
+@Service
+public class ServiceCompany implements IServiceCompany {
 
-    private IDAOCompany daoCompany = DAOCompany.INSTANCE;
-    private IDAOComputer daoComputer = DAOComputer.INSTANCE;
+    @Autowired
+    private IDAOCompany daoCompany;
+    @Autowired
+    private DAOComputer computerDAO;
+
     private ConnectionDbFactory connectionFactory = ConnectionDbFactory.INSTANCE;
 
     @Override
@@ -35,14 +39,14 @@ public enum ServiceCompany implements IServiceCompany {
 
     @Override
     public void deleteCompany(long id) {
-	List<Computer> computers = daoComputer.getOfCompany(id);
+	List<Computer> computers = computerDAO.getOfCompany(id);
 	connectionFactory.getConnection();
 
 	connectionFactory.startTransaction();
 	try {
 	    for (Computer computer : computers) {
 		// Call to DAO or Service ?
-		daoComputer.transactionDelete(computer.getId());
+		computerDAO.transactionDelete(computer.getId());
 	    }
 	    daoCompany.delete(id);
 	    connectionFactory.commit();

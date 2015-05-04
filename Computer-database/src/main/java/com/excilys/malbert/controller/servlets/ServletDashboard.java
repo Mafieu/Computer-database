@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.excilys.malbert.controller.Page;
 import com.excilys.malbert.controller.dto.ComputerDTO;
 import com.excilys.malbert.mapper.MapperComputer;
@@ -22,13 +24,17 @@ import com.excilys.malbert.util.Utils;
 @WebServlet("/dashboard")
 public class ServletDashboard extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private ServiceComputer serviceComputer = ServiceComputer.INSTANCE;
+    private ServiceComputer serviceComputer;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ServletDashboard() {
 	super();
+	ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
+		"applicationContext.xml");
+	serviceComputer = appContext.getBean(ServiceComputer.class);
+	appContext.close();
     }
 
     /**

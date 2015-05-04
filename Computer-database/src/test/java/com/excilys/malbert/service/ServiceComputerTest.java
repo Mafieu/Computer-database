@@ -13,21 +13,29 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.malbert.persistence.DAOComputer;
-import com.excilys.malbert.persistence.IDAOComputer;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.TestUtils;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/applicationContext.xml" })
 public class ServiceComputerTest {
     // We mock a DAOComputer with DAOException as a default answer
-    private IDAOComputer mockedDAOComputer = mock(IDAOComputer.class);
+    private DAOComputer mockedDAOComputer = mock(DAOComputer.class);
     private List<Computer> computers;
     private List<Computer> reversedComputers;
-    private ServiceComputer serviceComputer = ServiceComputer.INSTANCE;
+    @Autowired
+    private ServiceComputer serviceComputer;
+    @Autowired
+    private DAOComputer computerDAO;
 
     @SuppressWarnings("rawtypes")
     @Before
@@ -90,7 +98,7 @@ public class ServiceComputerTest {
 
     @After
     public void after() {
-	serviceComputer.setComputerDAO(DAOComputer.INSTANCE);
+	serviceComputer.setComputerDAO(computerDAO);
     }
 
     @Test
