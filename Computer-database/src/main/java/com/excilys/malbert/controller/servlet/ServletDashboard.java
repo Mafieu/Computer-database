@@ -1,4 +1,4 @@
-package com.excilys.malbert.controller.servlets;
+package com.excilys.malbert.controller.servlet;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.malbert.controller.Page;
 import com.excilys.malbert.controller.dto.ComputerDTO;
@@ -22,8 +22,9 @@ import com.excilys.malbert.util.Utils;
  * Servlet implementation class Servlet
  */
 @WebServlet("/dashboard")
-public class ServletDashboard extends HttpServlet {
+public class ServletDashboard extends ServletBasic {
     private static final long serialVersionUID = 1L;
+    @Autowired
     private ServiceComputer serviceComputer;
 
     /**
@@ -31,10 +32,6 @@ public class ServletDashboard extends HttpServlet {
      */
     public ServletDashboard() {
 	super();
-	ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
-		"applicationContext.xml");
-	serviceComputer = appContext.getBean(ServiceComputer.class);
-	appContext.close();
     }
 
     /**

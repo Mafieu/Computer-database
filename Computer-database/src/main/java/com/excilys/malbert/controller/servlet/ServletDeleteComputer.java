@@ -1,4 +1,4 @@
-package com.excilys.malbert.controller.servlets;
+package com.excilys.malbert.controller.servlet;
 
 import java.io.IOException;
 
@@ -8,15 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.malbert.service.ServiceComputer;
 
 @WebServlet("/deleteComputer")
-public class ServletDeleteComputer extends HttpServlet {
+public class ServletDeleteComputer extends ServletBasic {
 
     private static final long serialVersionUID = 1L;
 
+    @Autowired
     private ServiceComputer serviceComputer;
 
     /**
@@ -24,10 +25,6 @@ public class ServletDeleteComputer extends HttpServlet {
      */
     public ServletDeleteComputer() {
 	super();
-	ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
-		"applicationContext.xml");
-	serviceComputer = appContext.getBean(ServiceComputer.class);
-	appContext.close();
     }
 
     /**
