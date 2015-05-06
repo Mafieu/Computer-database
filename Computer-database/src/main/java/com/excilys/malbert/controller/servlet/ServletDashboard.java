@@ -15,7 +15,7 @@ import com.excilys.malbert.controller.Page;
 import com.excilys.malbert.controller.dto.ComputerDTO;
 import com.excilys.malbert.mapper.MapperComputer;
 import com.excilys.malbert.persistence.model.Computer;
-import com.excilys.malbert.service.ServiceComputer;
+import com.excilys.malbert.service.IServiceComputer;
 import com.excilys.malbert.util.Utils;
 
 /**
@@ -25,7 +25,7 @@ import com.excilys.malbert.util.Utils;
 public class ServletDashboard extends ServletBasic {
     private static final long serialVersionUID = 1L;
     @Autowired
-    private ServiceComputer serviceComputer;
+    private IServiceComputer serviceComputer;
 
     /**
      * @see HttpServlet#HttpServlet()

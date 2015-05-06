@@ -28,13 +28,6 @@ public interface IDAOComputer extends IDAOCrud<Computer> {
     public int getNumberComputer();
 
     /**
-     * @param id
-     * @param connection
-     *            used for rollback or commit
-     */
-    public void transactionDelete(long id);
-
-    /**
      * Get the list of computers from offset to offset + limit ordered by column
      * in ascending order
      * 

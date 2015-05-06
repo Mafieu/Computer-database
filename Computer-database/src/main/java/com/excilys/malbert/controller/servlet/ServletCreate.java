@@ -17,8 +17,8 @@ import com.excilys.malbert.controller.dto.CompanyDTO;
 import com.excilys.malbert.mapper.MapperCompany;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
-import com.excilys.malbert.service.ServiceCompany;
-import com.excilys.malbert.service.ServiceComputer;
+import com.excilys.malbert.service.IServiceCompany;
+import com.excilys.malbert.service.IServiceComputer;
 import com.excilys.malbert.util.Utils;
 
 /**
@@ -28,9 +28,9 @@ import com.excilys.malbert.util.Utils;
 public class ServletCreate extends ServletBasic {
     private static final long serialVersionUID = 1L;
     @Autowired
-    private ServiceCompany serviceCompany;
+    private IServiceCompany serviceCompany;
     @Autowired
-    private ServiceComputer serviceComputer;
+    private IServiceComputer serviceComputer;
 
     /**
      * @see HttpServlet#HttpServlet()

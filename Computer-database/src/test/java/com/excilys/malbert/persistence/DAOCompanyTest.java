@@ -68,16 +68,13 @@ public class DAOCompanyTest {
 	companyDAO.getOne(99);
     }
 
-    // @Test
-    // public void testDelete() {
-    // List<Computer> computers = computerDAO.getOfCompany(1);
-    // ConnectionDbFactory.INSTANCE.getConnection();
-    // ConnectionDbFactory.INSTANCE.startTransaction();
-    // for (Computer computer : computers) {
-    // computerDAO.transactionDelete(computer.getId());
-    // }
-    // companyDAO.delete(1);
-    // ConnectionDbFactory.INSTANCE.rollback();
-    // ConnectionDbFactory.INSTANCE.closeConnection();
-    // }
+    /*
+     * @Test public void testDelete() { List<Computer> computers =
+     * computerDAO.getOfCompany(1);
+     * ConnectionDbFactory.INSTANCE.getConnection();
+     * ConnectionDbFactory.INSTANCE.startTransaction(); for (Computer computer :
+     * computers) { computerDAO.transactionDelete(computer.getId()); }
+     * companyDAO.delete(1); ConnectionDbFactory.INSTANCE.rollback();
+     * ConnectionDbFactory.INSTANCE.closeConnection(); }
+     */
 }

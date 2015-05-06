@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.excilys.malbert.exceptions.ServiceException;
 import com.excilys.malbert.persistence.DAOComputer;
 import com.excilys.malbert.persistence.IDAOCompany;
-import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.Validator;
@@ -21,8 +20,6 @@ public class ServiceCompany implements IServiceCompany {
     private IDAOCompany daoCompany;
     @Autowired
     private DAOComputer computerDAO;
-    @Autowired
-    private ConnectionDbFactory connectionFactory;
 
     @Override
     public List<Company> getAllCompanies() {
@@ -41,10 +38,9 @@ public class ServiceCompany implements IServiceCompany {
     @Override
     public void deleteCompany(long id) {
 	List<Computer> computers = computerDAO.getOfCompany(id);
-	connectionFactory.getConnection();
 	for (Computer computer : computers) {
 	    // Call to DAO or Service ?
-	    computerDAO.transactionDelete(computer.getId());
+	    computerDAO.delete(computer.getId());
 	}
 	daoCompany.delete(id);
     }

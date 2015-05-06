@@ -1,106 +1,70 @@
 package com.excilys.malbert.persistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.mapper.MapperCompany;
-import com.excilys.malbert.persistence.dbConnection.ConnectionDbFactory;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.util.Validator;
 
 @Repository
 public class DAOCompany implements IDAOCompany {
 
-    @Autowired
-    private ConnectionDbFactory factory;
-
+    private JdbcTemplate jdbcTemplate;
     private Logger logger = LoggerFactory.getLogger(DAOCompany.class);
+
+    @Autowired
+    public void setDataSource(DataSource datasource) {
+	this.jdbcTemplate = new JdbcTemplate(datasource);
+    }
 
     @Override
     public List<Company> getAll() {
-	Connection connection = factory.getConnection();
-	PreparedStatement statement = null;
-	ResultSet set = null;
-	List<Company> companies = new ArrayList<Company>();
-
 	try {
-	    statement = connection.prepareStatement("SELECT * FROM company");
-	    set = statement.executeQuery();
-	    while (set.next()) {
-		companies.add(MapperCompany.resultsetToCompany(set));
-	    }
-	} catch (SQLException e) {
-	    logger.error("get all companies");
+	    return this.jdbcTemplate.query("SELECT * FROM company",
+		    new MapperCompany());
+	} catch (DataAccessException e) {
+	    logger.error("list company");
 	    throw new DAOException("Couldn't get the list of companies");
-	} finally {
-	    factory.close(statement, set);
 	}
-
-	return companies;
     }
 
     @Override
     public Company getOne(long id) {
-	Connection connection = factory.getConnection();
-	PreparedStatement statement = null;
-	ResultSet set = null;
-	Company company = null;
-
 	if (!Validator.isIdValid(id)) {
-	    logger.error("get company : invalid id");
+	    logger.error("get company : {}", id);
 	    throw new DAOException(Validator.INVALID_ID);
 	}
-
 	try {
-	    statement = connection
-		    .prepareStatement("SELECT * FROM company WHERE id = ?");
-	    statement.setLong(1, id);
-	    set = statement.executeQuery();
-	    if (!set.next()) {
-		throw new DAOException("No computer found with id " + id);
-	    } else {
-		company = MapperCompany.resultsetToCompany(set);
-	    }
-	} catch (SQLException e) {
+	    return this.jdbcTemplate.queryForObject(
+		    "SELECT * FROM company WHERE id = ?", new Object[] { id },
+		    new MapperCompany());
+	} catch (DataAccessException e) {
 	    logger.error("get company : {}", id);
-	    throw new DAOException("Couldn't get the company " + id);
-	} finally {
-	    factory.close(statement, set);
+	    throw new DAOException("Couldn't get company : " + id);
 	}
-
-	return company;
     }
 
     @Override
     public void delete(long id) {
-	Connection connection = factory.getConnection();
-	PreparedStatement statement = null;
-
 	if (!Validator.isIdValid(id)) {
-	    logger.error("get company : invalid id");
+	    logger.error("delete commpany : {}", id);
 	    throw new DAOException(Validator.INVALID_ID);
 	}
-
 	try {
-	    statement = connection
-		    .prepareStatement("DELETE FROM company WHERE id = ?");
-	    statement.setLong(1, id);
-	    statement.executeUpdate();
-	} catch (SQLException e) {
+	    this.jdbcTemplate.update("DELETE FROM company WHERE id = ?", id);
+	} catch (DataAccessException e) {
 	    logger.error("delete commpany : {}", id);
 	    throw new DAOException("Couldn't delete the company");
-	} finally {
-	    factory.close(statement, null);
 	}
     }
 }

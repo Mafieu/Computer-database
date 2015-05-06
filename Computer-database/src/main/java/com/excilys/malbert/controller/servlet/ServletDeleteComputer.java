@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.excilys.malbert.service.ServiceComputer;
+import com.excilys.malbert.service.IServiceComputer;
 
 @WebServlet("/deleteComputer")
 public class ServletDeleteComputer extends ServletBasic {
@@ -18,7 +18,7 @@ public class ServletDeleteComputer extends ServletBasic {
     private static final long serialVersionUID = 1L;
 
     @Autowired
-    private ServiceComputer serviceComputer;
+    private IServiceComputer serviceComputer;
 
     /**
      * @see HttpServlet#HttpServlet()
