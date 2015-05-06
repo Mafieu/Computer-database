@@ -47,7 +47,6 @@ public class DAOComputer implements IDAOComputer {
 	    throw new DAOException("Couldn't get the list of Computers");
 	} finally {
 	    factory.close(statement, set);
-	    factory.closeConnection();
 	}
 	return computers;
     }
@@ -82,7 +81,6 @@ public class DAOComputer implements IDAOComputer {
 	    throw new DAOException("Couldn't get the computer " + id);
 	} finally {
 	    factory.close(statement, set);
-	    factory.closeConnection();
 	}
 
 	return computer;
@@ -125,7 +123,6 @@ public class DAOComputer implements IDAOComputer {
 	    throw new DAOException("Couldn't create the computer");
 	} finally {
 	    factory.close(statement, null);
-	    factory.closeConnection();
 	}
 	return i;
     }
@@ -161,8 +158,6 @@ public class DAOComputer implements IDAOComputer {
 	} catch (DAOException e) {
 	    logger.error("delete computer : {}", id);
 	    throw new DAOException("Couldn't delete the computer " + id);
-	} finally {
-	    factory.closeConnection();
 	}
     }
 
@@ -193,7 +188,6 @@ public class DAOComputer implements IDAOComputer {
 	    throw new DAOException("Couldn't update the computer");
 	} finally {
 	    factory.close(statement, null);
-	    factory.closeConnection();
 	}
     }
 
@@ -215,7 +209,6 @@ public class DAOComputer implements IDAOComputer {
 	    throw new DAOException("Couldn't get the number of computers");
 	} finally {
 	    factory.close(statement, null);
-	    factory.closeConnection();
 	}
 	return nb;
     }
@@ -269,7 +262,6 @@ public class DAOComputer implements IDAOComputer {
 		    + column);
 	} finally {
 	    factory.close(statement, set);
-	    factory.closeConnection();
 	}
 	return computers;
     }
@@ -300,7 +292,6 @@ public class DAOComputer implements IDAOComputer {
 		    "Couldn't get the list of Computers of the company " + id);
 	} finally {
 	    factory.close(statement, set);
-	    factory.closeConnection();
 	}
 	return computers;
     }
@@ -350,7 +341,6 @@ public class DAOComputer implements IDAOComputer {
 		    + column + " with the search of " + search);
 	} finally {
 	    factory.close(statement, set);
-	    factory.closeConnection();
 	}
 
 	return computers;
@@ -381,7 +371,6 @@ public class DAOComputer implements IDAOComputer {
 			    + search);
 	} finally {
 	    factory.close(statement, set);
-	    factory.closeConnection();
 	}
 
 	return nb;

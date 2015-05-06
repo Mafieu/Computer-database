@@ -47,7 +47,6 @@ public class ServiceCompany implements IServiceCompany {
 	    computerDAO.transactionDelete(computer.getId());
 	}
 	daoCompany.delete(id);
-	connectionFactory.closeConnection();
     }
 
     @Override

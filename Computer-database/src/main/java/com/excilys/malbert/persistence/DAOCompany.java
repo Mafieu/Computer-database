@@ -44,7 +44,6 @@ public class DAOCompany implements IDAOCompany {
 	    throw new DAOException("Couldn't get the list of companies");
 	} finally {
 	    factory.close(statement, set);
-	    factory.closeConnection();
 	}
 
 	return companies;
@@ -77,7 +76,6 @@ public class DAOCompany implements IDAOCompany {
 	    throw new DAOException("Couldn't get the company " + id);
 	} finally {
 	    factory.close(statement, set);
-	    factory.closeConnection();
 	}
 
 	return company;
