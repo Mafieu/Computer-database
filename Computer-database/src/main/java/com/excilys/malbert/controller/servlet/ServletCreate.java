@@ -73,8 +73,6 @@ public class ServletCreate extends ServletBasic {
 	if (!request.getParameter("companyId").equals("0")) {
 	    company = serviceCompany.getCompany(Utils.stringToLong(request
 		    .getParameter("companyId")));
-	} else {
-	    company = new Company(0, "");
 	}
 	if (name == "" || request.getParameter("introduced") != ""
 		&& introduced == null

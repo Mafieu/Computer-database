@@ -83,8 +83,11 @@ public class ServletEdit extends ServletBasic {
 		.getParameter("introduced"));
 	LocalDateTime discontinued = Utils.stringToLocaldatetime(request
 		.getParameter("discontinued"));
-	Company company = serviceCompany.getCompany(Utils.stringToLong(request
-		.getParameter("companyId")));
+	Company company = null;
+	if (!request.getParameter("companyId").equals("0")) {
+	    company = serviceCompany.getCompany(Utils.stringToLong(request
+		    .getParameter("companyId")));
+	}
 	if (name == "" || request.getParameter("introduced") != ""
 		&& introduced == null
 		|| request.getParameter("discontinued") != ""

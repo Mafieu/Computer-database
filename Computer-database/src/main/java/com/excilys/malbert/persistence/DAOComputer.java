@@ -3,6 +3,7 @@ package com.excilys.malbert.persistence;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -87,12 +88,17 @@ public class DAOComputer implements IDAOComputer {
 			    .getIntroduced()));
 		    ps.setTimestamp(3, Utils.localdatetimeToTimestamp(computer
 			    .getDiscontinued()));
-		    ps.setLong(4, computer.getCompany().getId());
+		    if (computer.getCompany() == null) {
+			ps.setNull(4, Types.BIGINT);
+		    } else {
+			ps.setLong(4, computer.getCompany().getId());
+		    }
 		    return ps;
 		}
 	    }, keyHolder);
 	    return (long) keyHolder.getKey();
 	} catch (DataAccessException e) {
+	    e.printStackTrace();
 	    logger.error("create computer : {}", computer.toString());
 	    throw new DAOException("Couldn't create the computer");
 	}
@@ -122,12 +128,20 @@ public class DAOComputer implements IDAOComputer {
 	try {
 	    this.jdbcTemplate
 		    .update("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?",
-			    computer.getName(), Utils
-				    .localdatetimeToTimestamp(computer
-					    .getIntroduced()), Utils
-				    .localdatetimeToTimestamp(computer
-					    .getDiscontinued()), computer
-				    .getCompany().getId(), computer.getId());
+			    new Object[] {
+				    computer.getName(),
+				    Utils.localdatetimeToTimestamp(computer
+					    .getIntroduced()),
+				    Utils.localdatetimeToTimestamp(computer
+					    .getDiscontinued()),
+				    computer.getCompany() == null ? null
+					    : computer.getCompany().getId(),
+				    computer.getId() }, new int[] {
+				    Types.VARCHAR,
+				    Types.TIMESTAMP,
+				    Types.TIMESTAMP,
+				    computer.getCompany() == null ? Types.NULL
+					    : Types.BIGINT, Types.BIGINT });
 	} catch (DataAccessException e) {
 	    logger.error("update computer : {}", computer.toString());
 	    throw new DAOException("Couldn't update the computer");

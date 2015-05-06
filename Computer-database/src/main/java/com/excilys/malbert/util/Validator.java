@@ -41,8 +41,6 @@ public final class Validator {
 	    return false;
 	} else if (computer.getName().trim().equals("")) {
 	    return false;
-	} else if (computer.getCompany() == null) {
-	    return false;
 	} else {
 	    return true;
 	}
