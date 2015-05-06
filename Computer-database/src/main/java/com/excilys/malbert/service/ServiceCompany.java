@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.exceptions.ServiceException;
 import com.excilys.malbert.persistence.DAOComputer;
 import com.excilys.malbert.persistence.IDAOCompany;
@@ -37,24 +37,17 @@ public class ServiceCompany implements IServiceCompany {
 	return daoCompany.getOne(id);
     }
 
+    @Transactional
     @Override
     public void deleteCompany(long id) {
 	List<Computer> computers = computerDAO.getOfCompany(id);
 	connectionFactory.getConnection();
-
-	connectionFactory.startTransaction();
-	try {
-	    for (Computer computer : computers) {
-		// Call to DAO or Service ?
-		computerDAO.transactionDelete(computer.getId());
-	    }
-	    daoCompany.delete(id);
-	    connectionFactory.commit();
-	} catch (DAOException e) {
-	    connectionFactory.rollback();
-	} finally {
-	    connectionFactory.closeConnection();
+	for (Computer computer : computers) {
+	    // Call to DAO or Service ?
+	    computerDAO.transactionDelete(computer.getId());
 	}
+	daoCompany.delete(id);
+	connectionFactory.closeConnection();
     }
 
     @Override

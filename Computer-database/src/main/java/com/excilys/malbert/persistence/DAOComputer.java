@@ -130,7 +130,6 @@ public class DAOComputer implements IDAOComputer {
 	return i;
     }
 
-    // To change !
     @Override
     public void transactionDelete(long id) {
 	Connection connection = factory.getConnection();

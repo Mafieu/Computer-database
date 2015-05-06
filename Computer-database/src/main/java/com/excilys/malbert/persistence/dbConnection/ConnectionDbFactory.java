@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 import com.excilys.malbert.exceptions.ConnectionException;
@@ -37,7 +38,7 @@ public class ConnectionDbFactory {
 	    if (connection.get() == null || connection.get().isClosed()) {
 		Connection connection = null;
 
-		connection = dataSource.getConnection();
+		connection = DataSourceUtils.doGetConnection(dataSource);
 		this.connection.set(connection);
 	    }
 	} catch (SQLException e) {

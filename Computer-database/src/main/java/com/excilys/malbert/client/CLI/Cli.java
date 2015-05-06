@@ -8,8 +8,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
-import com.excilys.malbert.service.ServiceCompany;
-import com.excilys.malbert.service.ServiceComputer;
+import com.excilys.malbert.service.IServiceCompany;
+import com.excilys.malbert.service.IServiceComputer;
 import com.excilys.malbert.util.Utils;
 
 /**
@@ -20,8 +20,8 @@ import com.excilys.malbert.util.Utils;
 public class Cli {
 
     private static Scanner scanner;
-    private static ServiceCompany serviceCompany;
-    private static ServiceComputer serviceComputer;
+    private static IServiceCompany serviceCompany;
+    private static IServiceComputer serviceComputer;
 
     /**
      * Prints the menu
@@ -148,9 +148,8 @@ public class Cli {
 
 	ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
 		"applicationContext.xml");
-	serviceComputer = appContext.getBean(ServiceComputer.class);
-	serviceCompany = appContext.getBean(ServiceCompany.class);
-	appContext.close();
+	serviceComputer = appContext.getBean(IServiceComputer.class);
+	serviceCompany = appContext.getBean(IServiceCompany.class);
 
 	do {
 	    printMenu();
@@ -163,5 +162,6 @@ public class Cli {
 		System.err.println("Please enter a number between 1 and 7");
 	    }
 	} while (entry != 8);
+	appContext.close();
     }
 }
