@@ -8,4 +8,4 @@
 <%@ attribute name="column" required="true" type="java.lang.String" description="Column to order on"%>
 <%@ attribute name="search" required="true" type="java.lang.String" description="Pattern to search"%>
 
-<a class="${classes}" href="${target}?page=${page}&limit=${limit}&order=${orderBy}&column=${column}&search=${search}">${body}</a>
+<a class="${classes}" href="${target}?page=${page}&countPerPage=${limit}&order=${orderBy}&column=${column}&search=${search}">${body}</a>

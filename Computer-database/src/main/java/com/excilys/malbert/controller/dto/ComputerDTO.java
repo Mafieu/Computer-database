@@ -70,4 +70,10 @@ public class ComputerDTO extends EntityDTO {
 	return id;
     }
 
+    @Override
+    public String toString() {
+	return "ComputerDTO [name=" + name + ", introduced=" + introduced
+		+ ", discontinued=" + discontinued + ", companyId=" + companyId
+		+ ", companyName=" + companyName + "]";
+    }
 }

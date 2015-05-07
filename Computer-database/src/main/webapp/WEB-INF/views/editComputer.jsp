@@ -29,11 +29,11 @@
                     </c:if>
 
                     <form action="editComputer" onsubmit="return checkValues()" method="POST">
-                        <input type="hidden" name="computerId" value="${computer.id}"/>
+                        <input type="hidden" name="id" id="id" value="${computer.id}"/>
                         <fieldset>
                             <div class="form-group" id="computerNameDiv">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" value="${computer.name}">
+                                <input type="text" class="form-control" id="name" name="name" value="${computer.name}">
                             </div>
                             <div class="form-group" id="introducedDiv">
                                 <label for="introduced">Introduced date</label>

@@ -3,20 +3,25 @@ package com.excilys.malbert.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.malbert.controller.dto.EntityDTO;
+import org.springframework.stereotype.Component;
+
+import com.excilys.malbert.controller.dto.ComputerDTO;
+import com.excilys.malbert.mapper.MapperComputer;
+import com.excilys.malbert.persistence.model.Computer;
+import com.excilys.malbert.service.IServiceCompany;
+import com.excilys.malbert.service.IServiceComputer;
 import com.excilys.malbert.util.Validator;
 
 /**
- * Contains all the information for the jsp page. Must contain a DTO extending
- * enTityDTO. After constructing it, you must call isValid() method to validate
- * the data and replace it by default values if incorrect
+ * Contains all the information for the jsp page. After constructing it, you
+ * must call isValid() method to validate the data and replace it by default
+ * values if incorrect
  * 
  * @author excilys
- *
- * @param <T>
  */
-public class Page<T extends EntityDTO> {
-    private List<T> data;
+@Component
+public class Page {
+    private List<ComputerDTO> data;
     private int totalCount;
     private int countPerPage;
     private int page;
@@ -25,11 +30,11 @@ public class Page<T extends EntityDTO> {
     private String search;
 
     public Page() {
-	this(new ArrayList<T>(), 0, 0, 0, null, null, null);
+	this(new ArrayList<ComputerDTO>(), 0, 50, 1, "asc", "computer.id", null);
     }
 
-    public Page(List<T> data, int totalCount, int countPerPage, int page,
-	    String order, String column, String search) {
+    public Page(List<ComputerDTO> data, int totalCount, int countPerPage,
+	    int page, String order, String column, String search) {
 	this.data = data;
 	this.totalCount = totalCount;
 	this.countPerPage = countPerPage;
@@ -39,14 +44,10 @@ public class Page<T extends EntityDTO> {
 	this.search = search;
     }
 
-    public boolean isValid() {
+    public boolean isValid(IServiceComputer sComputer, IServiceCompany sCompany) {
 	boolean ret = true;
 	if (countPerPage <= 0) {
 	    countPerPage = 50;
-	    ret = false;
-	}
-	if (page <= 0 || page - 1 > totalCount / countPerPage) {
-	    page = 1;
 	    ret = false;
 	}
 	if (!Validator.isColumnValid(column)) {
@@ -60,6 +61,36 @@ public class Page<T extends EntityDTO> {
 	    order = "asc";
 	    ret = false;
 	}
+	if (!isSearchValid()) {
+	    totalCount = sComputer.getNumberComputer();
+	} else {
+	    totalCount = sComputer.getNumberComputerSearch(search);
+	}
+	if (page <= 0 || page - 1 > totalCount / countPerPage) {
+	    page = 1;
+	    ret = false;
+	}
+	List<Computer> list = null;
+	if (order.equals("asc")) {
+	    if (!isSearchValid()) {
+		list = sComputer.getSomeOrderedByAscending(countPerPage,
+			(page - 1) * countPerPage, column);
+	    } else {
+		list = sComputer.getSomeSearch(countPerPage, (page - 1)
+			* countPerPage, column, order, search);
+	    }
+	} else {
+	    if (!isSearchValid()) {
+		list = sComputer.getSomeOrderedByDescending(countPerPage,
+			(page - 1) * countPerPage, column);
+	    } else {
+		list = sComputer.getSomeSearch(countPerPage, (page - 1)
+			* countPerPage, column, order, search);
+	    }
+	}
+	for (Computer computer : list) {
+	    data.add(MapperComputer.computerToComputerdto(computer));
+	}
 	return ret;
     }
 
@@ -72,11 +103,11 @@ public class Page<T extends EntityDTO> {
 	return true;
     }
 
-    public List<T> getData() {
+    public List<ComputerDTO> getData() {
 	return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(List<ComputerDTO> data) {
 	this.data = data;
     }
 
@@ -128,4 +159,11 @@ public class Page<T extends EntityDTO> {
 	this.search = search;
     }
 
+    @Override
+    public String toString() {
+	return "Page [data=" + data + ", totalCount=" + totalCount
+		+ ", countPerPage=" + countPerPage + ", page=" + page
+		+ ", order=" + order + ", column=" + column + ", search="
+		+ search + "]";
+    }
 }

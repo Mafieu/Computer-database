@@ -3,10 +3,10 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-	<context:component-scan base-package="com.excilys.malbert" />
-
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -16,7 +16,13 @@
 		<property name="password" value="qwerty1234" />
 	</bean>
 
-	<!-- <tx:annotation-driven transaction-manager="txManager" /> <bean id="txManager" 
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
-		<property name="dataSource" ref="dataSource" /> </bean> -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<context:component-scan base-package="com.excilys.malbert.persistence" />
+	<context:component-scan base-package="com.excilys.malbert.service" />
+	<context:component-scan base-package="com.excilys.malbert.controller.servlet" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
 </beans>

@@ -1,6 +1,6 @@
 // On load, let's check values and update css accordingly
 $(function() {
-	if ($("#computerName").val().trim() == "") {
+	if ($("#name").val().trim() == "") {
 		toggleError($("#computerNameDiv"))
 	} else {
 		toggleSuccess($("#computerNameDiv"))
@@ -35,7 +35,7 @@ var toggleSuccess = function(element) {
 
 // Events for change in css in real time
 $("#computerNameDiv").keyup(function(e) {
-	if ($("#computerName").val().trim() == "") {
+	if ($("#name").val().trim() == "") {
 		toggleError($("#computerNameDiv"))
 	} else {
 		toggleSuccess($("#computerNameDiv"))
@@ -64,7 +64,7 @@ $("#discontinuedDiv").keyup(
 var checkValues = function() {
 	var bool = true
 
-	if ($("#computerName").val().trim() == "") {
+	if ($("#name").val().trim() == "") {
 		bool = false
 	}
 	if ($("#introduced").val() != "" && checkDateFormat($("#introduced"))) {

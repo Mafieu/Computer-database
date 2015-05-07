@@ -40,7 +40,7 @@ public final class Utils {
 	    return null;
 	} else {
 	    StringBuilder builder = new StringBuilder();
-	    builder.append(date.getYear());
+	    builder.append(date.getDayOfMonth());
 	    builder.append("-");
 	    if (date.getMonthValue() < 10) {
 		builder.append("0");
@@ -50,7 +50,7 @@ public final class Utils {
 	    if (date.getDayOfMonth() < 10) {
 		builder.append("0");
 	    }
-	    builder.append(date.getDayOfMonth());
+	    builder.append(date.getYear());
 	    return builder.toString();
 	}
     }

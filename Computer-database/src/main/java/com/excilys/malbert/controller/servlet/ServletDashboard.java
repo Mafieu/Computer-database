@@ -1,111 +1,31 @@
 package com.excilys.malbert.controller.servlet;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.excilys.malbert.controller.Page;
-import com.excilys.malbert.controller.dto.ComputerDTO;
-import com.excilys.malbert.mapper.MapperComputer;
-import com.excilys.malbert.persistence.model.Computer;
+import com.excilys.malbert.service.IServiceCompany;
 import com.excilys.malbert.service.IServiceComputer;
-import com.excilys.malbert.util.Utils;
 
-/**
- * Servlet implementation class Servlet
- */
-@WebServlet("/dashboard")
-public class ServletDashboard extends ServletBasic {
-    private static final long serialVersionUID = 1L;
+@Controller
+@RequestMapping(value = "/dashboard")
+public class ServletDashboard {
     @Autowired
     private IServiceComputer serviceComputer;
+    @Autowired
+    private IServiceCompany serviceCompany;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletDashboard() {
-	super();
+    @RequestMapping(method = RequestMethod.GET)
+    public String dashboard(@ModelAttribute Page page, Model model) {
+	if (!page.isValid(serviceComputer, serviceCompany)) {
+	    model.addAttribute("error", true);
+	    model.addAttribute("errorMessage", "Invalid arguments");
+	}
+	model.addAttribute(page);
+	return "dashboard";
     }
-
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
-     */
-    protected void doGet(HttpServletRequest request,
-	    HttpServletResponse response) throws ServletException, IOException {
-	Page<ComputerDTO> computers = new Page<ComputerDTO>();
-	int totalCount = serviceComputer.getNumberComputer();
-	int countPerPage = Utils.stringToInt(request.getParameter("limit"));
-	int page = Utils.stringToInt(request.getParameter("page"));
-	String order = request.getParameter("order");
-	String column = request.getParameter("column");
-	String search = request.getParameter("search");
-
-	computers.setTotalCount(totalCount);
-	computers.setCountPerPage(countPerPage);
-	computers.setPage(page);
-	computers.setOrder(order);
-	computers.setColumn(column);
-	computers.setSearch(search);
-
-	if (!computers.isValid()) {
-	    if (!(countPerPage == 0 && page == 0 && order == null
-		    && column == null && search == null)) {
-		request.setAttribute("error", true);
-		request.setAttribute("errorMessage", "Invalid arguments");
-	    }
-	}
-
-	List<Computer> list = null;
-	if (computers.getOrder().equals("asc")) {
-	    if (!computers.isSearchValid()) {
-		list = serviceComputer.getSomeOrderedByAscending(
-			computers.getCountPerPage(), (computers.getPage() - 1)
-				* computers.getCountPerPage(),
-			computers.getColumn());
-	    } else {
-		computers.setTotalCount(serviceComputer
-			.getNumberComputerSearch(search));
-		list = serviceComputer.getSomeSearch(
-			computers.getCountPerPage(), (computers.getPage() - 1)
-				* computers.getCountPerPage(),
-			computers.getColumn(), computers.getOrder(),
-			computers.getSearch());
-	    }
-	} else {
-	    if (!computers.isSearchValid()) {
-		list = serviceComputer.getSomeOrderedByDescending(
-			computers.getCountPerPage(), (computers.getPage() - 1)
-				* computers.getCountPerPage(),
-			computers.getColumn());
-	    } else {
-		computers.setTotalCount(serviceComputer
-			.getNumberComputerSearch(search));
-		list = serviceComputer.getSomeSearch(
-			computers.getCountPerPage(), (computers.getPage() - 1)
-				* computers.getCountPerPage(),
-			computers.getColumn(), computers.getOrder(),
-			computers.getSearch());
-	    }
-	}
-
-	for (Computer computer : list) {
-	    computers.getData().add(
-		    MapperComputer.computerToComputerdto(computer));
-	}
-
-	request.setAttribute("page", computers);
-
-	this.getServletContext()
-		.getRequestDispatcher("/WEB-INF/views/dashboard.jsp")
-		.forward(request, response);
-    }
-
 }

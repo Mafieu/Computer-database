@@ -29,7 +29,7 @@
                         <fieldset>
                             <div class="form-group" id="computerNameDiv">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" name="computerName" id="computerName" placeholder="Computer name">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Computer name">
                             </div>
                             <div class="form-group" id="introducedDiv">
                                 <label for="introduced">Introduced date</label>
