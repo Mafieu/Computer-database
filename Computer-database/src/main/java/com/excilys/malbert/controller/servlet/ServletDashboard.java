@@ -25,7 +25,6 @@ public class ServletDashboard {
     public String dashboard(@Validated @ModelAttribute Page page,
 	    BindingResult result, Model model) {
 	if (result.hasErrors()) {
-	    System.out.println(result.getAllErrors());
 	    model.addAttribute("error", true);
 	    model.addAttribute("errorMessage", "Invalid arguments");
 	    page.toDefault();
