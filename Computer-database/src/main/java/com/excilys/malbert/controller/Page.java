@@ -10,7 +10,6 @@ import com.excilys.malbert.mapper.MapperComputer;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.service.IServiceCompany;
 import com.excilys.malbert.service.IServiceComputer;
-import com.excilys.malbert.util.Validator;
 
 /**
  * Contains all the information for the jsp page. After constructing it, you
@@ -44,33 +43,22 @@ public class Page {
 	this.search = search;
     }
 
-    public boolean isValid(IServiceComputer sComputer, IServiceCompany sCompany) {
-	boolean ret = true;
-	if (countPerPage <= 0) {
-	    countPerPage = 50;
-	    ret = false;
-	}
-	if (!Validator.isColumnValid(column)) {
-	    column = "computer.id";
-	    ret = false;
-	}
-	if (order == null) {
-	    order = "asc";
-	    ret = false;
-	} else if (!order.equals("asc") && !order.equals("desc")) {
-	    order = "asc";
-	    ret = false;
-	}
+    public void toDefault() {
+	countPerPage = 50;
+	column = "computer.id";
+	order = "asc";
+	page = 1;
+    }
+
+    public void populate(IServiceComputer sComputer, IServiceCompany sCompany) {
+	List<Computer> list = null;
+
 	if (!isSearchValid()) {
 	    totalCount = sComputer.getNumberComputer();
 	} else {
 	    totalCount = sComputer.getNumberComputerSearch(search);
 	}
-	if (page <= 0 || page - 1 > totalCount / countPerPage) {
-	    page = 1;
-	    ret = false;
-	}
-	List<Computer> list = null;
+
 	if (order.equals("asc")) {
 	    if (!isSearchValid()) {
 		list = sComputer.getSomeOrderedByAscending(countPerPage,
@@ -91,7 +79,15 @@ public class Page {
 	for (Computer computer : list) {
 	    data.add(MapperComputer.computerToComputerdto(computer));
 	}
-	return ret;
+    }
+
+    public boolean isOrderValid() {
+	if (order == null) {
+	    return false;
+	} else if (!order.equals("asc") && order.equals("desc")) {
+	    return false;
+	}
+	return true;
     }
 
     public boolean isSearchValid() {

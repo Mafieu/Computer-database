@@ -22,7 +22,7 @@ import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.mapper.MapperComputer;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.Utils;
-import com.excilys.malbert.util.Validator;
+import com.excilys.malbert.util.DbValidator;
 
 @Repository
 public class DAOComputer implements IDAOComputer {
@@ -54,9 +54,9 @@ public class DAOComputer implements IDAOComputer {
 
     @Override
     public Computer getOne(long id) {
-	if (!Validator.isIdValid(id)) {
+	if (!DbValidator.isIdValid(id)) {
 	    logger.error("get computer : {}", id);
-	    throw new DAOException(Validator.INVALID_ID);
+	    throw new DAOException(DbValidator.INVALID_ID);
 	}
 	try {
 	    return this.jdbcTemplate
@@ -70,9 +70,9 @@ public class DAOComputer implements IDAOComputer {
 
     @Override
     public long create(Computer computer) {
-	if (!Validator.isComputerValid(computer)) {
+	if (!DbValidator.isComputerValid(computer)) {
 	    logger.error("create computer : invalid computer");
-	    throw new DAOException(Validator.INVALID_COMPUTER);
+	    throw new DAOException(DbValidator.INVALID_COMPUTER);
 	}
 	KeyHolder keyHolder = new GeneratedKeyHolder();
 	try {
@@ -106,9 +106,9 @@ public class DAOComputer implements IDAOComputer {
 
     @Override
     public void delete(long id) {
-	if (!Validator.isIdValid(id)) {
+	if (!DbValidator.isIdValid(id)) {
 	    logger.error("delete computer : invalid id");
-	    throw new DAOException(Validator.INVALID_ID);
+	    throw new DAOException(DbValidator.INVALID_ID);
 	}
 	try {
 	    this.jdbcTemplate.update("DELETE FROM computer WHERE id = ?", id);
@@ -120,9 +120,9 @@ public class DAOComputer implements IDAOComputer {
 
     @Override
     public void update(Computer computer) {
-	if (!Validator.isComputerValid(computer)) {
+	if (!DbValidator.isComputerValid(computer)) {
 	    logger.error("update computer : invalid computer");
-	    throw new DAOException(Validator.INVALID_COMPUTER);
+	    throw new DAOException(DbValidator.INVALID_COMPUTER);
 	}
 
 	try {
@@ -173,16 +173,16 @@ public class DAOComputer implements IDAOComputer {
 
     private List<Computer> getSomeOrderBy(int limit, int offset, String column,
 	    String order) {
-	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
+	if (!DbValidator.isLimitOffsetCorrect(limit, offset)) {
 	    logger.error(
 		    "get some computer with order by : invalid limit and offset {}/{}",
 		    limit, offset);
-	    throw new DAOException(Validator.INVALID_LIMIT_OFFSET);
+	    throw new DAOException(DbValidator.INVALID_LIMIT_OFFSET);
 	}
-	if (!Validator.isColumnValid(column)) {
+	if (!DbValidator.isColumnValid(column)) {
 	    logger.error("get some computer with order by : invalid column {}",
 		    column);
-	    throw new DAOException(Validator.INVALID_COLUMN);
+	    throw new DAOException(DbValidator.INVALID_COLUMN);
 	}
 
 	try {
@@ -202,9 +202,9 @@ public class DAOComputer implements IDAOComputer {
 
     @Override
     public List<Computer> getOfCompany(long id) {
-	if (!Validator.isIdValid(id)) {
+	if (!DbValidator.isIdValid(id)) {
 	    logger.error("get computers of company : invalid id");
-	    throw new DAOException(Validator.INVALID_ID);
+	    throw new DAOException(DbValidator.INVALID_ID);
 	}
 
 	try {
@@ -221,16 +221,16 @@ public class DAOComputer implements IDAOComputer {
     @Override
     public List<Computer> getSomeSearch(int limit, int offset, String column,
 	    String order, String search) {
-	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
+	if (!DbValidator.isLimitOffsetCorrect(limit, offset)) {
 	    logger.error(
 		    "get some computer with order by : invalid limit and offset {}/{}",
 		    limit, offset);
-	    throw new DAOException(Validator.INVALID_LIMIT_OFFSET);
+	    throw new DAOException(DbValidator.INVALID_LIMIT_OFFSET);
 	}
-	if (!Validator.isColumnValid(column)) {
+	if (!DbValidator.isColumnValid(column)) {
 	    logger.error("get some computer with order by : invalid column {}",
 		    column);
-	    throw new DAOException(Validator.INVALID_COLUMN);
+	    throw new DAOException(DbValidator.INVALID_COLUMN);
 	}
 
 	try {

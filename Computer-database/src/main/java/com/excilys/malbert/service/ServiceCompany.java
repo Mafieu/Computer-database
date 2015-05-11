@@ -11,7 +11,7 @@ import com.excilys.malbert.persistence.DAOComputer;
 import com.excilys.malbert.persistence.IDAOCompany;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
-import com.excilys.malbert.util.Validator;
+import com.excilys.malbert.util.DbValidator;
 
 @Service
 public class ServiceCompany implements IServiceCompany {
@@ -28,8 +28,8 @@ public class ServiceCompany implements IServiceCompany {
 
     @Override
     public Company getCompany(long id) {
-	if (!Validator.isIdValid(id)) {
-	    throw new ServiceException(Validator.INVALID_ID);
+	if (!DbValidator.isIdValid(id)) {
+	    throw new ServiceException(DbValidator.INVALID_ID);
 	}
 	return daoCompany.getOne(id);
     }

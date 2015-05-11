@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.excilys.malbert.exceptions.ServiceException;
 import com.excilys.malbert.persistence.DAOComputer;
 import com.excilys.malbert.persistence.model.Computer;
-import com.excilys.malbert.util.Validator;
+import com.excilys.malbert.util.DbValidator;
 
 @Service
 public class ServiceComputer implements IServiceComputer {
@@ -23,8 +23,8 @@ public class ServiceComputer implements IServiceComputer {
 
     @Override
     public List<Computer> getSome(int limit, int offset) {
-	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
-	    throw new ServiceException(Validator.INVALID_LIMIT_OFFSET);
+	if (!DbValidator.isLimitOffsetCorrect(limit, offset)) {
+	    throw new ServiceException(DbValidator.INVALID_LIMIT_OFFSET);
 	}
 
 	return computerDAO.getSome(limit, offset);
@@ -32,8 +32,8 @@ public class ServiceComputer implements IServiceComputer {
 
     @Override
     public Computer getComputer(long id) {
-	if (!Validator.isIdValid(id)) {
-	    throw new ServiceException(Validator.INVALID_ID);
+	if (!DbValidator.isIdValid(id)) {
+	    throw new ServiceException(DbValidator.INVALID_ID);
 	}
 
 	return computerDAO.getOne(id);
@@ -41,8 +41,8 @@ public class ServiceComputer implements IServiceComputer {
 
     @Override
     public long createComputer(Computer computer) {
-	if (!Validator.isComputerValid(computer)) {
-	    throw new ServiceException(Validator.INVALID_COMPUTER);
+	if (!DbValidator.isComputerValid(computer)) {
+	    throw new ServiceException(DbValidator.INVALID_COMPUTER);
 	}
 
 	return computerDAO.create(computer);
@@ -50,16 +50,16 @@ public class ServiceComputer implements IServiceComputer {
 
     @Override
     public void deleteComputer(long id) {
-	if (!Validator.isIdValid(id)) {
-	    throw new ServiceException(Validator.INVALID_ID);
+	if (!DbValidator.isIdValid(id)) {
+	    throw new ServiceException(DbValidator.INVALID_ID);
 	}
 	computerDAO.delete(id);
     }
 
     @Override
     public void updateComputer(Computer computer) {
-	if (!Validator.isComputerValid(computer)) {
-	    throw new ServiceException(Validator.INVALID_COMPUTER);
+	if (!DbValidator.isComputerValid(computer)) {
+	    throw new ServiceException(DbValidator.INVALID_COMPUTER);
 	}
 	computerDAO.update(computer);
     }
@@ -72,11 +72,11 @@ public class ServiceComputer implements IServiceComputer {
     @Override
     public List<Computer> getSomeOrderedByAscending(int limit, int offset,
 	    String column) {
-	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
-	    throw new ServiceException(Validator.INVALID_LIMIT_OFFSET);
+	if (!DbValidator.isLimitOffsetCorrect(limit, offset)) {
+	    throw new ServiceException(DbValidator.INVALID_LIMIT_OFFSET);
 	}
-	if (!Validator.isColumnValid(column)) {
-	    throw new ServiceException(Validator.INVALID_COLUMN);
+	if (!DbValidator.isColumnValid(column)) {
+	    throw new ServiceException(DbValidator.INVALID_COLUMN);
 	}
 
 	return computerDAO.getSomeOrderedByAscending(limit, offset, column);
@@ -85,11 +85,11 @@ public class ServiceComputer implements IServiceComputer {
     @Override
     public List<Computer> getSomeOrderedByDescending(int limit, int offset,
 	    String column) {
-	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
-	    throw new ServiceException(Validator.INVALID_LIMIT_OFFSET);
+	if (!DbValidator.isLimitOffsetCorrect(limit, offset)) {
+	    throw new ServiceException(DbValidator.INVALID_LIMIT_OFFSET);
 	}
-	if (!Validator.isColumnValid(column)) {
-	    throw new ServiceException(Validator.INVALID_COLUMN);
+	if (!DbValidator.isColumnValid(column)) {
+	    throw new ServiceException(DbValidator.INVALID_COLUMN);
 	}
 
 	return computerDAO.getSomeOrderedByDescending(limit, offset, column);
@@ -98,11 +98,11 @@ public class ServiceComputer implements IServiceComputer {
     @Override
     public List<Computer> getSomeSearch(int limit, int offset, String column,
 	    String order, String search) {
-	if (!Validator.isLimitOffsetCorrect(limit, offset)) {
-	    throw new ServiceException(Validator.INVALID_LIMIT_OFFSET);
+	if (!DbValidator.isLimitOffsetCorrect(limit, offset)) {
+	    throw new ServiceException(DbValidator.INVALID_LIMIT_OFFSET);
 	}
-	if (!Validator.isColumnValid(column)) {
-	    throw new ServiceException(Validator.INVALID_COLUMN);
+	if (!DbValidator.isColumnValid(column)) {
+	    throw new ServiceException(DbValidator.INVALID_COLUMN);
 	}
 
 	return computerDAO.getSomeSearch(limit, offset, column, order, search);

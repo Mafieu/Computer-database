@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.mapper.MapperCompany;
 import com.excilys.malbert.persistence.model.Company;
-import com.excilys.malbert.util.Validator;
+import com.excilys.malbert.util.DbValidator;
 
 @Repository
 public class DAOCompany implements IDAOCompany {
@@ -40,9 +40,9 @@ public class DAOCompany implements IDAOCompany {
 
     @Override
     public Company getOne(long id) {
-	if (!Validator.isIdValid(id)) {
+	if (!DbValidator.isIdValid(id)) {
 	    logger.error("get company : {}", id);
-	    throw new DAOException(Validator.INVALID_ID);
+	    throw new DAOException(DbValidator.INVALID_ID);
 	}
 	try {
 	    return this.jdbcTemplate.queryForObject(
@@ -56,9 +56,9 @@ public class DAOCompany implements IDAOCompany {
 
     @Override
     public void delete(long id) {
-	if (!Validator.isIdValid(id)) {
+	if (!DbValidator.isIdValid(id)) {
 	    logger.error("delete commpany : {}", id);
-	    throw new DAOException(Validator.INVALID_ID);
+	    throw new DAOException(DbValidator.INVALID_ID);
 	}
 	try {
 	    this.jdbcTemplate.update("DELETE FROM company WHERE id = ?", id);

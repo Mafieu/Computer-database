@@ -2,13 +2,13 @@ package com.excilys.malbert.util;
 
 import com.excilys.malbert.persistence.model.Computer;
 
-public final class Validator {
+public final class DbValidator {
     public static final String INVALID_LIMIT_OFFSET = "Invalid limit and offset";
     public static final String INVALID_COLUMN = "Invalid column name";
     public static final String INVALID_COMPUTER = "Invalid computer";
     public static final String INVALID_ID = "Invalid id";
 
-    private Validator() {
+    private DbValidator() {
     }
 
     public static boolean isLimitOffsetCorrect(Integer limit, Integer offset) {
