@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"   prefix="c"%>
 <%@ attribute name="body" required="true" type="java.lang.String" description="Body of the link"%>
 <%@ attribute name="target" required="true" type="java.lang.String" description="Servlet to request"%>
 <%@ attribute name="page" required="true" type="java.lang.Integer" description="Page to request"%>

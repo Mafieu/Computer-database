@@ -20,19 +20,16 @@ public final class Utils {
     }
 
     public static LocalDateTime stringToLocaldatetime(String date) {
+	String[] dates;
 	if (DateValidator.isThisDateValid(date, "dd-MM-YYYY")) {
-	    String[] dates = date.split("-");
-	    return LocalDateTime.of(Integer.parseInt(dates[2]),
-		    Integer.parseInt(dates[1]), Integer.parseInt(dates[0]), 0,
-		    0);
+	    dates = date.split("-");
 	} else if (DateValidator.isThisDateValid(date, "dd/MM/YYYY")) {
-	    String[] dates = date.split("/");
-	    return LocalDateTime.of(Integer.parseInt(dates[2]),
-		    Integer.parseInt(dates[1]), Integer.parseInt(dates[0]), 0,
-		    0);
+	    dates = date.split("/");
 	} else {
 	    return null;
 	}
+	return LocalDateTime.of(Integer.parseInt(dates[2]),
+		Integer.parseInt(dates[1]), Integer.parseInt(dates[0]), 0, 0);
     }
 
     public static String localdatetimeToString(LocalDateTime date) {
