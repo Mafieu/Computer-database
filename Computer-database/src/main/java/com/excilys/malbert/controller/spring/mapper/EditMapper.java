@@ -1,11 +1,16 @@
-package com.excilys.malbert.controller.servlet;
+package com.excilys.malbert.controller.spring.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,27 +18,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.malbert.controller.dto.CompanyDTO;
 import com.excilys.malbert.controller.dto.ComputerDTO;
-import com.excilys.malbert.mapper.MapperCompany;
-import com.excilys.malbert.mapper.MapperComputer;
+import com.excilys.malbert.mapper.CompanyMapper;
+import com.excilys.malbert.mapper.ComputerMapper;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
-import com.excilys.malbert.service.IServiceCompany;
-import com.excilys.malbert.service.IServiceComputer;
-import com.excilys.malbert.util.Utils;
+import com.excilys.malbert.service.ICompanyService;
+import com.excilys.malbert.service.IComputerService;
+import com.excilys.malbert.validator.Date.Pattern;
 
 /**
  * Servlet implementation class ServletEdit
  */
 @Controller
 @RequestMapping(value = "/editComputer")
-public class ServletEdit {
+public class EditMapper {
     @Autowired
-    private IServiceComputer serviceComputer;
+    private IComputerService serviceComputer;
     @Autowired
-    private IServiceCompany serviceCompany;
+    private ICompanyService serviceCompany;
 
     @RequestMapping(method = RequestMethod.GET)
     protected String doGet(@RequestParam(value = "id") long id, Model model) {
+	Locale locale = LocaleContextHolder.getLocale();
+	Pattern language = Pattern.map(locale.getLanguage());
 	if (id <= 0) {
 	    return "redirect:dashboard";
 	} else {
@@ -45,29 +52,30 @@ public class ServletEdit {
 	    } else {
 		for (Company company : serviceCompany.getAllCompanies()) {
 		    companiesDTO
-			    .add(MapperCompany.companyToCompanydto(company));
+			    .add(CompanyMapper.companyToCompanydto(company));
 		}
 
 		model.addAttribute("companies", companiesDTO);
-		model.addAttribute("computer",
-			MapperComputer.computerToComputerdto(computer));
+		model.addAttribute("computerDTO", ComputerMapper
+			.computerToComputerdto(computer, language));
 		return "editComputer";
 	    }
 	}
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    protected String doPost(@ModelAttribute ComputerDTO computerDTO, Model model) {
-	if (computerDTO.getName() == ""
-		|| computerDTO.getIntroduced() != ""
-		&& Utils.stringToLocaldatetime(computerDTO.getIntroduced()) == null
-		|| computerDTO.getDiscontinued() != ""
-		&& Utils.stringToLocaldatetime(computerDTO.getDiscontinued()) == null) {
-	    model.addAttribute("error", true);
-	    return "addComputer";
+    protected String doPost(@Valid @ModelAttribute ComputerDTO computerDTO,
+	    BindingResult result, Model model) {
+	Locale locale = LocaleContextHolder.getLocale();
+	Pattern language = Pattern.map(locale.getLanguage());
+	if (result.hasErrors()) {
+	    List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
+
+	    model.addAttribute("companies", companiesDTO);
+	    return "editComputer";
 	} else {
-	    serviceComputer.updateComputer(MapperComputer
-		    .computerdtoToComputer(computerDTO));
+	    serviceComputer.updateComputer(ComputerMapper
+		    .computerdtoToComputer(computerDTO, language));
 	    return "redirect:dashboard";
 	}
     }

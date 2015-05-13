@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.excilys</groupId>
 	<artifactId>Computer-database</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.5-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<properties>
@@ -19,10 +19,10 @@
 		<commons.version>1.4.0</commons.version>
 		<logback.version>1.1.3</logback.version>
 		<spring.version>4.1.6.RELEASE</spring.version>
+		<hibernate-validator.version>5.1.3.Final</hibernate-validator.version>
 	</properties>
 
 	<build>
-		<sourceDirectory>src/main/java/</sourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -35,10 +35,6 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.4</version>
-				<configuration>
-					<warSourceDirectory>src/main/webapp</warSourceDirectory>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -55,7 +51,6 @@
 			<groupId>com.jolbox</groupId>
 			<artifactId>bonecp</artifactId>
 			<version>${bonecp.version}</version>
-			<scope>compile</scope>
 		</dependency>
 
 		<!-- Logger -->
@@ -70,6 +65,12 @@
 			<version>${logback.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
 
 		<!-- Servlet -->
 		<dependency>
@@ -104,6 +105,13 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -131,7 +139,6 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-
 		<!-- View -->
 		<dependency>
 			<groupId>jstl</groupId>
@@ -152,6 +159,12 @@
 			<artifactId>commons-validator</artifactId>
 			<version>${commons.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+		</dependency>
+
 
 	</dependencies>
 </project>

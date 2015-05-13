@@ -8,7 +8,6 @@
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
-<!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
@@ -18,6 +17,17 @@
 		<div class="container">
 			<a class="navbar-brand" href="dashboard"><spring:message
 					code="application.title" /></a>
+			<!-- Imgs not loaded -->
+			<div class="navbar-right">
+				<hashtag:link column="${page.column}" limit="${page.limit}"
+					target="dashboard" page="${page.page}" orderBy="${page.order}"
+					search="${page.search}" lang="fr"
+					body='<img src="img/flag_fr.jpg">'></hashtag:link>
+				<hashtag:link column="${page.column}" limit="${page.limit}"
+					target="dashboard" page="${page.page}" orderBy="${page.order}"
+					search="${page.search}" lang="en"
+					body='<img src="img/flag_en.jpg">'></hashtag:link>
+			</div>
 		</div>
 	</header>
 
@@ -42,9 +52,9 @@
 					<form id="searchForm" action="dashboard" method="GET"
 						class="form-inline">
 						<input name="page" hidden="true" value="1" /> <input name="limit"
-							hidden="true" value="${page.countPerPage}" /> <input
-							name="order" hidden="true" value="${page.order}" /> <input
-							name="column" hidden="true" value="${page.column}" />
+							hidden="true" value="${page.limit}" /> <input name="order"
+							hidden="true" value="${page.order}" /> <input name="column"
+							hidden="true" value="${page.column}" />
 						<c:choose>
 							<c:when test="${page.isSearchValid()}">
 								<input type="search" id="searchbox" name="search"
@@ -91,13 +101,13 @@
 								<c:when
 									test="${page.column == 'computer.name' && page.order == 'asc'}">
 									<a
-										href="dashboard?page=${page.page}&countPerPage=${page.countPerPage}&order=desc&column=computer.name&search=${page.search}"><spring:message
+										href="dashboard?page=${page.page}&limit=${page.limit}&order=desc&column=computer.name&search=${page.search}"><spring:message
 											code='dashboard.name' /> <span
 										class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span></a>
 								</c:when>
 								<c:otherwise>
 									<a
-										href="dashboard?page=${page.page}&countPerPage=${page.countPerPage}&order=asc&column=computer.name&search=${page.search}"><spring:message
+										href="dashboard?page=${page.page}&limit=${page.limit}&order=asc&column=computer.name&search=${page.search}"><spring:message
 											code='dashboard.name' /> <span
 										class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span></a>
 								</c:otherwise>
@@ -106,13 +116,13 @@
 								<c:when
 									test="${page.column == 'introduced' && page.order == 'asc'}">
 									<a
-										href="dashboard?page=${page.page}&countPerPage=${page.countPerPage}&order=desc&column=introduced&search=${page.search}"><spring:message
+										href="dashboard?page=${page.page}&limit=${page.limit}&order=desc&column=introduced&search=${page.search}"><spring:message
 											code='dashboard.introduced' /> <span
 										class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span></a>
 								</c:when>
 								<c:otherwise>
 									<a
-										href="dashboard?page=${page.page}&countPerPage=${page.countPerPage}&order=asc&column=introduced&search=${page.search}"><spring:message
+										href="dashboard?page=${page.page}&limit=${page.limit}&order=asc&column=introduced&search=${page.search}"><spring:message
 											code='dashboard.introduced' /> <span
 										class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span></a>
 								</c:otherwise>
@@ -121,13 +131,13 @@
 								<c:when
 									test="${page.column == 'discontinued' && page.order == 'asc'}">
 									<a
-										href="dashboard?page=${page.page}&countPerPage=${page.countPerPage}&order=desc&column=discontinued&search=${page.search}"><spring:message
+										href="dashboard?page=${page.page}&limit=${page.limit}&order=desc&column=discontinued&search=${page.search}"><spring:message
 											code='dashboard.discontinued' /> <span
 										class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span></a>
 								</c:when>
 								<c:otherwise>
 									<a
-										href="dashboard?page=${page.page}&countPerPage=${page.countPerPage}&order=asc&column=discontinued&search=${page.search}"><spring:message
+										href="dashboard?page=${page.page}&limit=${page.limit}&order=asc&column=discontinued&search=${page.search}"><spring:message
 											code='dashboard.discontinued' /> <span
 										class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span></a>
 								</c:otherwise>
@@ -136,13 +146,13 @@
 								<c:when
 									test="${page.column == 'company.name' && page.order == 'asc'}">
 									<a
-										href="dashboard?page=${page.page}&countPerPage=${page.countPerPage}&order=desc&column=company.name&search=${page.search}"><spring:message
+										href="dashboard?page=${page.page}&limit=${page.limit}&order=desc&column=company.name&search=${page.search}"><spring:message
 											code='dashboard.company' /> <span
 										class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span></a>
 								</c:when>
 								<c:otherwise>
 									<a
-										href="dashboard?page=${page.page}&countPerPage=${page.countPerPage}&order=asc&column=company.name&search=${page.search}"><spring:message
+										href="dashboard?page=${page.page}&limit=${page.limit}&order=asc&column=company.name&search=${page.search}"><spring:message
 											code='dashboard.company' /> <span
 										class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span></a>
 								</c:otherwise>
@@ -171,12 +181,12 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-		<hashtag:pagination currentPage="${page.page}"
-			limit="${page.countPerPage}" size="${page.totalCount}"
-			orderBy="${page.order}" column="${page.column}"
-			search="${page.search}"></hashtag:pagination>
+		<hashtag:pagination currentPage="${page.page}" limit="${page.limit}"
+			size="${page.totalCount}" orderBy="${page.order}"
+			column="${page.column}" search="${page.search}"></hashtag:pagination>
 	</footer>
 	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.cookie.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/dashboard.js"></script>
 

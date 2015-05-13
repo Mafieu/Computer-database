@@ -1,4 +1,4 @@
-package com.excilys.malbert.util;
+package com.excilys.malbert.validator;
 
 import com.excilys.malbert.persistence.model.Computer;
 
@@ -15,19 +15,6 @@ public final class DbValidator {
 	if (limit == null || offset == null) {
 	    return false;
 	} else if (limit <= 0 || offset < 0) {
-	    return false;
-	} else {
-	    return true;
-	}
-    }
-
-    public static boolean isColumnValid(String column) {
-	if (column == null) {
-	    return false;
-	} else if (!(column.equals("computer.id")
-		|| column.equals("computer.name")
-		|| column.equals("introduced") || column.equals("discontinued")
-		|| column.equals("company.id") || column.equals("company.name"))) {
 	    return false;
 	} else {
 	    return true;

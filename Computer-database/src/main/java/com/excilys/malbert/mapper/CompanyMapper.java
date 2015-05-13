@@ -9,8 +9,8 @@ import com.excilys.malbert.controller.dto.CompanyDTO;
 import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.persistence.model.Company;
 
-public final class MapperCompany implements RowMapper<Company> {
-    public MapperCompany() {
+public final class CompanyMapper implements RowMapper<Company> {
+    public CompanyMapper() {
     }
 
     public static Company companydtoToCompany(CompanyDTO companyDTO) {

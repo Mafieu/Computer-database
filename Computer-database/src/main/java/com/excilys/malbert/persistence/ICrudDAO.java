@@ -2,9 +2,9 @@ package com.excilys.malbert.persistence;
 
 import com.excilys.malbert.persistence.model.Entity;
 
-public interface IDAOCrud<T extends Entity> {
+public interface ICrudDAO<T extends Entity> {
 
-    default public long create(T object) {
+    default public void create(T object) {
 	throw new IllegalAccessError("Create was not implemented");
     }
 

@@ -20,7 +20,16 @@ $(function() {
 
 // Functions to chack date format and change the css
 var checkDateFormat = function(element) {
-	var date = moment(element.val(), ["DD-MM-YYYY", "DD/MM/YYYY"], true)
+	var format
+	switch($.cookie("language")){
+		case "fr":
+			format = "DD-MM-YYYY"
+			break
+		default:
+			format = "MM-DD-YYYY"
+			break
+	}
+	var date = moment(element.val(), format, true)
 	var wrongDate = !date.isValid() || date.year() < 1970 || date.year() >= 2038
 	return wrongDate
 }

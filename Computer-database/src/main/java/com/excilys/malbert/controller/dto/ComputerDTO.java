@@ -1,11 +1,23 @@
 package com.excilys.malbert.controller.dto;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.excilys.malbert.validator.Date;
+
 public class ComputerDTO extends EntityDTO {
 
+    @NotNull
+    @Size(min = 1, max = 255)
     private String name;
+    @Date
     private String introduced;
+    @Date
     private String discontinued;
+    @Min(0)
     private long companyId;
+    @Size(min = 1, max = 255)
     private String companyName;
 
     public ComputerDTO() {
@@ -31,7 +43,7 @@ public class ComputerDTO extends EntityDTO {
     }
 
     public void setName(String name) {
-	this.name = name;
+	this.name = name.trim();
     }
 
     public String getIntroduced() {

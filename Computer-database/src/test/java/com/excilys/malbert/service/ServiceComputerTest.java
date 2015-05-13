@@ -20,7 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.malbert.persistence.DAOComputer;
+import com.excilys.malbert.persistence.ComputerDAO;
+import com.excilys.malbert.persistence.IComputerDAO.Column;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.TestUtils;
@@ -29,13 +30,13 @@ import com.excilys.malbert.util.TestUtils;
 @ContextConfiguration(locations = { "/applicationContext.xml" })
 public class ServiceComputerTest {
     // We mock a DAOComputer with DAOException as a default answer
-    private DAOComputer mockedDAOComputer = mock(DAOComputer.class);
+    private ComputerDAO mockedDAOComputer = mock(ComputerDAO.class);
     private List<Computer> computers;
     private List<Computer> reversedComputers;
     @Autowired
-    private ServiceComputer serviceComputer;
+    private ComputerService serviceComputer;
     @Autowired
-    private DAOComputer computerDAO;
+    private ComputerDAO computerDAO;
 
     @SuppressWarnings("rawtypes")
     @Before
@@ -56,22 +57,24 @@ public class ServiceComputerTest {
 	when(mockedDAOComputer.getSome(2, 0)).thenReturn(
 		computers.subList(0, 2));
 	when(mockedDAOComputer.getNumberComputer()).thenReturn(4);
-	when(
-		mockedDAOComputer.create(new Computer(5, "Test", LocalDateTime
-			.of(1990, 04, 29, 0, 0), null, new Company(1,
-			"Apple Inc.")))).thenAnswer(new Answer() {
+	doAnswer(new Answer() {
+
 	    @Override
 	    public Object answer(InvocationOnMock invocation) throws Throwable {
 		computers.add((Computer) invocation.getArguments()[0]);
-		return 5L;
+		((Computer) invocation.getArguments()[0]).setId(5);
+		return null;
 	    }
-	});
-	when(mockedDAOComputer.getSomeOrderedByAscending(2, 0, "computer.id"))
+
+	}).when(mockedDAOComputer).create(
+		new Computer(5, "Test", LocalDateTime.of(1990, 04, 29, 0, 0),
+			null, new Company(1, "Apple Inc.")));
+	when(mockedDAOComputer.getSomeOrderedByAscending(2, 0, Column.ID))
 		.thenReturn(computers.subList(0, 2));
 	reversedComputers = new ArrayList<Computer>();
 	reversedComputers.add(computers.get(1));
 	reversedComputers.add(computers.get(0));
-	when(mockedDAOComputer.getSomeOrderedByDescending(2, 0, "computer.id"))
+	when(mockedDAOComputer.getSomeOrderedByDescending(2, 0, Column.ID))
 		.thenReturn(reversedComputers);
 	doAnswer(new Answer() {
 	    @Override
@@ -122,7 +125,8 @@ public class ServiceComputerTest {
     public void testCreateComputer() {
 	Computer computer = new Computer(5, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, new Company(1, "Apple Inc."));
-	assertEquals(5, serviceComputer.createComputer(computer));
+	serviceComputer.createComputer(computer);
+	assertEquals(5, computer.getId());
     }
 
     @Test
@@ -145,12 +149,12 @@ public class ServiceComputerTest {
     @Test
     public void testGetSomeOrderedByAscending() {
 	assertArrayEquals(computers.subList(0, 2).toArray(), serviceComputer
-		.getSomeOrderedByAscending(2, 0, "computer.id").toArray());
+		.getSomeOrderedByAscending(2, 0, Column.ID).toArray());
     }
 
     @Test
     public void testGetSomeOrderedByDescending() {
 	assertArrayEquals(reversedComputers.toArray(), serviceComputer
-		.getSomeOrderedByDescending(2, 0, "computer.id").toArray());
+		.getSomeOrderedByDescending(2, 0, Column.ID).toArray());
     }
 }

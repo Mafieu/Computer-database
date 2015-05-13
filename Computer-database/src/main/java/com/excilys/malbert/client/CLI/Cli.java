@@ -8,9 +8,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
-import com.excilys.malbert.service.IServiceCompany;
-import com.excilys.malbert.service.IServiceComputer;
+import com.excilys.malbert.service.ICompanyService;
+import com.excilys.malbert.service.IComputerService;
 import com.excilys.malbert.util.Utils;
+import com.excilys.malbert.validator.Date.Pattern;
 
 /**
  * Command Line Interface class for the client
@@ -20,8 +21,8 @@ import com.excilys.malbert.util.Utils;
 public class Cli {
 
     private static Scanner scanner;
-    private static IServiceCompany serviceCompany;
-    private static IServiceComputer serviceComputer;
+    private static ICompanyService serviceCompany;
+    private static IComputerService serviceComputer;
 
     /**
      * Prints the menu
@@ -47,10 +48,12 @@ public class Cli {
 	System.out.println("Name of the computer :");
 	scanner.nextLine(); // Just for debug, otherwise name is ""
 	name = scanner.nextLine();
-	System.out.println("Date of introduction (YYYY-MM-DD):");
-	introduced = Utils.stringToLocaldatetime(scanner.nextLine());
-	System.out.println("Date of discontinuation (YYYY-MM-DD):");
-	discontinued = Utils.stringToLocaldatetime(scanner.nextLine());
+	System.out.println("Date of introduction (DD-MM-YYYY):");
+	introduced = Utils
+		.stringToLocaldatetime(scanner.nextLine(), Pattern.FR);
+	System.out.println("Date of discontinuation (DD-MM-YYYY):");
+	discontinued = Utils.stringToLocaldatetime(scanner.nextLine(),
+		Pattern.FR);
 	System.out
 		.println("Id of the manufacturer (for no manufacturer, enter a 0 or minus id):");
 	if (scanner.hasNextLong()) {
@@ -148,8 +151,8 @@ public class Cli {
 
 	ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
 		"applicationContext.xml");
-	serviceComputer = appContext.getBean(IServiceComputer.class);
-	serviceCompany = appContext.getBean(IServiceCompany.class);
+	serviceComputer = appContext.getBean(IComputerService.class);
+	serviceCompany = appContext.getBean(ICompanyService.class);
 
 	do {
 	    printMenu();

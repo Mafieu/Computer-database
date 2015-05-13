@@ -1,7 +1,12 @@
 package com.excilys.malbert.controller.dto;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public abstract class EntityDTO {
 
+    @NotNull
+    @Min(0)
     protected long id;
 
     public EntityDTO() {

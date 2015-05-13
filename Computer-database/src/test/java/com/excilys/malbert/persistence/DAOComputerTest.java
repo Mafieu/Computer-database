@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.malbert.exceptions.DAOException;
+import com.excilys.malbert.persistence.IComputerDAO.Column;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.TestUtils;
@@ -27,7 +28,7 @@ public class DAOComputerTest {
 
     private List<Computer> computers;
     @Autowired
-    private DAOComputer computerDAO;
+    private ComputerDAO computerDAO;
 
     @Before
     public void before() {
@@ -99,16 +100,14 @@ public class DAOComputerTest {
     public void testCreate() {
 	// We set the id because we know what's its going to be
 	// The id is not set in the database
-	Computer computer = new Computer(5, "Test", LocalDateTime.of(1990, 04,
+	Computer computer = new Computer(0, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, new Company(1, "Apple Inc."));
-	long id = computerDAO.create(computer);
-	assertEquals(computer.getId(), id);
+	computerDAO.create(computer);
+	assertEquals(computer.getId(), 5);
     }
 
-    @Test(expected = DAOException.class)
+    @Test
     public void testCreateNullCompany() {
-	// We set the id because we know what's its going to be
-	// The id is not set in the database
 	Computer computer = new Computer(5, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, null);
 	computerDAO.create(computer);
@@ -150,7 +149,7 @@ public class DAOComputerTest {
 	assertEquals(computer, computerDAO.getOne(3));
     }
 
-    @Test(expected = DAOException.class)
+    @Test
     public void testUpdateCompanyNull() {
 	Computer computer = new Computer(3, "Test", LocalDateTime.of(1990, 04,
 		29, 0, 0), null, null);
@@ -172,7 +171,7 @@ public class DAOComputerTest {
     @Test
     public void testGetSomeAscending() {
 	assertArrayEquals(computers.subList(0, 2).toArray(), computerDAO
-		.getSomeOrderedByAscending(2, 0, "computer.id").toArray());
+		.getSomeOrderedByAscending(2, 0, Column.ID).toArray());
     }
 
     @Test
@@ -181,15 +180,7 @@ public class DAOComputerTest {
 	invertComputers.add(computers.get(3));
 	invertComputers.add(computers.get(2));
 	assertArrayEquals(invertComputers.toArray(), computerDAO
-		.getSomeOrderedByDescending(2, 0, "computer.id").toArray());
-    }
-
-    @Test
-    public void testGetOfCompany() {
-	List<Computer> computersOfApple = new ArrayList<Computer>();
-	computersOfApple.add(computers.get(0));
-	assertArrayEquals(computersOfApple.toArray(),
-		computerDAO.getOfCompany(1).toArray());
+		.getSomeOrderedByDescending(2, 0, Column.ID).toArray());
     }
 
     @Test

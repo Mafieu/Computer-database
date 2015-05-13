@@ -1,4 +1,4 @@
-package com.excilys.malbert.controller.servlet;
+package com.excilys.malbert.controller.spring.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.excilys.malbert.service.IServiceComputer;
+import com.excilys.malbert.service.IComputerService;
 
 @Controller
 @RequestMapping(value = "/deleteComputer")
-public class ServletDeleteComputer {
+public class DeleteComputerMapper {
 
     @Autowired
-    private IServiceComputer serviceComputer;
+    private IComputerService serviceComputer;
 
     @RequestMapping(method = RequestMethod.POST)
     protected String doPost(@ModelAttribute("selection") String selection) {

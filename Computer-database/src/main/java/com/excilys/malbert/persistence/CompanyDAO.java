@@ -2,8 +2,6 @@ package com.excilys.malbert.persistence;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,26 +10,22 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.malbert.exceptions.DAOException;
-import com.excilys.malbert.mapper.MapperCompany;
+import com.excilys.malbert.mapper.CompanyMapper;
 import com.excilys.malbert.persistence.model.Company;
-import com.excilys.malbert.util.DbValidator;
+import com.excilys.malbert.validator.DbValidator;
 
 @Repository
-public class DAOCompany implements IDAOCompany {
-
-    private JdbcTemplate jdbcTemplate;
-    private Logger logger = LoggerFactory.getLogger(DAOCompany.class);
+public class CompanyDAO implements ICompanyDAO {
 
     @Autowired
-    public void setDataSource(DataSource datasource) {
-	this.jdbcTemplate = new JdbcTemplate(datasource);
-    }
+    private JdbcTemplate jdbcTemplate;
+    private Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
     @Override
     public List<Company> getAll() {
 	try {
 	    return this.jdbcTemplate.query("SELECT * FROM company",
-		    new MapperCompany());
+		    new CompanyMapper());
 	} catch (DataAccessException e) {
 	    logger.error("list company");
 	    throw new DAOException("Couldn't get the list of companies");
@@ -47,7 +41,7 @@ public class DAOCompany implements IDAOCompany {
 	try {
 	    return this.jdbcTemplate.queryForObject(
 		    "SELECT * FROM company WHERE id = ?", new Object[] { id },
-		    new MapperCompany());
+		    new CompanyMapper());
 	} catch (DataAccessException e) {
 	    logger.error("get company : {}", id);
 	    throw new DAOException("Couldn't get company : " + id);

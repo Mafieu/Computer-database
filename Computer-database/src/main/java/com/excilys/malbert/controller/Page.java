@@ -6,15 +6,17 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.excilys.malbert.controller.dto.ComputerDTO;
-import com.excilys.malbert.mapper.MapperComputer;
+import com.excilys.malbert.mapper.ComputerMapper;
+import com.excilys.malbert.persistence.IComputerDAO.Column;
+import com.excilys.malbert.persistence.IComputerDAO.Order;
 import com.excilys.malbert.persistence.model.Computer;
-import com.excilys.malbert.service.IServiceCompany;
-import com.excilys.malbert.service.IServiceComputer;
+import com.excilys.malbert.service.ICompanyService;
+import com.excilys.malbert.service.IComputerService;
+import com.excilys.malbert.validator.Date.Pattern;
 
 /**
- * Contains all the information for the jsp page. After constructing it, you
- * must call isValid() method to validate the data and replace it by default
- * values if incorrect
+ * Contains all the information for the jsp page. Use toDefault to set default
+ * values and then populate to populate the data list
  * 
  * @author excilys
  */
@@ -22,7 +24,7 @@ import com.excilys.malbert.service.IServiceComputer;
 public class Page {
     private List<ComputerDTO> data;
     private int totalCount;
-    private int countPerPage;
+    private int limit;
     private int page;
     private String order;
     private String column;
@@ -36,7 +38,7 @@ public class Page {
 	    int page, String order, String column, String search) {
 	this.data = data;
 	this.totalCount = totalCount;
-	this.countPerPage = countPerPage;
+	this.limit = countPerPage;
 	this.page = page;
 	this.order = order;
 	this.column = column;
@@ -44,14 +46,17 @@ public class Page {
     }
 
     public void toDefault() {
-	countPerPage = 50;
+	limit = 50;
 	column = "computer.id";
 	order = "asc";
 	page = 1;
     }
 
-    public void populate(IServiceComputer sComputer, IServiceCompany sCompany) {
+    public void populate(IComputerService sComputer, ICompanyService sCompany,
+	    Pattern language) {
 	List<Computer> list = null;
+	Column col = Column.map(column);
+	Order ord = Order.map(order);
 
 	if (!isSearchValid()) {
 	    totalCount = sComputer.getNumberComputer();
@@ -59,25 +64,29 @@ public class Page {
 	    totalCount = sComputer.getNumberComputerSearch(search);
 	}
 
+	if (page - 1 > totalCount / limit) {
+	    this.page = 1;
+	}
+
 	if (order.equals("asc")) {
 	    if (!isSearchValid()) {
-		list = sComputer.getSomeOrderedByAscending(countPerPage,
-			(page - 1) * countPerPage, column);
+		list = sComputer.getSomeOrderedByAscending(limit, (page - 1)
+			* limit, col);
 	    } else {
-		list = sComputer.getSomeSearch(countPerPage, (page - 1)
-			* countPerPage, column, order, search);
+		list = sComputer.getSomeSearch(limit, (page - 1) * limit, col,
+			ord, search);
 	    }
 	} else {
 	    if (!isSearchValid()) {
-		list = sComputer.getSomeOrderedByDescending(countPerPage,
-			(page - 1) * countPerPage, column);
+		list = sComputer.getSomeOrderedByDescending(limit, (page - 1)
+			* limit, col);
 	    } else {
-		list = sComputer.getSomeSearch(countPerPage, (page - 1)
-			* countPerPage, column, order, search);
+		list = sComputer.getSomeSearch(limit, (page - 1) * limit, col,
+			ord, search);
 	    }
 	}
 	for (Computer computer : list) {
-	    data.add(MapperComputer.computerToComputerdto(computer));
+	    data.add(ComputerMapper.computerToComputerdto(computer, language));
 	}
     }
 
@@ -93,10 +102,25 @@ public class Page {
     public boolean isSearchValid() {
 	if (search == null) {
 	    return false;
-	} else if (search.equals("")) {
+	} else if (search.trim().equals("")) {
+	    return false;
+	} else if (search.contains(" ")) {
 	    return false;
 	}
 	return true;
+    }
+
+    public boolean isColumnValid() {
+	if (column == null) {
+	    return false;
+	} else if (!(column.equals("computer.id")
+		|| column.equals("computer.name")
+		|| column.equals("introduced") || column.equals("discontinued")
+		|| column.equals("company.id") || column.equals("company.name"))) {
+	    return false;
+	} else {
+	    return true;
+	}
     }
 
     public List<ComputerDTO> getData() {
@@ -115,12 +139,12 @@ public class Page {
 	this.totalCount = totalCount;
     }
 
-    public int getCountPerPage() {
-	return countPerPage;
+    public int getLimit() {
+	return limit;
     }
 
-    public void setCountPerPage(int countPerPage) {
-	this.countPerPage = countPerPage;
+    public void setLimit(int countPerPage) {
+	this.limit = countPerPage;
     }
 
     public int getPage() {
@@ -158,8 +182,7 @@ public class Page {
     @Override
     public String toString() {
 	return "Page [data=" + data + ", totalCount=" + totalCount
-		+ ", countPerPage=" + countPerPage + ", page=" + page
-		+ ", order=" + order + ", column=" + column + ", search="
-		+ search + "]";
+		+ ", countPerPage=" + limit + ", page=" + page + ", order="
+		+ order + ", column=" + column + ", search=" + search + "]";
     }
 }

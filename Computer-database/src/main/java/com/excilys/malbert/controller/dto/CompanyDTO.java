@@ -1,7 +1,12 @@
 package com.excilys.malbert.controller.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class CompanyDTO extends EntityDTO {
 
+    @NotNull
+    @Size(min = 1)
     private String name;
 
     public CompanyDTO() {
@@ -18,7 +23,7 @@ public class CompanyDTO extends EntityDTO {
     }
 
     public void setName(String name) {
-	this.name = name;
+	this.name = name.trim();
     }
 
     public long getId() {

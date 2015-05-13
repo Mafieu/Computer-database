@@ -4,7 +4,59 @@ import java.util.List;
 
 import com.excilys.malbert.persistence.model.Computer;
 
-public interface IDAOComputer extends IDAOCrud<Computer> {
+public interface IComputerDAO extends ICrudDAO<Computer> {
+
+    public enum Order {
+	ASC("asc"), DESC("desc");
+	private String name;
+
+	private Order(String name) {
+	    this.name = name;
+	}
+
+	public String toString() {
+	    return name;
+	}
+
+	public static Order map(String s) {
+	    if (ASC.name.equalsIgnoreCase(s)) {
+		return ASC;
+	    } else if (DESC.name.equalsIgnoreCase(s)) {
+		return DESC;
+	    }
+	    return DESC;
+	}
+    };
+
+    public enum Column {
+	ID("computer.id"), NAME("computer.name"), INTRODUCED("introduced"), DISCONTINUED(
+		"discontinued"), COMPANY("company.name");
+	private String name;
+
+	private Column(String name) {
+	    this.name = name;
+	}
+
+	public String toString() {
+	    return name;
+	}
+
+	public static Column map(String s) {
+	    if (ID.name.equalsIgnoreCase(s)) {
+		return ID;
+	    } else if (NAME.name.equalsIgnoreCase(s)) {
+		return NAME;
+	    } else if (INTRODUCED.name.equalsIgnoreCase(s)) {
+		return INTRODUCED;
+	    } else if (DISCONTINUED.name.equalsIgnoreCase(s)) {
+		return DISCONTINUED;
+	    } else if (COMPANY.name.equalsIgnoreCase(s)) {
+		return COMPANY;
+	    }
+	    return ID;
+	}
+    }
+
     public List<Computer> getAll();
 
     /**
@@ -15,15 +67,6 @@ public interface IDAOComputer extends IDAOCrud<Computer> {
      * @return
      */
     public List<Computer> getSome(int limit, int offset);
-
-    /**
-     * Get the list of computers of a company
-     * 
-     * @param id
-     *            Id of the company
-     * @return
-     */
-    public List<Computer> getOfCompany(long id);
 
     public int getNumberComputer();
 
@@ -37,7 +80,7 @@ public interface IDAOComputer extends IDAOCrud<Computer> {
      * @return
      */
     public List<Computer> getSomeOrderedByAscending(int limit, int offset,
-	    String column);
+	    Column column);
 
     /**
      * Get the list of computers from offset to offset + limit ordered by column
@@ -49,7 +92,7 @@ public interface IDAOComputer extends IDAOCrud<Computer> {
      * @return
      */
     public List<Computer> getSomeOrderedByDescending(int limit, int offset,
-	    String column);
+	    Column column);
 
     /**
      * Get the list of computers from offset to offset + limit with the search
@@ -63,8 +106,8 @@ public interface IDAOComputer extends IDAOCrud<Computer> {
      * @param search
      * @return
      */
-    public List<Computer> getSomeSearch(int limit, int offset, String column,
-	    String order, String search);
+    public List<Computer> getSomeSearch(int limit, int offset, Column column,
+	    Order order, String search);
 
     /**
      * Get the number of computers that have search in their name or company
@@ -74,4 +117,6 @@ public interface IDAOComputer extends IDAOCrud<Computer> {
      * @return
      */
     public int getNumberComputerSearch(String search);
+
+    public void deleteOfCompany(long id);
 }

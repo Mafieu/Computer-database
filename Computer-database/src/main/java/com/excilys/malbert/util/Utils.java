@@ -1,7 +1,13 @@
 package com.excilys.malbert.util;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+import com.excilys.malbert.validator.Date.Pattern;
+import com.excilys.malbert.validator.DateValidator;
 
 public final class Utils {
     private Utils() {
@@ -19,36 +25,30 @@ public final class Utils {
 	return time == null ? null : Timestamp.valueOf(time);
     }
 
-    public static LocalDateTime stringToLocaldatetime(String date) {
-	String[] dates;
-	if (DateValidator.isThisDateValid(date, "dd-MM-YYYY")) {
-	    dates = date.split("-");
-	} else if (DateValidator.isThisDateValid(date, "dd/MM/YYYY")) {
-	    dates = date.split("/");
-	} else {
+    public static LocalDateTime stringToLocaldatetime(String date,
+	    Pattern pattern) {
+	if (date == null) {
 	    return null;
 	}
-	return LocalDateTime.of(Integer.parseInt(dates[2]),
-		Integer.parseInt(dates[1]), Integer.parseInt(dates[0]), 0, 0);
+	if (date.trim().isEmpty()) {
+	    return null;
+	}
+	if (!(new DateValidator().isValid(date, pattern))) {
+	    return null;
+	}
+	return LocalDateTime.of(
+		LocalDate.parse(date,
+			DateTimeFormatter.ofPattern(pattern.toString())),
+		LocalTime.of(0, 0));
     }
 
-    public static String localdatetimeToString(LocalDateTime date) {
+    // Change here for en or fr format
+    public static String localdatetimeToString(LocalDateTime date,
+	    Pattern pattern) {
 	if (date == null) {
 	    return null;
 	} else {
-	    StringBuilder builder = new StringBuilder();
-	    builder.append(date.getDayOfMonth());
-	    builder.append("-");
-	    if (date.getMonthValue() < 10) {
-		builder.append("0");
-	    }
-	    builder.append(date.getMonthValue());
-	    builder.append("-");
-	    if (date.getDayOfMonth() < 10) {
-		builder.append("0");
-	    }
-	    builder.append(date.getYear());
-	    return builder.toString();
+	    return date.format(DateTimeFormatter.ofPattern(pattern.toString()));
 	}
     }
 

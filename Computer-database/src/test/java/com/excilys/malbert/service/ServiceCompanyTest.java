@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.malbert.persistence.DAOCompany;
-import com.excilys.malbert.persistence.IDAOCompany;
+import com.excilys.malbert.persistence.CompanyDAO;
+import com.excilys.malbert.persistence.ICompanyDAO;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.util.TestUtils;
 
@@ -25,12 +25,12 @@ import com.excilys.malbert.util.TestUtils;
 @ContextConfiguration(locations = { "/applicationContext.xml" })
 public class ServiceCompanyTest {
 
-    private IDAOCompany mockedDAOCompany = mock(IDAOCompany.class);
+    private ICompanyDAO mockedDAOCompany = mock(ICompanyDAO.class);
     private List<Company> companies;
     @Autowired
-    private ServiceCompany serviceCompany;
+    private CompanyService serviceCompany;
     @Autowired
-    private DAOCompany companyDAO;
+    private CompanyDAO companyDAO;
 
     @Before
     public void before() {

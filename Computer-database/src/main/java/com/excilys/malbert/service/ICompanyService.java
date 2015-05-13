@@ -2,10 +2,10 @@ package com.excilys.malbert.service;
 
 import java.util.List;
 
-import com.excilys.malbert.persistence.IDAOCompany;
+import com.excilys.malbert.persistence.ICompanyDAO;
 import com.excilys.malbert.persistence.model.Company;
 
-public interface IServiceCompany {
+public interface ICompanyService {
 
     public List<Company> getAllCompanies();
 
@@ -23,5 +23,5 @@ public interface IServiceCompany {
      * 
      * @param daoCompany
      */
-    public void setCompanyDAO(IDAOCompany daoCompany);
+    public void setCompanyDAO(ICompanyDAO daoCompany);
 }

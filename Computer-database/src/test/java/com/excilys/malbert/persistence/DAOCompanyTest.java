@@ -24,9 +24,9 @@ public class DAOCompanyTest {
 
     private List<Company> companies;
     @Autowired
-    private DAOComputer computerDAO;
+    private ComputerDAO computerDAO;
     @Autowired
-    private DAOCompany companyDAO;
+    private CompanyDAO companyDAO;
 
     @Before
     public void before() {

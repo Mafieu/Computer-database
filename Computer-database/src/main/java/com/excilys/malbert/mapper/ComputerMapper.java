@@ -10,41 +10,42 @@ import com.excilys.malbert.exceptions.DAOException;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.persistence.model.Computer;
 import com.excilys.malbert.util.Utils;
+import com.excilys.malbert.validator.Date.Pattern;
 
-public final class MapperComputer implements RowMapper<Computer> {
-    public MapperComputer() {
+public final class ComputerMapper implements RowMapper<Computer> {
+    public ComputerMapper() {
     }
 
-    public static Computer computerdtoToComputer(ComputerDTO computerDTO) {
+    public static Computer computerdtoToComputer(ComputerDTO computerDTO,
+	    Pattern pattern) {
 	if (computerDTO == null) {
 	    return null;
 	} else {
 	    return new Computer(computerDTO.getId(), computerDTO.getName(),
-		    Utils.stringToLocaldatetime(computerDTO.getIntroduced()),
-		    Utils.stringToLocaldatetime(computerDTO.getDiscontinued()),
-		    new Company(computerDTO.getCompanyId(),
-			    computerDTO.getCompanyName()));
+		    Utils.stringToLocaldatetime(computerDTO.getIntroduced(),
+			    pattern), Utils.stringToLocaldatetime(
+			    computerDTO.getDiscontinued(), pattern),
+		    new Company(computerDTO.getCompanyId(), computerDTO
+			    .getCompanyName()));
 	}
     }
 
-    public static ComputerDTO computerToComputerdto(Computer computer) {
+    public static ComputerDTO computerToComputerdto(Computer computer,
+	    Pattern pattern) {
 	if (computer == null) {
 	    return null;
 	} else {
 	    if (computer.getCompany() == null) {
-		return new ComputerDTO(
-			computer.getId(),
-			computer.getName(),
-			Utils.localdatetimeToString(computer.getIntroduced()),
-			Utils.localdatetimeToString(computer.getDiscontinued()),
-			0, null);
+		return new ComputerDTO(computer.getId(), computer.getName(),
+			Utils.localdatetimeToString(computer.getIntroduced(),
+				pattern), Utils.localdatetimeToString(
+				computer.getDiscontinued(), pattern), 0, null);
 	    } else {
-		return new ComputerDTO(
-			computer.getId(),
-			computer.getName(),
-			Utils.localdatetimeToString(computer.getIntroduced()),
-			Utils.localdatetimeToString(computer.getDiscontinued()),
-			computer.getCompany().getId(), computer.getCompany()
+		return new ComputerDTO(computer.getId(), computer.getName(),
+			Utils.localdatetimeToString(computer.getIntroduced(),
+				pattern), Utils.localdatetimeToString(
+				computer.getDiscontinued(), pattern), computer
+				.getCompany().getId(), computer.getCompany()
 				.getName());
 	    }
 	}
