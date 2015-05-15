@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.malbert.persistence.CompanyDAO;
 import com.excilys.malbert.persistence.ICompanyDAO;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.util.TestUtils;
@@ -28,9 +27,9 @@ public class ServiceCompanyTest {
     private ICompanyDAO mockedDAOCompany = mock(ICompanyDAO.class);
     private List<Company> companies;
     @Autowired
-    private CompanyService serviceCompany;
+    private ICompanyService serviceCompany;
     @Autowired
-    private CompanyDAO companyDAO;
+    private ICompanyDAO companyDAO;
 
     @Before
     public void before() {

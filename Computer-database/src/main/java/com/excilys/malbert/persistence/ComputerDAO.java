@@ -248,8 +248,9 @@ public class ComputerDAO implements IComputerDAO {
 	}
 	try {
 	    this.jdbcTemplate.update(
-		    "DELETE FROM computer WHERE company.id = ?", id);
+		    "DELETE FROM computer WHERE computer.company_id = ?", id);
 	} catch (DataAccessException e) {
+	    e.printStackTrace();
 	    logger.error("delete some computer of a company : {}", id);
 	    throw new DAOException(
 		    "Couldn't delete some computer of a company : " + id);

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.malbert.exceptions.ServiceException;
-import com.excilys.malbert.persistence.ComputerDAO;
 import com.excilys.malbert.persistence.ICompanyDAO;
+import com.excilys.malbert.persistence.IComputerDAO;
 import com.excilys.malbert.persistence.model.Company;
 import com.excilys.malbert.validator.DbValidator;
 
@@ -16,13 +16,13 @@ import com.excilys.malbert.validator.DbValidator;
 public class CompanyService implements ICompanyService {
 
     @Autowired
-    private ICompanyDAO daoCompany;
+    private ICompanyDAO companyDAO;
     @Autowired
-    private ComputerDAO computerDAO;
+    private IComputerDAO computerDAO;
 
     @Override
     public List<Company> getAllCompanies() {
-	return daoCompany.getAll();
+	return companyDAO.getAll();
     }
 
     @Override
@@ -30,18 +30,18 @@ public class CompanyService implements ICompanyService {
 	if (!DbValidator.isIdValid(id)) {
 	    throw new ServiceException(DbValidator.INVALID_ID);
 	}
-	return daoCompany.getOne(id);
+	return companyDAO.getOne(id);
     }
 
     @Transactional
     @Override
     public void deleteCompany(long id) {
 	computerDAO.deleteOfCompany(id);
-	daoCompany.delete(id);
+	companyDAO.delete(id);
     }
 
     @Override
     public void setCompanyDAO(ICompanyDAO daoCompany) {
-	this.daoCompany = daoCompany;
+	this.companyDAO = daoCompany;
     }
 }
