@@ -32,8 +32,9 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 	if (dateToValidate.trim().isEmpty()) {
 	    return false;
 	}
-	System.err.println(dateToValidate + " " + dateFormat + " "
-		+ validator.isValid(dateToValidate, dateFormat.toString()));
+	if (!dateToValidate.matches("[0-9]{2}-[0-9]{2}-[0-9]{4}"))
+	    return false;
+
 	if (validator.isValid(dateToValidate, dateFormat.toString())) {
 	    LocalDateTime ldt = Utils.stringToLocaldatetime(dateToValidate,
 		    dateFormat);

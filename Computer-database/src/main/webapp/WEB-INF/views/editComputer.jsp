@@ -85,47 +85,6 @@
 									code="addComputer.button.cancel" /></a>
 						</div>
 					</form:form>
-
-					<!--<form action="editComputer" onsubmit="return checkValues()"
-						method="POST">
-						<input type="hidden" name="id" id="id" value="${computer.id}" />
-						<fieldset>
-							<div class="form-group" id="computerNameDiv">
-								<label for="computerName"><spring:message code="addComputer.name" /></label> <input
-									type="text" class="form-control" id="name" name="name"
-									value="${computer.name}">
-							</div>
-							<div class="form-group" id="introducedDiv">
-								<label for="introduced"><spring:message code="addComputer.introduced" /></label> <input
-									type="date" class="form-control" id="introduced"
-									name="introduced" value="${computer.introduced}">
-							</div>
-							<div class="form-group" id="discontinuedDiv">
-								<label for="discontinued"><spring:message code="addComputer.discontinued" /></label> <input
-									type="date" class="form-control" id="discontinued"
-									name="discontinued" value="${computer.discontinued}">
-							</div>
-							<div class="form-group" id="companyDiv">
-								<label for="companyId"><spring:message code="addComputer.company" /></label> <select
-									class="form-control" name="companyId" id="companyId">
-									<!-- Actual value 
-									<c:if test="${computer.companyName != null}">
-										<option value="${computer.companyId}">${computer.companyName}</option>
-									</c:if>
-									<option value="0">--</option>
-									<c:forEach items="${companies}" var="company">
-										<c:if test="${company.id != computer.companyId}">
-											<option value="${company.id}">${company.name}</option>
-										</c:if>
-									</c:forEach>
-								</select>
-							</div>
-						</fieldset>
-						<div class="actions pull-right">
-							<input type="submit" value="<spring:message code='editComputer.button.edit' />" class="btn btn-primary">
-							<spring:message code="addComputer.or" /> <a href="dashboard" class="btn btn-default"><spring:message code="addComputer.button.cancel" /></a>
-						</div>
-					</form>-->
 				</div>
 			</div>
 		</div>
@@ -133,6 +92,6 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery.cookie.js"></script>
 	<script src="js/moment.min.js"></script>
-	<!-- <script src="js/editComputer.js"></script> -->
+	<script src="js/editComputer.js"></script>
 </body>
 </html>
