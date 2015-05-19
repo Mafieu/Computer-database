@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
 	version="2.0">
+	<!-- We use entityManager, the standard of JPA, implemented by Hibernate 
+		(it uses sessions) -->
 	<persistence-unit name="ComputerDatabase_PU"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>

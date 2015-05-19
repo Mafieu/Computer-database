@@ -42,7 +42,6 @@ public final class Utils {
 				LocalTime.of(0, 0));
 	}
 
-	// Change here for en or fr format
 	public static String localdatetimeToString(LocalDateTime date,
 			Pattern pattern) {
 		if (date == null) {
