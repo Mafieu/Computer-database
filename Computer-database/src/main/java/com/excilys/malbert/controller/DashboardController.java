@@ -1,4 +1,4 @@
-package com.excilys.malbert.controller.spring.mapper;
+package com.excilys.malbert.controller;
 
 import java.util.Locale;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.excilys.malbert.controller.Page;
+import com.excilys.malbert.model.Page;
 import com.excilys.malbert.service.ICompanyService;
 import com.excilys.malbert.service.IComputerService;
 import com.excilys.malbert.validator.Date.Pattern;
@@ -23,29 +23,29 @@ import com.excilys.malbert.validator.PageValidator;
 
 @Controller
 @RequestMapping(value = "/dashboard")
-public class DashboardMapper {
-    @Autowired
-    private IComputerService serviceComputer;
-    @Autowired
-    private ICompanyService serviceCompany;
+public class DashboardController {
+	@Autowired
+	private IComputerService serviceComputer;
+	@Autowired
+	private ICompanyService serviceCompany;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-	binder.setValidator(new PageValidator());
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String dashboard(@Valid @ModelAttribute Page page,
-	    BindingResult result, Model model) {
-	Locale locale = LocaleContextHolder.getLocale();
-	Pattern language = Pattern.map(locale.getLanguage());
-	if (result.hasErrors()) {
-	    model.addAttribute("error", true);
-	    model.addAttribute("errorMessage", "Invalid arguments");
-	    page.toDefault();
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setValidator(new PageValidator());
 	}
-	page.populate(serviceComputer, serviceCompany, language);
-	model.addAttribute(page);
-	return "dashboard";
-    }
+
+	@RequestMapping(method = RequestMethod.GET)
+	public String dashboard(@Valid @ModelAttribute Page page,
+			BindingResult result, Model model) {
+		Locale locale = LocaleContextHolder.getLocale();
+		Pattern language = Pattern.map(locale.getLanguage());
+		if (result.hasErrors()) {
+			model.addAttribute("error", true);
+			model.addAttribute("errorMessage", "Invalid arguments");
+			page.toDefault();
+		}
+		page.populate(serviceComputer, serviceCompany, language);
+		model.addAttribute(page);
+		return "dashboard";
+	}
 }

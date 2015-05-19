@@ -2,63 +2,68 @@ package com.excilys.malbert.persistence;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.malbert.exceptions.DAOException;
-import com.excilys.malbert.mapper.CompanyMapper;
-import com.excilys.malbert.persistence.model.Company;
+import com.excilys.malbert.model.Company;
+import com.excilys.malbert.model.QCompany;
 import com.excilys.malbert.validator.DbValidator;
+import com.mysema.query.jpa.impl.JPADeleteClause;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
 public class CompanyDAO implements ICompanyDAO {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    private Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
+	@Autowired
+	EntityManagerFactory emFactory;
+	private Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
-    @Override
-    public List<Company> getAll() {
-	try {
-	    return this.jdbcTemplate.query("SELECT * FROM company",
-		    new CompanyMapper());
-	} catch (DataAccessException e) {
-	    logger.error("list company");
-	    throw new DAOException("Couldn't get the list of companies");
+	@Override
+	public List<Company> getAll() {
+		EntityManager em = emFactory.createEntityManager();
+		QCompany company = QCompany.company;
+		JPAQuery query = new JPAQuery(em);
+		return query.from(company).list(company);
 	}
-    }
 
-    @Override
-    public Company getOne(long id) {
-	if (!DbValidator.isIdValid(id)) {
-	    logger.error("get company : {}", id);
-	    throw new DAOException(DbValidator.INVALID_ID);
-	}
-	try {
-	    return this.jdbcTemplate.queryForObject(
-		    "SELECT * FROM company WHERE id = ?", new Object[] { id },
-		    new CompanyMapper());
-	} catch (DataAccessException e) {
-	    logger.error("get company : {}", id);
-	    throw new DAOException("Couldn't get company : " + id);
-	}
-    }
+	@Override
+	public Company getOne(long id) {
+		if (!DbValidator.isIdValid(id)) {
+			logger.error("get company : {}", id);
+			throw new DAOException(DbValidator.INVALID_ID);
+		}
 
-    @Override
-    public void delete(long id) {
-	if (!DbValidator.isIdValid(id)) {
-	    logger.error("delete commpany : {}", id);
-	    throw new DAOException(DbValidator.INVALID_ID);
+		EntityManager em = emFactory.createEntityManager();
+		QCompany company = QCompany.company;
+		JPAQuery query = new JPAQuery(em);
+		return query.from(company).where(company.id.eq(id))
+				.uniqueResult(company);
 	}
-	try {
-	    this.jdbcTemplate.update("DELETE FROM company WHERE id = ?", id);
-	} catch (DataAccessException e) {
-	    logger.error("delete commpany : {}", id);
-	    throw new DAOException("Couldn't delete the company");
+
+	@Override
+	public void delete(long id) {
+		if (!DbValidator.isIdValid(id)) {
+			logger.error("delete commpany : {}", id);
+			throw new DAOException(DbValidator.INVALID_ID);
+		}
+
+		EntityManager em = emFactory.createEntityManager();
+		QCompany company = QCompany.company;
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			JPADeleteClause query = new JPADeleteClause(em, company);
+			query.where(company.id.eq(id)).execute();
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+		}
 	}
-    }
 }

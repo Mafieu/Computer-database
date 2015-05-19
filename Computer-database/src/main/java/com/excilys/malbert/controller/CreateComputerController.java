@@ -1,9 +1,12 @@
-package com.excilys.malbert.controller.spring.mapper;
+package com.excilys.malbert.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,53 +17,43 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.excilys.malbert.controller.dto.CompanyDTO;
-import com.excilys.malbert.controller.dto.ComputerDTO;
 import com.excilys.malbert.mapper.CompanyMapper;
 import com.excilys.malbert.mapper.ComputerMapper;
-import com.excilys.malbert.persistence.model.Company;
-import com.excilys.malbert.persistence.model.Computer;
+import com.excilys.malbert.model.Company;
+import com.excilys.malbert.model.CompanyDTO;
+import com.excilys.malbert.model.ComputerDTO;
 import com.excilys.malbert.service.ICompanyService;
 import com.excilys.malbert.service.IComputerService;
 import com.excilys.malbert.validator.Date.Pattern;
 
 /**
- * Servlet implementation class ServletEdit
+ * Servlet implementation class ServletCreate
  */
 @Controller
-@RequestMapping(value = "/editComputer")
-public class EditMapper {
-    @Autowired
-    private IComputerService serviceComputer;
+@RequestMapping(value = "/addComputer")
+public class CreateComputerController {
     @Autowired
     private ICompanyService serviceCompany;
+    @Autowired
+    private IComputerService serviceComputer;
 
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
     @RequestMapping(method = RequestMethod.GET)
-    protected String doGet(@RequestParam(value = "id") long id, Model model) {
-	Locale locale = LocaleContextHolder.getLocale();
-	Pattern language = Pattern.map(locale.getLanguage());
-	if (id <= 0) {
-	    return "redirect:dashboard";
-	} else {
-	    Computer computer = null;
-	    List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
-	    computer = serviceComputer.getComputer(id);
-	    if (computer == null) {
-		return "redirect:dashboard";
-	    } else {
-		for (Company company : serviceCompany.getAllCompanies()) {
-		    companiesDTO
-			    .add(CompanyMapper.companyToCompanydto(company));
-		}
-
-		model.addAttribute("companies", companiesDTO);
-		model.addAttribute("computerDTO", ComputerMapper
-			.computerToComputerdto(computer, language));
-		return "editComputer";
-	    }
+    protected String doGet(Model model) {
+	ComputerDTO computerDTO = new ComputerDTO();
+	List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
+	for (Company company : serviceCompany.getAllCompanies()) {
+	    companiesDTO.add(CompanyMapper.companyToCompanydto(company));
 	}
+
+	model.addAttribute("companies", companiesDTO);
+	model.addAttribute("computerDTO", computerDTO);
+
+	return "addComputer";
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -70,11 +63,13 @@ public class EditMapper {
 	Pattern language = Pattern.map(locale.getLanguage());
 	if (result.hasErrors()) {
 	    List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
-
+	    for (Company company1 : serviceCompany.getAllCompanies()) {
+		companiesDTO.add(CompanyMapper.companyToCompanydto(company1));
+	    }
 	    model.addAttribute("companies", companiesDTO);
-	    return "editComputer";
+	    return "addComputer";
 	} else {
-	    serviceComputer.updateComputer(ComputerMapper
+	    serviceComputer.createComputer(ComputerMapper
 		    .computerdtoToComputer(computerDTO, language));
 	    return "redirect:dashboard";
 	}

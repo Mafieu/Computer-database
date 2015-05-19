@@ -5,7 +5,7 @@
 	version="3.1">
 	<display-name>Computer-database</display-name>
 	<welcome-file-list>
-		<welcome-file>dashboard</welcome-file>
+		<welcome-file>/dashboard</welcome-file>
 	</welcome-file-list>
 
 	<error-page>

@@ -12,32 +12,32 @@ import javax.validation.Payload;
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Date {
-    public enum Pattern {
-	FR("dd-MM-yyyy"), EN("MM-dd-yyyy");
-	private String pattern;
+	public enum Pattern {
+		FR("dd-MM-yyyy"), EN("MM-dd-yyyy");
+		private String pattern;
 
-	private Pattern(String pattern) {
-	    this.pattern = pattern;
+		private Pattern(String pattern) {
+			this.pattern = pattern;
+		}
+
+		public String toString() {
+			return pattern;
+		}
+
+		public static Pattern map(String str) {
+			if (str.equalsIgnoreCase("fr")) {
+				return FR;
+			}
+			if (str.equalsIgnoreCase("en")) {
+				return EN;
+			}
+			return null;
+		}
 	}
 
-	public String toString() {
-	    return pattern;
-	}
+	String message() default "Wrong date format";
 
-	public static Pattern map(String str) {
-	    if (str.equalsIgnoreCase("fr")) {
-		return FR;
-	    }
-	    if (str.equalsIgnoreCase("en")) {
-		return EN;
-	    }
-	    return null;
-	}
-    }
+	Class<?>[] groups() default {};
 
-    String message() default "Wrong date format";
-
-    Class<?>[] groups() default {};
-
-    Class<? extends Payload>[] payload() default {};
+	Class<? extends Payload>[] payload() default {};
 }

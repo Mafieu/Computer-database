@@ -35,7 +35,7 @@
 		</bean>
 	</mvc:interceptors>
 
-	<context:component-scan base-package="com.excilys.malbert.controller.spring.mapper" />
+	<context:component-scan base-package="com.excilys.malbert.controller" />
 	<mvc:resources location="/" mapping="/**" />
 	<mvc:annotation-driven />
 </beans>
