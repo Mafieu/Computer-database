@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.excilys.malbert.binding.validator.Date.Pattern;
+import com.excilys.malbert.controller.model.Page;
+import com.excilys.malbert.controller.validator.PageValidator;
 import com.excilys.malbert.service.ICompanyService;
 import com.excilys.malbert.service.IComputerService;
-import com.excilys.malbert.service.model.Page;
-import com.excilys.malbert.service.validator.PageValidator;
 
 @Controller
 @RequestMapping(value = "/dashboard")

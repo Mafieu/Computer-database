@@ -18,7 +18,6 @@ import com.excilys.malbert.core.model.QComputer;
 import com.excilys.malbert.persistence.validator.DbValidator;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 @Repository
 public class ComputerDAO implements IComputerDAO {
@@ -68,9 +67,12 @@ public class ComputerDAO implements IComputerDAO {
 
 		try {
 			transaction.begin();
-			em.persist(computer);
+			Computer c = em.merge(computer);
+			em.persist(c);
+			computer.setId(c != null ? c.getId() : null);
 			transaction.commit();
 		} catch (Exception e) {
+			e.printStackTrace();
 			transaction.rollback();
 		}
 		em.close();
@@ -103,16 +105,10 @@ public class ComputerDAO implements IComputerDAO {
 			throw new DAOException(DbValidator.INVALID_COMPUTER);
 		}
 		EntityManager em = emFactory.createEntityManager();
-		QComputer comp = QComputer.computer;
 		EntityTransaction transaction = em.getTransaction();
 		try {
 			transaction.begin();
-			JPAUpdateClause query = new JPAUpdateClause(em, comp);
-			query.where(comp.id.eq(computer.getId()))
-					.set(comp.name, computer.getName())
-					.set(comp.introduced, computer.getIntroduced())
-					.set(comp.discontinued, computer.getDiscontinued())
-					.set(comp.company, computer.getCompany()).execute();
+			em.merge(computer);
 			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();

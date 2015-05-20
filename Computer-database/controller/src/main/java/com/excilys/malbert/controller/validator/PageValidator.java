@@ -1,9 +1,9 @@
-package com.excilys.malbert.service.validator;
+package com.excilys.malbert.controller.validator;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.excilys.malbert.service.model.Page;
+import com.excilys.malbert.controller.model.Page;
 
 public class PageValidator implements Validator {
 

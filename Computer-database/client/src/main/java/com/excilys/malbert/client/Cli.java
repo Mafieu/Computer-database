@@ -44,7 +44,7 @@ public class Cli {
 	private static Computer createComputer(long id) {
 		String name;
 		LocalDateTime introduced, discontinued;
-		long idCompany = -1;
+		long idCompany = 0;
 		System.out.println("Name of the computer :");
 		scanner.nextLine(); // Just for debug, otherwise name is ""
 		name = scanner.nextLine();
@@ -54,15 +54,16 @@ public class Cli {
 		System.out.println("Date of discontinuation (DD-MM-YYYY):");
 		discontinued = Utils.stringToLocaldatetime(scanner.nextLine(),
 				Pattern.FR);
+		do{
 		System.out
-				.println("Id of the manufacturer (for no manufacturer, enter a 0 or minus id):");
+				.println("Id of the manufacturer (for no manufacturer, enter a 0):");
 		if (scanner.hasNextLong()) {
 			idCompany = scanner.nextLong();
 		} else {
 			scanner.next();
 		}
-		return new Computer(id, name, introduced, discontinued, new Company(
-				idCompany, null));
+		} while(idCompany < 0);
+		return new Computer(id, name, introduced, discontinued, (idCompany == 0 ? null : serviceCompany.getCompany(idCompany)));
 	}
 
 	private static Computer createComputer() {

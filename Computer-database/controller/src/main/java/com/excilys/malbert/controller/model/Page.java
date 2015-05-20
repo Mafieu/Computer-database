@@ -1,4 +1,4 @@
-package com.excilys.malbert.service.model;
+package com.excilys.malbert.controller.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -37,11 +37,8 @@ public class CompanyService implements ICompanyService {
 	@Override
 	public void deleteCompany(long id) {
 		if (companyDAO.getOne(id) != null) {
-			System.out.println("Before comp deletion");
 			computerDAO.deleteOfCompany(id);
-			System.out.println("Before comp deletion");
 			companyDAO.delete(id);
-			System.out.println("Ended");
 		}
 		// Maybe throw a non runtime exception to catch on controller and
 		// display a message
