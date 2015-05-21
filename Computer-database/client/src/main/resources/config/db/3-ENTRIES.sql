@@ -1,3 +1,7 @@
+insert into users(username, password, enabled) values ('admin', 'admin', true);
+
+insert into authorities(username, authority) values('admin', 'ROLE_USER');
+
 insert into company (id,name) values (  1,'Apple Inc.');
 insert into company (id,name) values (  2,'Thinking Machines');
 insert into company (id,name) values (  3,'RCA');

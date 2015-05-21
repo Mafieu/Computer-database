@@ -13,23 +13,7 @@
 <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand" href="dashboard"><spring:message
-					code="application.title" /></a>
-			<!-- Imgs not loaded -->
-			<div class="navbar-right">
-				<hashtag:link column="${page.column}" limit="${page.limit}"
-					target="dashboard" page="${page.page}" orderBy="${page.order}"
-					search="${page.search}" lang="fr"
-					body='<img src="img/flag_fr.jpg">'></hashtag:link>
-				<hashtag:link column="${page.column}" limit="${page.limit}"
-					target="dashboard" page="${page.page}" orderBy="${page.order}"
-					search="${page.search}" lang="en"
-					body='<img src="img/flag_en.jpg">'></hashtag:link>
-			</div>
-		</div>
-	</header>
+	<c:import url="header.jsp"></c:import>
 
 	<section id="main">
 		<div class="container">

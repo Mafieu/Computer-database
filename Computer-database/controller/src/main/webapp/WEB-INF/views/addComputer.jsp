@@ -13,17 +13,7 @@
 <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand" href="dashboard"> <spring:message
-					code="application.title" />
-			</a>
-			<div class="navbar-right">
-				<a href="?lang=fr"><img src="img/flag_fr.jpg"></a>
-				<a href="?lang=en"><img src="img/flag_en.jpg"></a>
-			</div>
-		</div>
-	</header>
+	<c:import url="header.jsp"></c:import>
 
 	<section id="main">
 		<div class="container">
