@@ -9,6 +9,7 @@
 		<jta-data-source>java:/DefaultDS</jta-data-source>
 		<class>com.excilys.malbert.core.model.Computer</class>
 		<class>com.excilys.malbert.core.model.Company</class>
+		<class>com.excilys.malbert.core.model.User</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 		</properties>
