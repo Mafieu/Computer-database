@@ -93,7 +93,7 @@ public class Page {
 	public boolean isOrderValid() {
 		if (order == null) {
 			return false;
-		} else if (!order.equals("asc") && order.equals("desc")) {
+		} else if (!order.equals("asc") && !order.equals("desc")) {
 			return false;
 		}
 		return true;

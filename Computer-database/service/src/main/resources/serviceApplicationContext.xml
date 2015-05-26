@@ -5,6 +5,6 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-	<import resource="classpath:serviceApplicationContext.xml"/>
-	<context:annotation-config />
+	<import resource="classpath:persistenceApplicationContext.xml" />
+	<context:component-scan base-package="com.excilys.malbert.service" />
 </beans>
