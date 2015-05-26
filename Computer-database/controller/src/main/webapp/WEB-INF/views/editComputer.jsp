@@ -19,13 +19,14 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">id:
-						${computer.id}</div>
+						${computerDTO.id}</div>
 					<h1><spring:message code="editComputer.title" /></h1>
 					<c:if test="${error}">
 						<div class="alert alert-danger">You have an error</div>
 					</c:if>
 
 					<form:form modelAttribute="computerDTO" method="POST" action="editComputer" onsubmit="return checkValues()">
+						<form:input path="id" hidden="true" value="${computer.id}" />
 						<fieldset>
 							<div class="form-group" id="computerNameDiv">
 								<label for="computerName"><spring:message
@@ -38,7 +39,7 @@
 								<label for="introduced"><spring:message
 										code="addComputer.introduced" /></label>
 								<form:input type="date" class="form-control" path="introduced"
-									value="${computer.introduced}" />
+									value="${computerDTO.introduced}" />
 							</div>
 							<div class="text-center form-group"><form:errors class="alert alert-danger" path="introduced"/></div>
 							<div class="form-group" id="discontinuedDiv">

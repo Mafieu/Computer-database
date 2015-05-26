@@ -15,12 +15,22 @@ public final class ComputerMapper {
 		if (computerDTO == null) {
 			return null;
 		} else {
-			return new Computer(computerDTO.getId(), computerDTO.getName(),
-					Utils.stringToLocaldatetime(computerDTO.getIntroduced(),
-							pattern), Utils.stringToLocaldatetime(
-							computerDTO.getDiscontinued(), pattern),
-					new Company(computerDTO.getCompanyId(), computerDTO
-							.getCompanyName()));
+			Computer comp = new Computer();
+			if (computerDTO.getId() != null && computerDTO.getId() != 0) {
+				comp.setId(computerDTO.getId());
+			}
+			comp.setName(computerDTO.getName());
+			comp.setIntroduced(Utils.stringToLocaldatetime(
+					computerDTO.getIntroduced(), pattern));
+			comp.setDiscontinued(Utils.stringToLocaldatetime(
+					computerDTO.getDiscontinued(), pattern));
+			if (computerDTO.getCompanyId() != null && computerDTO.getCompanyId() != 0) {
+				comp.setCompany(new Company(computerDTO.getCompanyId(),
+						computerDTO.getCompanyName()));
+			} else {
+				comp.setCompany(null);
+			}
+			return comp;
 		}
 	}
 
@@ -33,7 +43,7 @@ public final class ComputerMapper {
 				return new ComputerDTO(computer.getId(), computer.getName(),
 						Utils.localdatetimeToString(computer.getIntroduced(),
 								pattern), Utils.localdatetimeToString(
-								computer.getDiscontinued(), pattern), 0, null);
+								computer.getDiscontinued(), pattern), null, null);
 			} else {
 				return new ComputerDTO(computer.getId(), computer.getName(),
 						Utils.localdatetimeToString(computer.getIntroduced(),

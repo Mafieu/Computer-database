@@ -51,19 +51,19 @@ public final class Utils {
 		}
 	}
 
-	public static long stringToLong(String str) {
+	public static Long stringToLong(String str) {
 		if (str != null && str.matches("\\d+")) {
 			return Long.parseLong(str);
 		} else {
-			return 0;
+			return null;
 		}
 	}
 
-	public static int stringToInt(String str) {
+	public static Integer stringToInt(String str) {
 		if (str != null && str.matches("\\d+")) {
 			return Integer.parseInt(str);
 		} else {
-			return 0;
+			return null;
 		}
 	}
 }

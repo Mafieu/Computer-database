@@ -8,7 +8,7 @@ public interface ICrudDAO<T extends Entity> {
 		throw new IllegalAccessError("Create was not implemented");
 	}
 
-	default public T getOne(long id) {
+	default public T getOne(Long id) {
 		throw new IllegalAccessError("Get one was not implemented");
 	}
 
@@ -16,7 +16,7 @@ public interface ICrudDAO<T extends Entity> {
 		throw new IllegalAccessError("Update was not implemented");
 	}
 
-	default public void delete(long id) {
+	default public void delete(Long id) {
 		throw new IllegalAccessError("Delete was not implemented");
 	}
 }

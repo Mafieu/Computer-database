@@ -10,25 +10,25 @@ public interface IComputerService {
 
 	public List<Computer> getAllComputers();
 
-	public List<Computer> getSome(int limit, int offset);
+	public List<Computer> getSome(Integer limit, Integer offset);
 
-	public Computer getComputer(long id);
+	public Computer getComputer(Long id);
 
 	public void createComputer(Computer computer);
 
-	public void deleteComputer(long id);
+	public void deleteComputer(Long id);
 
 	public void updateComputer(Computer computer);
 
 	public int getNumberComputer();
 
-	public List<Computer> getSomeOrderedByAscending(int limit, int offset,
+	public List<Computer> getSomeOrderedByAscending(Integer limit, Integer offset,
 			Column column);
 
-	public List<Computer> getSomeOrderedByDescending(int limit, int offset,
+	public List<Computer> getSomeOrderedByDescending(Integer limit, Integer offset,
 			Column column);
 
-	public List<Computer> getSomeSearch(int limit, int offset, Column column,
+	public List<Computer> getSomeSearch(Integer limit, Integer offset, Column column,
 			Order order, String search);
 
 	public int getNumberComputerSearch(String search);

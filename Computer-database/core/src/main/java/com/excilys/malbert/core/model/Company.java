@@ -18,7 +18,7 @@ public class Company implements Entity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
-	protected long id;
+	protected Long id;
 	@Column(name = "name")
 	private String name;
 
@@ -35,7 +35,7 @@ public class Company implements Entity {
 	 * @param id
 	 * @param name
 	 */
-	public Company(long id, String name) {
+	public Company(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
@@ -49,11 +49,11 @@ public class Company implements Entity {
 		this.name = name;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

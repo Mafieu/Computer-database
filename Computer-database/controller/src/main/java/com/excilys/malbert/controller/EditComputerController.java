@@ -44,9 +44,8 @@ public class EditComputerController {
 		if (id <= 0) {
 			return "redirect:dashboard";
 		} else {
-			Computer computer = null;
 			List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
-			computer = serviceComputer.getComputer(id);
+			Computer computer = serviceComputer.getComputer(id);
 			if (computer == null) {
 				return "redirect:dashboard";
 			} else {

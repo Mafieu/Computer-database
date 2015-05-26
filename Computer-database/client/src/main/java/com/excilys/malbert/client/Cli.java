@@ -54,16 +54,17 @@ public class Cli {
 		System.out.println("Date of discontinuation (DD-MM-YYYY):");
 		discontinued = Utils.stringToLocaldatetime(scanner.nextLine(),
 				Pattern.FR);
-		do{
-		System.out
-				.println("Id of the manufacturer (for no manufacturer, enter a 0):");
-		if (scanner.hasNextLong()) {
-			idCompany = scanner.nextLong();
-		} else {
-			scanner.next();
-		}
-		} while(idCompany < 0);
-		return new Computer(id, name, introduced, discontinued, (idCompany == 0 ? null : serviceCompany.getCompany(idCompany)));
+		do {
+			System.out
+					.println("Id of the manufacturer (for no manufacturer, enter a 0):");
+			if (scanner.hasNextLong()) {
+				idCompany = scanner.nextLong();
+			} else {
+				scanner.next();
+			}
+		} while (idCompany < 0);
+		return new Computer(id, name, introduced, discontinued,
+				(idCompany == 0 ? null : serviceCompany.getCompany(idCompany)));
 	}
 
 	private static Computer createComputer() {

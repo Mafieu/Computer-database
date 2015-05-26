@@ -66,7 +66,7 @@ public interface IComputerDAO extends ICrudDAO<Computer> {
 	 * @param offset
 	 * @return
 	 */
-	public List<Computer> getSome(int limit, int offset);
+	public List<Computer> getSome(Integer limit, Integer offset);
 
 	public int getNumberComputer();
 
@@ -79,7 +79,7 @@ public interface IComputerDAO extends ICrudDAO<Computer> {
 	 * @param column
 	 * @return
 	 */
-	public List<Computer> getSomeOrderedByAscending(int limit, int offset,
+	public List<Computer> getSomeOrderedByAscending(Integer limit, Integer offset,
 			Column column);
 
 	/**
@@ -91,7 +91,7 @@ public interface IComputerDAO extends ICrudDAO<Computer> {
 	 * @param column
 	 * @return
 	 */
-	public List<Computer> getSomeOrderedByDescending(int limit, int offset,
+	public List<Computer> getSomeOrderedByDescending(Integer limit, Integer offset,
 			Column column);
 
 	/**
@@ -106,7 +106,7 @@ public interface IComputerDAO extends ICrudDAO<Computer> {
 	 * @param search
 	 * @return
 	 */
-	public List<Computer> getSomeSearch(int limit, int offset, Column column,
+	public List<Computer> getSomeSearch(Integer limit, Integer offset, Column column,
 			Order order, String search);
 
 	/**
@@ -118,5 +118,5 @@ public interface IComputerDAO extends ICrudDAO<Computer> {
 	 */
 	public int getNumberComputerSearch(String search);
 
-	public void deleteOfCompany(long id);
+	public void deleteOfCompany(Long id);
 }

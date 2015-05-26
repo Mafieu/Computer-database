@@ -6,8 +6,10 @@ import javax.validation.constraints.Size;
 
 import com.excilys.malbert.binding.validator.Date;
 
-public class ComputerDTO extends EntityDTO {
+public class ComputerDTO {
 
+	@Min(0)
+	protected Long id;
 	@NotNull
 	@Size(min = 1, max = 255)
 	private String name;
@@ -16,26 +18,34 @@ public class ComputerDTO extends EntityDTO {
 	@Date
 	private String discontinued;
 	@Min(0)
-	private long companyId;
+	private Long companyId;
 	@Size(min = 1, max = 255)
 	private String companyName;
 
 	public ComputerDTO() {
-		this(0, null, null, null, 0, null);
+		this(null, null, null, null, null, null);
 	}
 
-	public ComputerDTO(long id) {
-		this(id, null, null, null, 0, null);
+	public ComputerDTO(Long id) {
+		this(id, null, null, null, null, null);
 	}
 
-	public ComputerDTO(long id, String name, String introduced,
-			String discontinued, long companyId, String companyName) {
-		super(id);
+	public ComputerDTO(Long id, String name, String introduced,
+			String discontinued, Long companyId, String companyName) {
+		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
 		this.companyId = companyId;
 		this.companyName = companyName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -62,11 +72,11 @@ public class ComputerDTO extends EntityDTO {
 		this.discontinued = discontinued;
 	}
 
-	public long getCompanyId() {
+	public Long getCompanyId() {
 		return companyId;
 	}
 
-	public void setCompanyId(long companyId) {
+	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
 
@@ -78,14 +88,11 @@ public class ComputerDTO extends EntityDTO {
 		this.companyName = companyName;
 	}
 
-	public long getId() {
-		return id;
-	}
-
 	@Override
 	public String toString() {
-		return "ComputerDTO [name=" + name + ", introduced=" + introduced
-				+ ", discontinued=" + discontinued + ", companyId=" + companyId
-				+ ", companyName=" + companyName + "]";
+		return "ComputerDTO [id=" + id + ", name=" + name
+				+ ", introduced=" + introduced + ", discontinued="
+				+ discontinued + ", companyId=" + companyId + ", companyName="
+				+ companyName + "]";
 	}
 }

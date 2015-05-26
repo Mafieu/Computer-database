@@ -26,7 +26,7 @@ public class CompanyService implements ICompanyService {
 	}
 
 	@Override
-	public Company getCompany(long id) {
+	public Company getCompany(Long id) {
 		if (!DbValidator.isIdValid(id)) {
 			throw new ServiceException(DbValidator.INVALID_ID);
 		}
@@ -35,7 +35,7 @@ public class CompanyService implements ICompanyService {
 
 	@Transactional
 	@Override
-	public void deleteCompany(long id) {
+	public void deleteCompany(Long id) {
 		if (companyDAO.getOne(id) != null) {
 			computerDAO.deleteOfCompany(id);
 			companyDAO.delete(id);

@@ -24,7 +24,7 @@ public class Computer implements Entity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
-	protected long id;
+	protected Long id;
 	@Column(name = "name")
 	private String name;
 	@Column(name = "introduced")
@@ -54,7 +54,7 @@ public class Computer implements Entity {
 	 * @param name
 	 * @param id_company
 	 */
-	public Computer(long id, String name, Company company) {
+	public Computer(Long id, String name, Company company) {
 		this.id = id;
 		this.name = name;
 		this.company = company;
@@ -67,7 +67,7 @@ public class Computer implements Entity {
 	 * @param introduced
 	 * @param id_company
 	 */
-	public Computer(long id, String name, LocalDateTime introduced,
+	public Computer(Long id, String name, LocalDateTime introduced,
 			Company company) {
 		this(id, name, company);
 		this.introduced = introduced;
@@ -80,7 +80,7 @@ public class Computer implements Entity {
 	 * @param discontinued
 	 * @param id_company
 	 */
-	public Computer(long id, String name, LocalDateTime introduced,
+	public Computer(Long id, String name, LocalDateTime introduced,
 			LocalDateTime discontinued, Company company) {
 		this(id, name, introduced, company);
 		this.discontinued = discontinued;
@@ -119,11 +119,11 @@ public class Computer implements Entity {
 		this.discontinued = discontinued;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
