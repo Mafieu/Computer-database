@@ -50,7 +50,7 @@ public class ComputerService implements IComputerService {
 		}
 
 		computerDAO.create(computer);
-		
+
 	}
 
 	@Override
@@ -77,8 +77,8 @@ public class ComputerService implements IComputerService {
 	}
 
 	@Override
-	public List<Computer> getSomeOrderedByAscending(Integer limit, Integer offset,
-			Column column) {
+	public List<Computer> getSomeOrderedByAscending(Integer limit,
+			Integer offset, Column column) {
 		if (!DbValidator.isLimitOffsetCorrect(limit, offset)) {
 			throw new ServiceException(DbValidator.INVALID_LIMIT_OFFSET);
 		}
@@ -87,8 +87,8 @@ public class ComputerService implements IComputerService {
 	}
 
 	@Override
-	public List<Computer> getSomeOrderedByDescending(Integer limit, Integer offset,
-			Column column) {
+	public List<Computer> getSomeOrderedByDescending(Integer limit,
+			Integer offset, Column column) {
 		if (!DbValidator.isLimitOffsetCorrect(limit, offset)) {
 			throw new ServiceException(DbValidator.INVALID_LIMIT_OFFSET);
 		}
@@ -97,8 +97,8 @@ public class ComputerService implements IComputerService {
 	}
 
 	@Override
-	public List<Computer> getSomeSearch(Integer limit, Integer offset, Column column,
-			Order order, String search) {
+	public List<Computer> getSomeSearch(Integer limit, Integer offset,
+			Column column, Order order, String search) {
 		if (!DbValidator.isLimitOffsetCorrect(limit, offset)) {
 			throw new ServiceException(DbValidator.INVALID_LIMIT_OFFSET);
 		}
@@ -109,5 +109,22 @@ public class ComputerService implements IComputerService {
 	@Override
 	public int getNumberComputerSearch(String search) {
 		return computerDAO.getNumberComputerSearch(search);
+	}
+
+	@Override
+	public List<Computer> getList(Integer limit, Integer offset, Column column,
+			Order order, String search) {
+		if (search != null && !search.equals("")) {
+			return getSomeSearch(limit, offset, column, order, search);
+		}
+		if (column != null) {
+			if (order == Order.ASC) {
+				return getSomeOrderedByAscending(limit, offset, column);
+			}
+			if (order == Order.DESC) {
+				return getSomeOrderedByDescending(limit, offset, column);
+			}
+		}
+		return getSome(limit, offset);
 	}
 }

@@ -22,14 +22,17 @@ public interface IComputerService {
 
 	public int getNumberComputer();
 
-	public List<Computer> getSomeOrderedByAscending(Integer limit, Integer offset,
-			Column column);
+	public List<Computer> getSomeOrderedByAscending(Integer limit,
+			Integer offset, Column column);
 
-	public List<Computer> getSomeOrderedByDescending(Integer limit, Integer offset,
-			Column column);
+	public List<Computer> getSomeOrderedByDescending(Integer limit,
+			Integer offset, Column column);
 
-	public List<Computer> getSomeSearch(Integer limit, Integer offset, Column column,
-			Order order, String search);
+	public List<Computer> getSomeSearch(Integer limit, Integer offset,
+			Column column, Order order, String search);
 
 	public int getNumberComputerSearch(String search);
+
+	public List<Computer> getList(Integer limit, Integer offset, Column column,
+			Order order, String search);
 }

@@ -177,6 +177,12 @@ public class ComputerDAO implements IComputerDAO {
 		JPAQuery query = new JPAQuery(em);
 		List<Computer> computers;
 		search = "%" + search + "%";
+		if (column == null) {
+			column = Column.ID;
+		}
+		if (order == null) {
+			order = Order.ASC;
+		}
 		query = query
 				.from(computer)
 				.leftJoin(computer.company, company)

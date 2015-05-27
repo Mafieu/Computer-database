@@ -3,10 +3,8 @@
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-	<context:component-scan base-package="com.excilys.malbert.client" />
-	
-	<!-- A enlever -->
-	<import resource="classpath:serviceApplicationContext.xml" />
+	<import resource="classpath:serviceApplicationContext.xml"/>
+	<context:annotation-config />
 </beans>

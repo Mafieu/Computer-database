@@ -36,6 +36,9 @@ public final class Utils {
 		if (!(new DateValidator().isValid(date, pattern))) {
 			return null;
 		}
+		if (pattern == null) {
+			pattern = Pattern.EN;
+		}
 		return LocalDateTime.of(
 				LocalDate.parse(date,
 						DateTimeFormatter.ofPattern(pattern.toString())),
@@ -47,6 +50,9 @@ public final class Utils {
 		if (date == null) {
 			return null;
 		} else {
+			if (pattern == null) {
+				pattern = Pattern.EN;
+			}
 			return date.format(DateTimeFormatter.ofPattern(pattern.toString()));
 		}
 	}

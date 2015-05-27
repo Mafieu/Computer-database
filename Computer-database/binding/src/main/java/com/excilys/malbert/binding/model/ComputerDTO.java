@@ -3,6 +3,7 @@ package com.excilys.malbert.binding.model;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.excilys.malbert.binding.validator.Date;
 
@@ -90,9 +91,9 @@ public class ComputerDTO {
 
 	@Override
 	public String toString() {
-		return "ComputerDTO [id=" + id + ", name=" + name
-				+ ", introduced=" + introduced + ", discontinued="
-				+ discontinued + ", companyId=" + companyId + ", companyName="
-				+ companyName + "]";
+		return "ComputerDTO [id=" + id + ", name=" + name + ", introduced="
+				+ introduced + ", discontinued=" + discontinued
+				+ ", companyId=" + companyId + ", companyName=" + companyName
+				+ "]";
 	}
 }

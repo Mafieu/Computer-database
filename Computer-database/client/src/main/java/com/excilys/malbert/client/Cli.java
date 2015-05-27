@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 import com.excilys.malbert.binding.util.Utils;
 import com.excilys.malbert.binding.validator.Date.Pattern;
+import com.excilys.malbert.client.service.IClientService;
 import com.excilys.malbert.core.model.Company;
 import com.excilys.malbert.core.model.Computer;
 import com.excilys.malbert.service.ICompanyService;
@@ -18,16 +21,20 @@ import com.excilys.malbert.service.IComputerService;
  * 
  * @author excilys
  */
+@Component
 public class Cli {
 
-	private static Scanner scanner;
+	@Autowired
+	public IClientService service;
+
+	private Scanner scanner;
 	private static ICompanyService serviceCompany;
 	private static IComputerService serviceComputer;
 
 	/**
 	 * Prints the menu
 	 */
-	private static void printMenu() {
+	private void printMenu() {
 		System.out.println("1. List of computers");
 		System.out.println("2. List of companies");
 		System.out.println("3. Show details of a computer");
@@ -41,7 +48,7 @@ public class Cli {
 	/**
 	 * @return A computer
 	 */
-	private static Computer createComputer(long id) {
+	private Computer createComputer(long id) {
 		String name;
 		LocalDateTime introduced, discontinued;
 		long idCompany = 0;
@@ -67,7 +74,7 @@ public class Cli {
 				(idCompany == 0 ? null : serviceCompany.getCompany(idCompany)));
 	}
 
-	private static Computer createComputer() {
+	private Computer createComputer() {
 		return createComputer(-1);
 	}
 
@@ -77,14 +84,14 @@ public class Cli {
 	 * @param choice
 	 *            Menu choice
 	 */
-	private static void menu(int choice) {
+	private void menu(int choice) {
 		List<Company> listCompanies;
 		List<Computer> listComputers;
 		long id = -1;
 
 		switch (choice) {
 		case 1:
-			listComputers = serviceComputer.getAllComputers();
+			listComputers = service.getAllComputer(Pattern.EN);
 			Paginator<Computer> paginatorPc = new Paginator<Computer>(
 					listComputers);
 			paginatorPc.show();
@@ -143,19 +150,9 @@ public class Cli {
 		}
 	}
 
-	/**
-	 * @param args
-	 *            Unused
-	 */
-	public static void main(String[] args) {
+	private void displayMenu() {
 		scanner = new Scanner(System.in);
 		int entry;
-
-		ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
-				"applicationContext.xml");
-		serviceComputer = appContext.getBean(IComputerService.class);
-		serviceCompany = appContext.getBean(ICompanyService.class);
-
 		do {
 			printMenu();
 			if (scanner.hasNextInt()) {
@@ -167,6 +164,19 @@ public class Cli {
 				System.err.println("Please enter a number between 1 and 7");
 			}
 		} while (entry != 8);
+	}
+
+	/**
+	 * @param args
+	 *            Unused
+	 */
+	public static void main(String[] args) {
+		ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
+				"applicationContext.xml");
+		serviceComputer = appContext.getBean(IComputerService.class);
+		serviceCompany = appContext.getBean(ICompanyService.class);
+		Cli cli = appContext.getBean(Cli.class);
+		cli.displayMenu();
 		appContext.close();
 	}
 }

@@ -24,7 +24,8 @@ public final class ComputerMapper {
 					computerDTO.getIntroduced(), pattern));
 			comp.setDiscontinued(Utils.stringToLocaldatetime(
 					computerDTO.getDiscontinued(), pattern));
-			if (computerDTO.getCompanyId() != null && computerDTO.getCompanyId() != 0) {
+			if (computerDTO.getCompanyId() != null
+					&& computerDTO.getCompanyId() != 0) {
 				comp.setCompany(new Company(computerDTO.getCompanyId(),
 						computerDTO.getCompanyName()));
 			} else {
@@ -43,7 +44,8 @@ public final class ComputerMapper {
 				return new ComputerDTO(computer.getId(), computer.getName(),
 						Utils.localdatetimeToString(computer.getIntroduced(),
 								pattern), Utils.localdatetimeToString(
-								computer.getDiscontinued(), pattern), null, null);
+								computer.getDiscontinued(), pattern), null,
+						null);
 			} else {
 				return new ComputerDTO(computer.getId(), computer.getName(),
 						Utils.localdatetimeToString(computer.getIntroduced(),
