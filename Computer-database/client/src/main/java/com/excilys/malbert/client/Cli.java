@@ -28,8 +28,6 @@ public class Cli {
 	public IClientService service;
 
 	private Scanner scanner;
-	private static ICompanyService serviceCompany;
-	private static IComputerService serviceComputer;
 
 	/**
 	 * Prints the menu
@@ -71,7 +69,7 @@ public class Cli {
 			}
 		} while (idCompany < 0);
 		return new Computer(id, name, introduced, discontinued,
-				(idCompany == 0 ? null : serviceCompany.getCompany(idCompany)));
+				(idCompany == 0 ? null : service.getCompany(idCompany)));
 	}
 
 	private Computer createComputer() {
@@ -91,13 +89,13 @@ public class Cli {
 
 		switch (choice) {
 		case 1:
-			listComputers = service.getAllComputer(Pattern.EN);
+			listComputers = service.getAllComputer();
 			Paginator<Computer> paginatorPc = new Paginator<Computer>(
 					listComputers);
 			paginatorPc.show();
 			break;
 		case 2:
-			listCompanies = serviceCompany.getAllCompanies();
+			listCompanies = service.getAllCompany();
 			Paginator<Company> paginatorComp = new Paginator<Company>(
 					listCompanies);
 			paginatorComp.show();
@@ -109,10 +107,10 @@ public class Cli {
 			} else {
 				scanner.next();
 			}
-			System.out.println(serviceComputer.getComputer(id).toString());
+			System.out.println(service.findComputer(id).toString());
 			break;
 		case 4:
-			serviceComputer.createComputer(createComputer());
+			service.createComputer(createComputer());
 			break;
 		case 5:
 			System.out.println("Id of the computer to update :");
@@ -121,7 +119,7 @@ public class Cli {
 			} else {
 				scanner.next();
 			}
-			serviceComputer.updateComputer(createComputer(id));
+			service.updateComputer(createComputer(id));
 			break;
 		case 6:
 			System.out.println("Id of the computer :");
@@ -130,7 +128,7 @@ public class Cli {
 			} else {
 				scanner.next();
 			}
-			serviceComputer.deleteComputer(id);
+			service.deleteComputer(id);
 			break;
 		case 7:
 			System.out.println("Id of the company :");
@@ -139,7 +137,7 @@ public class Cli {
 			} else {
 				scanner.next();
 			}
-			serviceCompany.deleteCompany(id);
+			service.deleteCompany(id);
 			break;
 		case 8:
 			System.out.println("Good bye");
@@ -173,8 +171,6 @@ public class Cli {
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
 				"applicationContext.xml");
-		serviceComputer = appContext.getBean(IComputerService.class);
-		serviceCompany = appContext.getBean(ICompanyService.class);
 		Cli cli = appContext.getBean(Cli.class);
 		cli.displayMenu();
 		appContext.close();
