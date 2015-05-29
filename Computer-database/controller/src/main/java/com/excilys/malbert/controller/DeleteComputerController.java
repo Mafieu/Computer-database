@@ -17,7 +17,7 @@ public class DeleteComputerController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	protected String doPost(@ModelAttribute("selection") String selection) {
-		// We should get id,id,id
+		// We should get id,id,id : see dashboard.js for more explanation
 		String[] ids = selection.split(",");
 		for (String id : ids) {
 			serviceComputer.deleteComputer(Long.parseLong(id));

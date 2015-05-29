@@ -2,6 +2,11 @@ package com.excilys.malbert.persistence.validator;
 
 import com.excilys.malbert.core.model.Computer;
 
+/**
+ * Class containing some useful methods for validation
+ * 
+ * @author excilys
+ */
 public final class DbValidator {
 	public static final String INVALID_LIMIT_OFFSET = "Invalid limit and offset";
 	public static final String INVALID_COLUMN = "Invalid column name";

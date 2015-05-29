@@ -3,10 +3,15 @@ package com.excilys.malbert.binding.model;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import com.excilys.malbert.binding.validator.Date;
 
+/**
+ * POJO of Computer
+ * 
+ * @author excilys
+ * @see Computer
+ */
 public class ComputerDTO {
 
 	@Min(0)
@@ -25,10 +30,6 @@ public class ComputerDTO {
 
 	public ComputerDTO() {
 		this(null, null, null, null, null, null);
-	}
-
-	public ComputerDTO(Long id) {
-		this(id, null, null, null, null, null);
 	}
 
 	public ComputerDTO(Long id, String name, String introduced,

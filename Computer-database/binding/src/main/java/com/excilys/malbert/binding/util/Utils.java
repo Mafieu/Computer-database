@@ -1,28 +1,20 @@
 package com.excilys.malbert.binding.util;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import com.excilys.malbert.binding.validator.DateValidator;
 import com.excilys.malbert.binding.validator.Date.Pattern;
+import com.excilys.malbert.binding.validator.DateValidator;
 
+/**
+ * Contains some useful functions
+ * 
+ * @author excilys
+ */
 public final class Utils {
 	private Utils() {
-	}
-
-	public static LocalDateTime timestampToLocaldatetime(Timestamp time) {
-		if (time == null) {
-			return null;
-		} else {
-			return time.toLocalDateTime();
-		}
-	}
-
-	public static Timestamp localdatetimeToTimestamp(LocalDateTime time) {
-		return time == null ? null : Timestamp.valueOf(time);
 	}
 
 	public static LocalDateTime stringToLocaldatetime(String date,

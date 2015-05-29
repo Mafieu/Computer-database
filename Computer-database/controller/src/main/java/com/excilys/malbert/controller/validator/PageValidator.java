@@ -5,6 +5,14 @@ import org.springframework.validation.Validator;
 
 import com.excilys.malbert.controller.model.Page;
 
+/**
+ * Used by DashboardController to validate a Page object thanx to Hibernate
+ * Validator.
+ * 
+ * @author excilys
+ */
+// We don't have to use this kind of validator, we can also use annotations like
+// in ComputerDTO
 public class PageValidator implements Validator {
 
 	public boolean supports(Class<?> param) {

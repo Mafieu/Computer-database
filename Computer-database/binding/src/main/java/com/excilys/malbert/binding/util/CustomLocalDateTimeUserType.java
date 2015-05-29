@@ -15,6 +15,12 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.usertype.EnhancedUserType;
 
+/**
+ * Class used for mapping LocalDateTime to TimeStamp
+ * 
+ * @author excilys
+ * @see Computer
+ */
 public class CustomLocalDateTimeUserType implements EnhancedUserType,
 		Serializable {
 	private static final long serialVersionUID = 1106096378628680326L;

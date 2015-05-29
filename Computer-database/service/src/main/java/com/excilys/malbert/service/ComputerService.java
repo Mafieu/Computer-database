@@ -13,6 +13,11 @@ import com.excilys.malbert.persistence.IComputerDAO.Column;
 import com.excilys.malbert.persistence.IComputerDAO.Order;
 import com.excilys.malbert.persistence.validator.DbValidator;
 
+/**
+ * Service for Computer
+ * 
+ * @author excilys
+ */
 @Service
 public class ComputerService implements IComputerService {
 

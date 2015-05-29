@@ -10,6 +10,7 @@ import com.excilys.malbert.binding.CompanyMapper;
 import com.excilys.malbert.binding.model.CompanyDTO;
 import com.excilys.malbert.service.ICompanyService;
 
+// We use Spring RestController to publish the web services
 @RestController
 @RequestMapping("/company")
 public class CompanyController {
@@ -19,11 +20,12 @@ public class CompanyController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/getAll")
 	public Object[] getAll() {
+		// First usage of Java8 streams ! Yay \o/
 		return companyService.getAllCompanies().stream()
 				.map(c -> CompanyMapper.companyToCompanydto(c)).toArray();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/getAll")
+	@RequestMapping(method = RequestMethod.GET, value = "/find")
 	public CompanyDTO find(@RequestParam(value = "id") Long id) {
 		return CompanyMapper.companyToCompanydto(companyService.getCompany(id));
 	}

@@ -12,6 +12,11 @@ import com.excilys.malbert.persistence.ICompanyDAO;
 import com.excilys.malbert.persistence.IComputerDAO;
 import com.excilys.malbert.persistence.validator.DbValidator;
 
+/**
+ * Service for Company
+ * 
+ * @author excilys
+ */
 @Service
 public class CompanyService implements ICompanyService {
 

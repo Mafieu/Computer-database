@@ -4,6 +4,12 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * POJO of Company
+ * 
+ * @author excilys
+ * @see Company
+ */
 public class CompanyDTO {
 
 	@Min(0)
@@ -28,7 +34,7 @@ public class CompanyDTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

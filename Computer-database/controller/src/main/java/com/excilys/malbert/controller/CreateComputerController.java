@@ -25,7 +25,7 @@ import com.excilys.malbert.service.ICompanyService;
 import com.excilys.malbert.service.IComputerService;
 
 /**
- * Servlet implementation class ServletCreate
+ * Controller for addComputer view
  */
 @Controller
 @RequestMapping(value = "/addComputer")
@@ -35,10 +35,7 @@ public class CreateComputerController {
 	@Autowired
 	private IComputerService serviceComputer;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	// Model is a mapping to the jsp view's objects
 	@RequestMapping(method = RequestMethod.GET)
 	protected String doGet(Model model) {
 		ComputerDTO computerDTO = new ComputerDTO();
@@ -53,6 +50,8 @@ public class CreateComputerController {
 		return "addComputer";
 	}
 
+	// Valid annotation permits the use of Hibernate Validator and if errors are
+	// found, it puts objects corresponding to errors found in BindingResult
 	@RequestMapping(method = RequestMethod.POST)
 	protected String doPost(@Valid @ModelAttribute ComputerDTO computerDTO,
 			BindingResult result, Model model) {

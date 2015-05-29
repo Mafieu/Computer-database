@@ -13,8 +13,6 @@ import com.excilys.malbert.binding.validator.Date.Pattern;
 import com.excilys.malbert.client.service.IClientService;
 import com.excilys.malbert.core.model.Company;
 import com.excilys.malbert.core.model.Computer;
-import com.excilys.malbert.service.ICompanyService;
-import com.excilys.malbert.service.IComputerService;
 
 /**
  * Command Line Interface class for the client
@@ -165,6 +163,9 @@ public class Cli {
 	}
 
 	/**
+	 * Gets the Bean of this class in the application context and start the menu
+	 * from it. This permits to autowire the service
+	 * 
 	 * @param args
 	 *            Unused
 	 */

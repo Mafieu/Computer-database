@@ -71,6 +71,8 @@ public class ComputerController {
 		computerService.deleteComputer(id);
 	}
 
+	// For POST services, the annotation used to get the object send within the
+	// POST request is RequestBody
 	@RequestMapping(method = RequestMethod.POST, value = "/create")
 	public ComputerDTO create(@RequestBody ComputerDTO computerDTO) {
 		Pattern pattern = Pattern.EN;

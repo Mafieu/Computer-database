@@ -10,7 +10,6 @@ import javax.persistence.Table;
  * Model object to represent the rows of company's table
  * 
  * @author excilys
- *
  */
 @javax.persistence.Entity
 @Table(name = "company")
@@ -37,15 +36,6 @@ public class Company implements Entity {
 	 */
 	public Company(Long id, String name) {
 		this.id = id;
-		this.name = name;
-	}
-
-	/**
-	 * Constructor without id
-	 * 
-	 * @param name
-	 */
-	public Company(String name) {
 		this.name = name;
 	}
 

@@ -12,6 +12,11 @@ import javax.validation.Payload;
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Date {
+	/**
+	 * Enums of languages available and the date format corresponding
+	 * 
+	 * @author excilys
+	 */
 	public enum Pattern {
 		FR("dd-MM-yyyy"), EN("MM-dd-yyyy");
 		private String pattern;

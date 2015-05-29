@@ -27,7 +27,7 @@ $(function() {
 
 // Function setCheckboxValues
 (function ( $ ) {
-
+	// Gets the values of the checked checkboxes then joins them in a single string with ',' as separator
 	$.fn.setCheckboxValues = function(formFieldName, checkboxFieldName) {
 
 		var str = $('.' + checkboxFieldName + ':checked').map(function() {

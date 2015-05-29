@@ -18,6 +18,11 @@ import com.excilys.malbert.binding.validator.Date.Pattern;
 import com.excilys.malbert.core.model.Company;
 import com.excilys.malbert.core.model.Computer;
 
+/**
+ * Implementation of the IClientService interface
+ * 
+ * @author excilys
+ */
 @Service
 public class ClientService implements IClientService {
 	private final static String SERVER_ROOT_URI = "http://localhost:8080/web-service";
@@ -30,6 +35,8 @@ public class ClientService implements IClientService {
 	public List<Computer> getAllComputer() {
 		// Getting the JSON object in a String object
 		Client client = ClientBuilder.newClient();
+		// Sending a GET request for /getAll with a JSON object (null here) and
+		// parsing the answer as a ComputerDTO[]
 		ComputerDTO[] response = client.target(SERVER_ROOT_COMPUTER)
 				.path("getAll").request(MediaType.APPLICATION_JSON_TYPE)
 				.get(ComputerDTO[].class);

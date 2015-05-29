@@ -16,8 +16,10 @@ import org.hibernate.annotations.Type;
  * Model object to represent the rows of computer's table
  * 
  * @author excilys
- *
  */
+// The Entity annotation is here for QueryDSL to know that this object is
+// serializable in database and QueryDSL will generate a file that represents
+// the persisted object
 @javax.persistence.Entity
 @Table(name = "computer")
 public class Computer implements Entity {
@@ -33,6 +35,7 @@ public class Computer implements Entity {
 	@Column(name = "discontinued")
 	@Type(type = "com.excilys.malbert.binding.util.CustomLocalDateTimeUserType")
 	private LocalDateTime discontinued;
+	// Some Computer can have the same Company
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "company_id")
 	private Company company;

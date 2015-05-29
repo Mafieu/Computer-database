@@ -16,6 +16,11 @@ import com.excilys.malbert.persistence.validator.DbValidator;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+/**
+ * DAO for Company
+ * 
+ * @author excilys
+ */
 @Repository
 public class CompanyDAO implements ICompanyDAO {
 

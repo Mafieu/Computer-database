@@ -10,6 +10,12 @@ import com.excilys.malbert.core.model.QUser;
 import com.excilys.malbert.core.model.User;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+/**
+ * DAO for User. Only needs to find a User by it's username. Used by Spring
+ * Security
+ * 
+ * @author excilys
+ */
 @Repository
 public class UserDAO implements IUserDAO {
 

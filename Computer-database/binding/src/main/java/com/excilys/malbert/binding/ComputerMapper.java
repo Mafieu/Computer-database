@@ -6,6 +6,11 @@ import com.excilys.malbert.binding.validator.Date.Pattern;
 import com.excilys.malbert.core.model.Company;
 import com.excilys.malbert.core.model.Computer;
 
+/**
+ * Mapper for Computer and ComputerDTO
+ * 
+ * @author excilys
+ */
 public final class ComputerMapper {
 	public ComputerMapper() {
 	}

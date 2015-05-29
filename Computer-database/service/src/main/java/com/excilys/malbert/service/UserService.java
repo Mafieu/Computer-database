@@ -18,6 +18,12 @@ import org.springframework.stereotype.Service;
 import com.excilys.malbert.core.model.User;
 import com.excilys.malbert.persistence.IUserDAO;
 
+/**
+ * Service for User. Used by SpringSecurity. Transforms our own User to a
+ * UserDetails used then by Spring Security for authentication
+ * 
+ * @author excilys
+ */
 @Service("userDetailsService")
 public class UserService implements IUserService, UserDetailsService {
 

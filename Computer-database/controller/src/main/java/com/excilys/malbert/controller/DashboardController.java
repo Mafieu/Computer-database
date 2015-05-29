@@ -29,6 +29,8 @@ public class DashboardController {
 	@Autowired
 	private ICompanyService serviceCompany;
 
+	// On initialization of the bean, set the validator used by Hibernate
+	// Validator to our PageValidator
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setValidator(new PageValidator());

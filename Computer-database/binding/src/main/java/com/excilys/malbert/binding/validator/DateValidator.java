@@ -11,6 +11,11 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import com.excilys.malbert.binding.util.Utils;
 import com.excilys.malbert.binding.validator.Date.Pattern;
 
+/**
+ * Implementation of the Date interface
+ * 
+ * @author excilys
+ */
 public class DateValidator implements ConstraintValidator<Date, String> {
 	private final org.apache.commons.validator.routines.DateValidator validator = org.apache.commons.validator.routines.DateValidator
 			.getInstance();
@@ -46,6 +51,13 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 		}
 	}
 
+	/**
+	 * @param date
+	 * @param pattern
+	 * @return
+	 * 
+	 *         Function used for validation of date before parsing in Utils
+	 */
 	public boolean isValid(String date, Pattern pattern) {
 		if (date == null || date.isEmpty()) {
 			return true;

@@ -18,8 +18,12 @@ import com.excilys.malbert.persistence.validator.DbValidator;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+/**
+ * DAO for Computer
+ * 
+ * @author excilys
+ */
 @Repository
-@Transactional(readOnly = true)
 public class ComputerDAO implements IComputerDAO {
 
 	@PersistenceContext

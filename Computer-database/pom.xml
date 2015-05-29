@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.excilys</groupId>
 	<artifactId>Computer-database</artifactId>
@@ -161,7 +162,7 @@
 			</dependency>
 
 			<!-- Spring security -->
-			<!-- <dependency>
+			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
 				<version>${spring-security.version}</version>
@@ -170,7 +171,7 @@
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
 				<version>${spring-security.version}</version>
-			</dependency>  -->
+			</dependency>
 
 			<!-- View -->
 			<dependency>
@@ -197,6 +198,25 @@
 				<artifactId>hibernate-validator</artifactId>
 				<version>${hibernate-validator.version}</version>
 			</dependency>
+
+			<!-- Web Service -->
+			<!-- Client side -->
+			<dependency>
+				<groupId>org.glassfish.jersey.core</groupId>
+				<artifactId>jersey-client</artifactId>
+				<version>2.17</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-json-jackson</artifactId>
+				<version>2.17</version>
+			</dependency>
+			<!-- Server side -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>1.2.3.RELEASE</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -207,6 +227,6 @@
 		<module>service</module>
 		<module>client</module>
 		<module>controller</module>
-    <module>web-service</module>
-  </modules>
+		<module>web-service</module>
+	</modules>
 </project>

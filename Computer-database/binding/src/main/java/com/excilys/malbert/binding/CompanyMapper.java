@@ -3,6 +3,11 @@ package com.excilys.malbert.binding;
 import com.excilys.malbert.binding.model.CompanyDTO;
 import com.excilys.malbert.core.model.Company;
 
+/**
+ * Mapper for Company and CompanyDTO
+ * 
+ * @author excilys
+ */
 public final class CompanyMapper {
 	public CompanyMapper() {
 	}

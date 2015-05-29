@@ -4,11 +4,22 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Class used to represent custom users in database. It's used by Spring
+ * Security for authentication
+ * 
+ * @author excilys
+ */
 @javax.persistence.Entity
 @Table(name = "users")
 public class User {
+	/**
+	 * Represents the roles a user can have (currently only user is used)
+	 * 
+	 * @author excilys
+	 */
 	public enum Role {
-		USER("ROLE_USER"), ADMIN("ROLE_ADMIN");
+		USER("ROLE_USER");
 		private String role;
 
 		Role(String role) {
@@ -18,13 +29,10 @@ public class User {
 		public String toString() {
 			return role;
 		}
-		
+
 		public static Role map(String str) {
 			if (str.equalsIgnoreCase("ROLE_USER")) {
 				return USER;
-			}
-			if (str.equalsIgnoreCase("ROLE_ADMIN")) {
-				return ADMIN;
 			}
 			return null;
 		}
@@ -63,10 +71,10 @@ public class User {
 		this.password = password;
 	}
 
-	public Role getRole(){
+	public Role getRole() {
 		return Role.map(authority);
 	}
-	
+
 	public String getAuthority() {
 		return authority;
 	}
@@ -74,9 +82,9 @@ public class User {
 	public void setAuthority(Role authority) {
 		this.authority = authority.toString();
 	}
-	
+
 	public void setAuthority(String authority) {
-		if(Role.map(authority) != null)
+		if (Role.map(authority) != null)
 			this.authority = authority;
 	}
 
